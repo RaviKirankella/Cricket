@@ -21,7 +21,7 @@ function calc() {
 	adv = Math.exp(-adv);
 	adv = 100/(1+adv);
 	adv = Math.round(adv);
-	document.getElementById("test").innerHTML=adv;
+	document.getElementById("advantage").innerHTML=adv;
 }
 
 function getval(val) {
