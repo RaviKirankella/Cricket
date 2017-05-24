@@ -7,6 +7,7 @@ function calc() {
 	var i;
 	var val="";
 	var adv="";
+	var ret="";
 	
 	for (i = 0; i < x.length; i++) {
 		val = x[i].value;
@@ -16,7 +17,13 @@ function calc() {
 		}
 		else {
 			//adv = adv + parseFloat(getval(val));
-			adv = adv +parseFloat(getval(val));
+			ret = parseFloat(getval(val));
+			if (ret == NaN) {
+				adv = adv+ "Error ";
+			}
+			else {
+				adv = adv +parseFloat(getval(val));
+			}
 		}
 		
 	}
