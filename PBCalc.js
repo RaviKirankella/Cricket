@@ -6,21 +6,23 @@ function calc() {
 	var x = document.getElementsByClassName("field");
 	var i;
 	var val="";
-	var adv=0;
+	var adv="";
 	
 	for (i = 0; i < x.length; i++) {
 		val = x[i].value;
 		if (val =="") {
-			adv = adv-2.5;
+			//adv = adv-2.5;
+			adv = adv + "blank ";
 		}
 		else {
-			adv = adv + parseFloat(getval(val));
+			//adv = adv + parseFloat(getval(val));
+			adv = adv +parseFloat(getval(val));
 		}
 		
 	}
-	adv = Math.exp(-adv);
-	adv = 100/(1+adv);
-	adv = Math.round(adv);
+	//adv = Math.exp(-adv);
+	//adv = 100/(1+adv);
+	//adv = Math.round(adv);
 	document.getElementById("advantage").innerHTML=adv;
 }
 
