@@ -22,42 +22,7 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
   $( function() {
-    var OppositionTags = [
-"Aldworth",
-"Appleton",
-"Astons",
-"Bartlemas C.C. (formerly Probationers)",
-"Blackwells",
-"Blenheim Park",
-"Bodleian Library",
-"Charlton-on-Otmoor",
-"Cherwell School Staff",
-"Cholsey",
-"Enstone",
-"Far from the MCC",
-"Garsington",
-"HCL",
-"Ibstone",
-"Iffle-y Village",
-"Infosys",
-"Ipsden",
-"Islip",
-"Keen Crcketers",
-"Kempsford",
-"Kingston Bagpuize",
-"Lord Williams Staff",
-"Neilsen Media Research",
-"Nomads C.C.",
-"Oxford University Press",
-"Oxfordshire County Council",
-"Quokkers",
-"Railway Taverners",
-"United Oxford Hospitals",
-"Wolvercote",
-"Wooton & Boars Hill",
-"Wytham",
-"Other Team"
-    ];
+    var OppositionTags =opplist();
     $( "#Opposition" ).autocomplete({
       source: OppositionTags
     });
