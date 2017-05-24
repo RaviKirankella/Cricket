@@ -6,31 +6,22 @@ function calc() {
 	var x = document.getElementsByClassName("field");
 	var i;
 	var val="";
-	var adv="";
-	var ret="";
+	var adv=0;
+	var ret=0;
 	
 	for (i = 0; i < x.length; i++) {
 		val = x[i].value;
-		if (val =="") {
-			//adv = adv-2.5;
-			adv = adv + "blank ";
-		}
+		if (val =="") {adv = adv-2.5;}
 		else {
-			//adv = adv + parseFloat(getval(val));
 			ret = (getval(val));
-			if (ret == NaN) {
-				adv = adv+ "Error ";
-			}
-			else {
-				adv = adv +ret;
-			}
+			if (ret == NaN) {adv = adv-2,5;}
+			else {adv = adv +ret;}
 		}
-		
 	}
-	//adv = Math.exp(-adv);
-	//adv = 100/(1+adv);
-	//adv = Math.round(adv);
-	document.getElementById("advantage").innerHTML=adv;
+	adv = Math.exp(-adv);
+	adv = 100/(1+adv);
+	adv = Math.round(adv);
+	document.getElementById("advantage").innerHTML=adv+"%";
 }
 
 function getval(val) {
