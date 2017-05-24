@@ -21,18 +21,13 @@
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
-  $( function() {
-    var OppositionTags =getlist("Opposition");
-    var PlayerTags =getlist("Players");
-    $( "#Opposition" ).autocomplete({
-      source: OppositionTags
-    });
-     $( ".Player" ).autocomplete({
-      source: PlayerTags
-    });
-    
-  } );
-    </script>
+      $( function() {
+          var OppositionTags =getlist("Opposition");
+          var PlayerTags =getlist("Players");
+          $( "#Opposition" ).autocomplete({source: OppositionTags});
+          $( ".Player" ).autocomplete({source: PlayerTags});
+          } );
+   </script>
   </head>
   
   <body>
