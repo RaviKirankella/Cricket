@@ -37,6 +37,7 @@ function getval(val) {
 	var list = getlist("list");
 	var values = getlist("values");
 	var index = list.indexOf("val")
+	console.log(values[index]); 
 	return values[index];
 }
 
