@@ -40,4 +40,29 @@ function playerlist() {
 	return players;
 }
 
+function getlist(type) {
+	var list = ["20/20", "Limited Overs", "Home", "Away", "A. Albasri", "A. East", "A. Mohammad", "A. Shariff", "A. Symons", 
+		    "B. Harden", "B. Shepherd", "C. Tarratt", "D. Henry", "D. Penhallurick", "D. Valsan", "D.J. Lawrence", 
+		    "G. Barker", "G. Gardner-Morrison", "H. Hudson", "H. Stoneman", "J. Gifford", "J. Khawaja", "J. Ponsford", 
+		    "J. Walter", "K. Bhaskaran", "K. Ponsford", "K. Siddireddy", "K.H. Whiter", "L. Blatchford", "L. Whitby", 
+		    "M. Naqvi", "M. Stanbury", "M. Thompson", "N. Hardy", "N. Hussain", "N. Khawaja", "N.H.R. Wyatt", "O. Walter", 
+		    "P. Davenport", "P. Gregory", "P. Jacobs", "P. Wiblin", "R. Blatchford", "R. Kella", "R. Stephenson", 
+		    "R. Stoneman", "R. Tolson", "R. Vellayappan", "R. Venkat", "R. Yennapusa", "S. Gregan", "S. Khawaja", 
+		    "S. Mistry", "S. Sivalingam", "W. Green", "Other Player", "Aldworth", "Appleton", "Astons", 
+		    "Bartlemas C.C. (formerly Probationers)", "Blackwells", "Blenheim Park", "Bodleian Library", "Charlton-on-Otmoor", 
+		    "Cherwell School Staff", "Cholsey", "Enstone", "Far from the MCC", "Garsington", "HCL", "Ibstone", 
+		    "Iffley Village", "Infosys", "Ipsden", "Islip", "Keen Crcketers", "Kempsford", "Kingston Bagpuize", 
+		    "Lord Williams Staff", "Neilsen Media Research", "Nomads C.C.", "Oxford University Press", 
+		    "Oxfordshire County Council", "Quokkers", "Railway Taverners", "United Oxford Hospitals", "Wolvercote", 
+		    "Wooton & Boars Hill", "Wytham", "Other Team"];
+	var playerstartindex = 4;
+	var playerendindex = list.indexOf("Other Player");
+	var oppstartindex = list.indexOf("Other Player")+1;
+	var oppendindex = list.indexOf("Other Team");
+	if (type="Players") {return list.slice(playerstartindex, playerendindex+1);}
+	else if (type="Opposition") {return list.slice(oppstartindex, oppendindex+1);}
+	else if (type="All") {return list;}
+	else {return list;}
+}
+
 
