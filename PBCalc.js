@@ -71,9 +71,9 @@ function getlist(type) {
 	var playerstartindex = 4;
 	var playerendindex = list.indexOf("Other Player");
 	var oppstartindex = list.indexOf("Other Player")+1;
-	var oppendindex = list.indexOf("Other Team");
+	
 	if (type="Players") {return list.slice(playerstartindex, playerendindex+1);}
-	else if (type="Opposition") {return list.slice(oppstartindex, oppendindex+1);}
+	else if (type="Opposition") {return list.slice(oppstartindex);}
 	else if (type="All") {return list;}
 	else {return list;}
 }
