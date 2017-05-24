@@ -11,10 +11,10 @@ function calc() {
 	for (i = 0; i < x.length; i++) {
 		val = x[i].value;
 		if (val =="") {
-			adv +=-2.5;
+			adv = adv-2.5;
 		}
 		else {
-			adv += parseFloat(getval(val));
+			adv = adv + parseFloat(getval(val));
 		}
 		
 	}
