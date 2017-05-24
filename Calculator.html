@@ -7,11 +7,12 @@
       h2{text-align:center;font-family:Verdana;clear:both;margin-top:10px;}
       p {font-family:Verdana;font-size:14px;}
       span {font-family:Verdana;font-size:14px;}
-      .subinp {margin:auto;width:50%;clear:both;}
       .inp {width:80%;background-color:grey;margin: auto; }
+      .subinp {margin:auto;width:100%;clear:both;}
+      .sec {margin:auto;width:49%;float:left;}
       .fieldlabel {width:46%;text-align:right;margin:1% 1% 0% 1%;float:left;height:26px;}
       .field {width:46%;margin:1% 1% 0% 1%;float:right;height:20px;}
-      .subinpbtn {margin:auto;font-size:14px;font-family:Verdana;text-align:center;}
+      .subinpbtn {margin:auto;font-size:14px;font-family:Verdana;text-align:center;clear:both;}
       .btn {margin:10px 1px 10px 1px;}
       ul {list-style-type: none;margin: 0;padding: 0; width:40px;background-color:white;font-size:12px;}
       li {margin-bottom:0.25px;}
@@ -35,33 +36,38 @@
     <div id="advantage"></div>
     
     <div class="inp">
-      <h2>Match Info</h2>
-      <div class="subinp"> <p class="fieldlabel">Match Type</p> 
-        <select class="field" id="MatchType">
-            <option value="20/20">20/20</option>
-            <option value="Limited Overs">Limited Overs</option>
-        </select>
-      </div>
-      <div class="subinp"> <p class="fieldlabel">Home / Away</p>
-        <select class="field" id="HomeAway">
-            <option value="Home">Home</option>
-            <option value="Away">Away</option>
-        </select>
-      </div>
-      <div class="subinp"> <p class="fieldlabel">Opposition</p><input type="text" class="field" id="Opposition"> </div>
-      <h2>Player Info</h2>
-      <div class="subinp"> <p class="fieldlabel">Player 1</p><input type="text" class="field Player" id="P1"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 2</p><input type="text" class="field Player" id="P2"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 3</p><input type="text" class="field Player" id="P3"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 4</p><input type="text" class="field Player" id="P4"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 5</p><input type="text" class="field Player" id="P5"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 6</p><input type="text" class="field Player" id="P6"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 7</p><input type="text" class="field Player" id="P7"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 8</p><input type="text" class="field Player" id="P8"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 9</p><input type="text" class="field Player" id="P9"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 10</p><input type="text" class="field Player" id="P10"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 11</p><input type="text" class="field Player" id="P11"> </div>
-        <div class="subinpbtn"><button class="btn" onclick="calc()">Calculate</button><div class="subinp">
+      <div class="sec" id="secA">
+          <h2>Match Info</h2>
+          <div class="subinp"> <p class="fieldlabel">Match Type</p> 
+            <select class="field" id="MatchType">
+              <option value="20/20">20/20</option>
+              <option value="Limited Overs">Limited Overs</option>
+            </select>
+          </div>
+          <div class="subinp"> <p class="fieldlabel">Home / Away</p>
+            <select class="field" id="HomeAway">
+              <option value="Home">Home</option>
+              <option value="Away">Away</option>
+            </select>
+          </div>
+          <div class="subinp"> <p class="fieldlabel">Opposition</p><input type="text" class="field" id="Opposition"> </div>
+        </div>
+      
+        <div class="sec" id="secB">
+          <h2>Player Info</h2>
+          <div class="subinp"> <p class="fieldlabel">Player 1</p><input type="text" class="field Player" id="P1"> </div>
+          <div class="subinp"> <p class="fieldlabel">Player 2</p><input type="text" class="field Player" id="P2"> </div>
+          <div class="subinp"> <p class="fieldlabel">Player 3</p><input type="text" class="field Player" id="P3"> </div>
+          <div class="subinp"> <p class="fieldlabel">Player 4</p><input type="text" class="field Player" id="P4"> </div>
+          <div class="subinp"> <p class="fieldlabel">Player 5</p><input type="text" class="field Player" id="P5"> </div>
+          <div class="subinp"> <p class="fieldlabel">Player 6</p><input type="text" class="field Player" id="P6"> </div>
+          <div class="subinp"> <p class="fieldlabel">Player 7</p><input type="text" class="field Player" id="P7"> </div>
+          <div class="subinp"> <p class="fieldlabel">Player 8</p><input type="text" class="field Player" id="P8"> </div>
+          <div class="subinp"> <p class="fieldlabel">Player 9</p><input type="text" class="field Player" id="P9"> </div>
+          <div class="subinp"> <p class="fieldlabel">Player 10</p><input type="text" class="field Player" id="P10"> </div>
+          <div class="subinp"> <p class="fieldlabel">Player 11</p><input type="text" class="field Player" id="P11"> </div>
+        </div>
+            <div class="subinpbtn"><button class="btn" onclick="calc()">Calculate</button><div class="subinp">
     </div>
   </body>
    </html>
