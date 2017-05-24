@@ -22,7 +22,7 @@ function calc() {
 				adv = adv+ "Error ";
 			}
 			else {
-				adv = adv +parseFloat(getval(val));
+				adv = adv +(getval(val));
 			}
 		}
 		
