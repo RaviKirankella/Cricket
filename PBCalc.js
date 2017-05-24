@@ -17,12 +17,12 @@ function calc() {
 		}
 		else {
 			//adv = adv + parseFloat(getval(val));
-			ret = parseFloat(getval(val));
+			ret = (getval(val));
 			if (ret == NaN) {
 				adv = adv+ "Error ";
 			}
 			else {
-				adv = adv +(getval(val));
+				adv = adv +ret;
 			}
 		}
 		
