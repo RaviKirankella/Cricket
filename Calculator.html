@@ -22,10 +22,15 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
   $( function() {
-    var OppositionTags =opplist();
+    var OppositionTags =getlist("Opposition");
+    var PlayerTags =getlist("Players");
     $( "#Opposition" ).autocomplete({
       source: OppositionTags
     });
+     $( ".Player" ).autocomplete({
+      source: PlayerTags
+    });
+    
   } );
     </script>
   </head>
@@ -50,17 +55,17 @@
       </div>
       <div class="subinp"> <p class="fieldlabel">Opposition</p><input type="text" class="field" id="Opposition"> </div>
       <h2>Player Info</h2>
-      <div class="subinp"> <p class="fieldlabel">Player 1</p><input type="text" class="field" id="P1"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 2</p><input type="text" class="field" id="P2"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 3</p><input type="text" class="field" id="P3"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 4</p><input type="text" class="field" id="P4"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 5</p><input type="text" class="field" id="P5"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 6</p><input type="text" class="field" id="P6"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 7</p><input type="text" class="field" id="P7"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 8</p><input type="text" class="field" id="P8"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 9</p><input type="text" class="field" id="P9"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 10</p><input type="text" class="field" id="P10"> </div>
-      <div class="subinp"> <p class="fieldlabel">Player 11</p><input type="text" class="field" id="P11"> </div>
+      <div class="subinp"> <p class="fieldlabel">Player 1</p><input type="text" class="field Player" id="P1"> </div>
+      <div class="subinp"> <p class="fieldlabel">Player 2</p><input type="text" class="field Player" id="P2"> </div>
+      <div class="subinp"> <p class="fieldlabel">Player 3</p><input type="text" class="field Player" id="P3"> </div>
+      <div class="subinp"> <p class="fieldlabel">Player 4</p><input type="text" class="field Player" id="P4"> </div>
+      <div class="subinp"> <p class="fieldlabel">Player 5</p><input type="text" class="field Player" id="P5"> </div>
+      <div class="subinp"> <p class="fieldlabel">Player 6</p><input type="text" class="field Player" id="P6"> </div>
+      <div class="subinp"> <p class="fieldlabel">Player 7</p><input type="text" class="field Player" id="P7"> </div>
+      <div class="subinp"> <p class="fieldlabel">Player 8</p><input type="text" class="field Player" id="P8"> </div>
+      <div class="subinp"> <p class="fieldlabel">Player 9</p><input type="text" class="field Player" id="P9"> </div>
+      <div class="subinp"> <p class="fieldlabel">Player 10</p><input type="text" class="field Player" id="P10"> </div>
+      <div class="subinp"> <p class="fieldlabel">Player 11</p><input type="text" class="field Player" id="P11"> </div>
         <div class="subinpbtn"><button class="btn" onclick="calc()">Calculate</button><div class="subinp">
     </div>
   </body>
