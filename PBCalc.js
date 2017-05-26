@@ -71,4 +71,16 @@ function getlist(type) {
 	else {return list;}
 }
 
+function checkcode() {
+	var c = document.getElementById("code");
+	if (c=="123456") {
+		document.getElementById("message").innerHTML = "Sucess";
+		document.getElementById("acesscode").style.display = "none"
+		document.getElementById("info").style.display = "block"
+	}
+	else {
+		document.getElementById("message").innerHTML = "Invalid Code, try again";
+		document.getElementById("code").value = "";
+	}
+}
 
