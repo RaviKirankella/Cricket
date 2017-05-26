@@ -73,7 +73,7 @@ function getlist(type) {
 
 function checkcode() {
 	var c = document.getElementById("code");
-	if (c=="123456") {
+	if (c.value=="123456") {
 		document.getElementById("message").innerHTML = "Sucess";
 		document.getElementById("acesscode").style.display = "none"
 		document.getElementById("info").style.display = "block"
