@@ -52,7 +52,7 @@
         <div class="subsect" id="map1" style="width:100%;height:400px;display:block"></div>
         <div class="subsect" id="map2" style="width:100%;height:400px;"></div>
       </div>
-      <button>Update</button>
+      <button onclick="Mapupdate()">Update</button>
     </div>
     
      <script>
@@ -74,7 +74,7 @@
         var lat ="51.743363";
         var long= "-1.252402";
         var map = new google.maps.Map(document.getElementById("map1"), {
-          zoom: 4,
+          zoom: 15,
           //center: uluru
           center: new google.maps.LatLng(lat,long)
         });
