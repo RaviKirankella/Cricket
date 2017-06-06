@@ -10,13 +10,17 @@
       td, th {padding:1% 1% 1% 1%}
       tr {margin:1% 0% 1% 0%}
     </style>
-    
+  <script>
+    $(document).ready(function(){
+        $(".subsect").width(($("#frm").width())/2);
+    });
+  </script>
   
   </head>
   
   <body>
     <h1>Ground Locations</h1>
-    <div class="frame">
+    <div class="frame" id="frm">
       <div class="sect" id="tbl_loc">
         <table>
           <tr><th>Ground</th><th>Nearest PostCode</th><th>Geo Code</th></tr>
