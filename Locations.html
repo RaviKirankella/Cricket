@@ -7,12 +7,17 @@
       .frame {background-color:grey; width:90%; margin:auto;font-size:85%;}
       .frame .sect {wdith:50%; float:left;margin:0px 0px 0px 0px}
       .subsect {width:100%; margin:auto}
+      .map {height:300px}
+      #bottom {clear:both}
       td, th {padding:1% 1% 1% 1%}
       tr {margin:1% 0% 1% 0%}
     </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script>
     $(document).ready(function(){
+        $(".subsect").width(($("#frm").width())/2);
+    });
+    $( window ).resize(function(){
         $(".subsect").width(($("#frm").width())/2);
     });
   </script>
@@ -49,10 +54,11 @@
       
       <div class="sect">
         <div class="subsect"><h3>View on Map</h3></div>
-        <div class="subsect" id="map1" style="width:100%;height:400px;display:block"></div>
-        <div class="subsect" id="map2" style="width:100%;height:400px;"></div>
+        <div class="subsect map" id="map1" ></div>
+        <div class="subsect map" id="map2" ></div>
       </div>
       <button onclick="Mapupdate()">Update</button>
+      <div id="bottom"><div>
     </div>
     
      <script>
