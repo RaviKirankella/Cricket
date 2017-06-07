@@ -1,4 +1,4 @@
-function loc() {
+function loc(type) {
   var loc =[[ 'Queens', 'OX1 4PP', 51.743363, -1.252402], 
 			[ 'SSJ', 'OX33 1ET', 51.774466, -1.162412], 
 			[ 'Eynsham', 'OX29 4LF', 51.785588, -1.360644], 
@@ -18,4 +18,6 @@ function loc() {
 			[ 'Wiley-Blackwells (Horsepath)', 'OX33 1RT', 51.737729, -1.175608], 
 			[ 'Wolvercote (Cutteslowe Park)', 'OX2 8NP', 51.792418, -1.265106], 
 			[ 'Wytham', 'OX2 8QA', 51.775372, -1.312852]];
+	if (type=="all") {retun loc;}
+	else {return loc;}
       }
