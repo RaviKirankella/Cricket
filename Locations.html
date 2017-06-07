@@ -23,12 +23,19 @@
 	
 	var tbl= document.getElementById("tbl");
       	var loc = loc_list("all");
-      	for (i = 0; i <loc.length; i++) {
+	      	for (i = 0; i <row_len-1; i++) {
         	var rowrec = loc[i];
         	var row = tbl.insertRow(-1);
-          	for (j=0; j <rowrec.length; j++) {
-          		var cell = row.insertCell(-1);
-          		cell.innerHTML = rowrec[j];
+		var row_len = rowrec.length;
+          	for (j=0; j <row_len-1; j++) {
+          		if (j==row_len-2){
+			var cell = row.insertCell(-1);
+          		cell.innerHTML = rowrec[j]+', '+rowrec[j+1];
+			}
+			else {
+				var cell = row.insertCell(-1);
+          			cell.innerHTML = rowrec[j];
+				}
           	}
 	}
 	
