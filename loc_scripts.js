@@ -18,6 +18,10 @@ function loc(type) {
 			[ 'Wiley-Blackwells (Horsepath)', 'OX33 1RT', 51.737729, -1.175608], 
 			[ 'Wolvercote (Cutteslowe Park)', 'OX2 8NP', 51.792418, -1.265106], 
 			[ 'Wytham', 'OX2 8QA', 51.775372, -1.312852]];
-	if (type=="all") {retun loc;}
-	else {return loc;}
+	if (type=="valid") {return loc.filter(checkvalid);}
+	else {retun loc;}
       }
+
+function checkvalid(loc) {
+	return loc[1] != "";
+}
