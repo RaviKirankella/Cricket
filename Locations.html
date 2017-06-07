@@ -18,6 +18,17 @@
     $(document).ready(function(){
         $(".subsect").width(($("#frm").width())/2);
         $(".sect").width(($("#frm").width())/2);
+	
+	var tbl= document.getElementById("tbl");
+      	var loc_list = loc("all");
+      	for (i = 0; i <loc.length; i++) {
+        	var rowrec = loc[i];
+        	var row = tbl.insertRow(-1);
+          	for (j=0; j <rowrec.length; j++) {
+          		var cell = row.insertCell(-1);
+          		cell.innerHTML = rowrec[j];
+          	}
+	}
     });
     $("#frm").resize(function(){
         $(".subsect").width(($("#frm").width())/2);
@@ -28,21 +39,6 @@
   </head>
   
   <body>
-  <script>
-    function build_table() {
-      var tbl= document.getElementById("tbl");
-      var loc_list = loc("all");
-      for (i = 0; i <loc.length; i++) {
-        var rowrec = loc[i];
-        var row = tbl.insertRow(-1);
-          for (j=0; j <rowrec.length; j++) {
-          var cell = row.insertCell(-1);
-          cell.innerHTML = rowrec[j];
-          }
-			 }
-    }
-    build_table();
-  </script>
   
     <h1>Ground Locations</h1>
     <div class="frame" id="frm">
