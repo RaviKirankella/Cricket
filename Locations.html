@@ -28,10 +28,26 @@
   </head>
   
   <body>
+  <script>
+    function build_table() {
+      var tbl= document.getElementById("tbl");
+      var loc_list = loc("all");
+      for (i = 0; i <loc.length; i++) {
+        var rowrec = loc[i];
+        var row = tbl.insertRow(-1);
+          for (j=0; j <rowrec.length; j++) {
+          var cell = row.insertCell(-1);
+          cell.innerHTML = rowrec[j];
+          }
+			 }
+    }
+    build_table();
+  </script>
+  
     <h1>Ground Locations</h1>
     <div class="frame" id="frm">
       <div class="sect" id="tbl_loc">
-        <table>
+        <table id="tbl">
           <tr><th>Ground</th><th>Nearest PostCode</th><th>Geo Code</th></tr>
           <tr><td>Queens</td><td>OX1 4PP</td><td>51.743363, -1.252402</td></tr>
           <tr><td>SSJ</td><td>OX33 1ET</td><td>51.774466, -1.162412</td></tr>
