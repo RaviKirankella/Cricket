@@ -87,19 +87,21 @@
     
      <script>
       function initMap() {
-        //var uluru = {lat: -25.363, lng: 131.044};
-        var lat ="51.508742";
-        var long= "-0.120850";
-        var map = new google.maps.Map(document.getElementById("map1"), {
-          zoom: 4,
-          //center: uluru
-          center: new google.maps.LatLng(lat,long)
-        });
-        var marker = new google.maps.Marker({
-          position: new google.maps.LatLng(lat,long),
-          map: map
-        });
+	var mapCanvas1 = document.getElementById("map1");
+	var mapOptions1 = {
+    	center: new google.maps.LatLng(51.743363, -1.252402),
+    	zoom:9,
+    	mapTypeId:google.maps.MapTypeId.ROADMAP
+  	};
+	var map1 = new google.maps.Map(mapCanvas1,mapOptions1);
+	var marker;
+        var loc = loc_list("valid");
+	for (i = 0; i <loc.length; i++) {
+    		if (loc[i][1]!=''){
+    		marker = new google.maps.Marker({position: new google.maps.LatLng(loc[i][2], loc[i][3]),label:loc[i][0],map: map1});
+    		}
       }
+      
      function Mapupdate() {
         var lat ="51.743363";
         var long= "-1.252402";
