@@ -1,4 +1,4 @@
-function loc(type) {
+function loc_list(type) {
   var loc =[[ 'Queens', 'OX1 4PP', 51.743363, -1.252402], 
 			[ 'SSJ', 'OX33 1ET', 51.774466, -1.162412], 
 			[ 'Eynsham', 'OX29 4LF', 51.785588, -1.360644], 
