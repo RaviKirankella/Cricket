@@ -1,5 +1,5 @@
 function loc_list(type) {
-  var loc =[[ 'Queens', 'OX1 4PP', 51.743363, -1.252402], 
+  var loc_lst =[[ 'Queens', 'OX1 4PP', 51.743363, -1.252402], 
 			[ 'SSJ', 'OX33 1ET', 51.774466, -1.162412], 
 			[ 'Eynsham', 'OX29 4LF', 51.785588, -1.360644], 
 			[ 'Peppard Stoke Row', 'RG9 5JD', 51.528351, -0.988155], 
@@ -18,10 +18,10 @@ function loc_list(type) {
 			[ 'Wiley-Blackwells (Horsepath)', 'OX33 1RT', 51.737729, -1.175608], 
 			[ 'Wolvercote (Cutteslowe Park)', 'OX2 8NP', 51.792418, -1.265106], 
 			[ 'Wytham', 'OX2 8QA', 51.775372, -1.312852]];
-	if (type=="valid") {return loc.filter(checkvalid);}
-	else {retun loc;}
+	if (type=="valid") {return loc_lst.filter(checkvalid);}
+	else {return loc_st;}
       }
 
-function checkvalid(loc) {
-	return loc[1] != "";
+function checkvalid(loc_rec) {
+	return loc_rec[1] != "";
 }
