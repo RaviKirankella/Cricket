@@ -19,7 +19,7 @@ function loc_list(type) {
 			[ 'Wolvercote (Cutteslowe Park)', 'OX2 8NP', 51.792418, -1.265106], 
 			[ 'Wytham', 'OX2 8QA', 51.775372, -1.312852]];
 	if (type=="valid") {return loc_lst.filter(checkvalid);}
-	else {return loc_st;}
+	else {return loc_lst;}
       }
 
 function checkvalid(loc_rec) {
