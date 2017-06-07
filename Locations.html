@@ -32,6 +32,11 @@
 			var cell = row.insertCell(-1);
           		cell.innerHTML = rowrec[j]+', '+rowrec[j+1];
 			}
+			elseif (j==0){
+				var cell = row.insertCell(-1);
+          			cell.innerHTML = rowrec[j];
+				cell.classname="clck";
+			}
 			else {
 				var cell = row.insertCell(-1);
           			cell.innerHTML = rowrec[j];
