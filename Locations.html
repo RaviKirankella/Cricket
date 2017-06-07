@@ -23,7 +23,7 @@
 	
 	var tbl= document.getElementById("tbl");
       	var loc = loc_list("all");
-	      	for (i = 0; i <row_len-1; i++) {
+	      	for (i = 0; i <loc.length; i++) {
         	var rowrec = loc[i];
         	var row = tbl.insertRow(-1);
 		var row_len = rowrec.length;
