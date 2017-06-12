@@ -196,7 +196,7 @@
     });
 			 
 	 $("#go").click(function(){
-	var location = loc_list($("#selected").texg());
+	var location = loc_list($("#selected").text());
 	Mapupdate(location[2],location[3]);
 	MapDirections(location[2],location[3],location[1],location[0]);
 	
