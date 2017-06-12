@@ -127,11 +127,12 @@
         });
       }
 
-	function MapDirections(lat="",long="",pcode="") {
+	function MapDirections(lat="",long="",pcode="",place="") {
 		if(lat==""){
         	lat ="51.743363";
         	long= "-1.252402";
 		pcode="OX1 4PP";
+		place="Displaying Queens instead of "+place;
 	     	}
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -153,7 +154,12 @@
         		}
 	);
 	directionsDisplay.setMap(map2);
-		
+	
+	var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(lat,long),
+	  label:place,
+          map: map2
+        });
 	}
   
 	
@@ -173,7 +179,7 @@
 	cur.css({"color":"white","font-weight": "bold","background-color":"blue"});
 	var location = loc_list(cur.text());
 	Mapupdate(location[2],location[3]);
-	MapDirections(location[2],location[3],location[1]);
+	MapDirections(location[2],location[3],location[1],location[0]);
     });
 			 });
 	      </script>
