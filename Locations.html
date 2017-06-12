@@ -137,8 +137,7 @@
     });
     
     $(".clck").click(function(){
-	    alert($(this).text());
-	    var location = loc_list($(this).text());
+	var location = loc_list($(this).text());
         Mapupdate(location[2],location[3]);
     });
 			 });
