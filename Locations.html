@@ -108,6 +108,8 @@
     		marker = new google.maps.Marker({position: new google.maps.LatLng(loc[i][2], loc[i][3]),label:loc[i][0],map: map1});
     		}
 	}
+	      $("#map1").height(($("#tbl_loc").height()));
+	      $("#map2").height(0);
       }
       
      function Mapupdate(lat="",long="") {
@@ -117,7 +119,7 @@
         	long= "-1.252402";
 	     }
         var map = new google.maps.Map(document.getElementById("map1"), {
-          zoom: 15,
+          zoom: 18,
 	  mapTypeId: 'hybrid',
           center: new google.maps.LatLng(lat,long)
         });
@@ -181,6 +183,8 @@
 	var location = loc_list(cur.text());
 	Mapupdate(location[2],location[3]);
 	MapDirections(location[2],location[3],location[1],location[0]);
+	    	$("#map1").height(($("#tbl_loc").height())/2);
+	      $("#map2").height(($("#tbl_loc").height())/2);
     });
 			 });
 	      </script>
