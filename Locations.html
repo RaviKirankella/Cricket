@@ -45,16 +45,9 @@
 				}
           	}
 	}
-	$(".clck").css({'color':'blue','font-weight': 'bold','background-color':'white' }}
+	$(".clck").css({'color':'blue','font-weight': 'bold','background-color':'white' }};
     
-    $("#frm").resize(function(){
-        $(".subsect").width(($("#frm").width())/2);
-        $(".sect").width(($("#frm").width())/2);
-    });
-    
-    $(".clck").click(function(){
-        Mapupdate();
-    });
+
     
     });
 
@@ -134,6 +127,18 @@
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaBGIiQEFd4xGMwKVmr7EYrA5hxbEEjH0&callback=initMap"></script>
   
+	<script>
+		 $(document).ready(function(){
+		    $("#frm").resize(function(){
+        $(".subsect").width(($("#frm").width())/2);
+        $(".sect").width(($("#frm").width())/2);
+    });
+    
+    $(".clck").click(function(){
+        Mapupdate();
+    });
+			 });
+	      </script>
     
   </body>
  
