@@ -141,7 +141,7 @@
 		pcode="OX1 4PP";
 		place="Displaying Queens instead of "+place;
 	     	}
-		var org = $("#inp").value();
+		var org = document.getElementById('inp').value;
 		if(org==""){org=new google.maps.LatLng("51.743363","-1.252402");}
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
