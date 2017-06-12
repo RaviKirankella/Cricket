@@ -142,8 +142,8 @@
 	
        directionsService.route(
 		{
-          	origin: new google.maps.LatLng("51.743363","-1.252402");
-          	destination: new google.maps.LatLng(lat,long);
+          	origin: new google.maps.LatLng("51.743363","-1.252402"),
+          	destination: new google.maps.LatLng(lat,long),
           	travelMode: 'DRIVING'
         	}, function(response, status) {
           		if (status === 'OK') {directionsDisplay.setDirections(response);} 
