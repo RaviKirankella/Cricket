@@ -45,11 +45,18 @@
 				}
           	}
 	}
-    });
+    
     $("#frm").resize(function(){
         $(".subsect").width(($("#frm").width())/2);
         $(".sect").width(($("#frm").width())/2);
     });
+    
+    $(".clck").click(function(){
+        Mapupdate();
+    });
+    
+    });
+
   </script>
   
   </head>
