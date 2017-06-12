@@ -127,10 +127,11 @@
         });
       }
 
-	function MapDirections(lat="",long="") {
+	function MapDirections(lat="",long="",pcode="") {
 		if(lat==""){
         	lat ="51.743363";
         	long= "-1.252402";
+		pcode="OX1 4PP";
 	     	}
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -143,7 +144,8 @@
        directionsService.route(
 		{
           	origin: new google.maps.LatLng("51.743363","-1.252402"),
-          	destination: new google.maps.LatLng(lat,long),
+          	//destination: new google.maps.LatLng(lat,long),
+		destination: pcode,
           	travelMode: 'DRIVING'
         	}, function(response, status) {
           		if (status === 'OK') {directionsDisplay.setDirections(response);} 
@@ -171,7 +173,7 @@
 	cur.css({"color":"white","font-weight": "bold","background-color":"blue"});
 	var location = loc_list(cur.text());
 	Mapupdate(location[2],location[3]);
-	MapDirections(location[2],location[3]);
+	MapDirections(location[2],location[3],location[1]);
     });
 			 });
 	      </script>
