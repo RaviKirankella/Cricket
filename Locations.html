@@ -196,9 +196,7 @@
     });
 			 
 	 $("#go").click(function(){
-	var location = loc_list($("#selected").value());
-	       $("#map1").height(($("#tbl_loc").height())/2);
-	      $("#map2").height(($("#tbl_loc").height())/2);
+	var location = loc_list($("#selected").texg());
 	Mapupdate(location[2],location[3]);
 	MapDirections(location[2],location[3],location[1],location[0]);
 	
