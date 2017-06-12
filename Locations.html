@@ -110,9 +110,12 @@
 	}
       }
       
-     function Mapupdate() {
+     function Mapupdate(place="") {
+	     if(place=="")
+	     {
         var lat ="51.743363";
         var long= "-1.252402";
+	     }
         var map = new google.maps.Map(document.getElementById("map1"), {
           zoom: 15,
           //center: uluru
