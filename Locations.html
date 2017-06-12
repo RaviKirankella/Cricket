@@ -46,6 +46,8 @@
           	}
 	}
 	$(".clck").css({"color":"blue","font-weight": "bold","background-color":"white"});
+	  $("#map1").height(($("#tbl_loc").height()));
+	  $("#map2").height(0);
    
  
     });
@@ -108,8 +110,7 @@
     		marker = new google.maps.Marker({position: new google.maps.LatLng(loc[i][2], loc[i][3]),label:loc[i][0],map: map1});
     		}
 	}
-	      $("#map1").height(($("#tbl_loc").height()));
-	      $("#map2").height(0);
+
       }
       
      function Mapupdate(lat="",long="") {
