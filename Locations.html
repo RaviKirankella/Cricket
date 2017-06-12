@@ -10,6 +10,7 @@
       .map {height:280px; margin:2px 0px 2px 0px}
 	    .sect {color:white; font-size:90%}
 	    .inpt {text-align:right;width:90%; margin:0px 0px 1px 0px;}
+	    #selected {display:none;}
 	    
       #bottom {clear:both}
       td, th {padding:1% 1% 1% 1%}
@@ -60,7 +61,7 @@
   <body>
   
     <h1>Ground Locations</h1>
-	  <div class="inpt"><label>Your Location: </label><input id="inp"><button id="go">Go</button></div>
+	  <div class="inpt"><p id="selected"></p><label>Your Location: </label><input id="inp"><button id="go">Go</button></div>
     <div class="frame" id="frm">
       <div class="sect" id="tbl_loc">
         <table id="tbl">
@@ -140,6 +141,8 @@
 		pcode="OX1 4PP";
 		place="Displaying Queens instead of "+place;
 	     	}
+		var org = $("#inp").value();
+		if(org==""){org=new google.maps.LatLng("51.743363","-1.252402");}
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
         var map2 = new google.maps.Map(document.getElementById('map2'), 
@@ -150,7 +153,7 @@
 	
        directionsService.route(
 		{
-          	origin: new google.maps.LatLng("51.743363","-1.252402"),
+          	origin: org,
           	//destination: new google.maps.LatLng(lat,long),
 		destination: pcode,
           	travelMode: 'DRIVING'
@@ -183,13 +186,25 @@
 	var cur=$(this);
 	$(".clck").css({"color":"blue","font-weight": "bold","background-color":"white"});
 	cur.css({"color":"white","font-weight": "bold","background-color":"blue"});
-	var location = loc_list(cur.text());
+	$("#selected").text(cur.text());
+	    var location = loc_list(cur.text());
+	       $("#map1").height(($("#tbl_loc").height())/2);
+	      $("#map2").height(($("#tbl_loc").height())/2);
 	Mapupdate(location[2],location[3]);
 	MapDirections(location[2],location[3],location[1],location[0]);
-	    	$("#map1").height(($("#tbl_loc").height())/2);
-	      $("#map2").height(($("#tbl_loc").height())/2);
+	
     });
-			 });
+			 
+	 $("#go").click(function(){
+	var location = loc_list($("#selected").value());
+	       $("#map1").height(($("#tbl_loc").height())/2);
+	      $("#map2").height(($("#tbl_loc").height())/2);
+	Mapupdate(location[2],location[3]);
+	MapDirections(location[2],location[3],location[1],location[0]);
+	
+    });
+			 
+	 });
 	      </script>
     
   </body>
