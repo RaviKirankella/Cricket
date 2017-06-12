@@ -137,8 +137,11 @@
     });
     
     $(".clck").click(function(){
-	var location = loc_list($(this).text());
-        Mapupdate(location[2],location[3]);
+	var cur=$(this);
+	$(".clck").css({"color":"blue","font-weight": "bold","background-color":"white"});
+	cur.css({"color":"blue","font-weight": "bold","background-color":"grey"});
+	var location = loc_list(cur.text());
+	Mapupdate(location[2],location[3]);
     });
 			 });
 	      </script>
