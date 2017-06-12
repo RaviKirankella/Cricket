@@ -110,11 +110,11 @@
 	}
       }
       
-     function Mapupdate(place="") {
-	     if(place=="")
+     function Mapupdate(lat="",long="") {
+	     if(lat=="")
 	     {
-        var lat ="51.743363";
-        var long= "-1.252402";
+        lat ="51.743363";
+        long= "-1.252402";
 	     }
         var map = new google.maps.Map(document.getElementById("map1"), {
           zoom: 15,
@@ -137,7 +137,9 @@
     });
     
     $(".clck").click(function(){
-        Mapupdate();
+	    alert($(this).text);
+	    var location = loc_list($(this).text);
+        Mapupdate(location[2],location[3]);
     });
 			 });
 	      </script>
