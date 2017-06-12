@@ -113,15 +113,15 @@
      function Mapupdate(lat="",long="") {
 	     if(lat=="")
 	     {
-        lat ="51.743363";
-        long= "-1.252402";
+        	lat ="51.743363";
+        	long= "-1.252402";
 	     }
         var map = new google.maps.Map(document.getElementById("map1"), {
           zoom: 15,
-          //center: uluru
           center: new google.maps.LatLng(lat,long)
         });
-        var marker = new google.maps.Marker({
+        
+	var marker = new google.maps.Marker({
           position: new google.maps.LatLng(lat,long),
           map: map
         });
@@ -131,27 +131,28 @@
 		if(lat==""){
         	lat ="51.743363";
         	long= "-1.252402";
-	     }
+	     	}
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
-        var map = new google.maps.Map(document.getElementById('map2'), {
-          zoom: 7,
-          center: new google.maps.LatLng(lat,long)
-        });
-        directionsDisplay.setMap(map);
-        directionsService.route({
-          origin: new google.maps.LatLng("51.743363","-1.252402");
-          destination: new google.maps.LatLng(lat,long);
-          travelMode: 'DRIVING'
-        }, function(response, status) {
-          if (status === 'OK') {
-            directionsDisplay.setDirections(response);
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
-        });
-
-      }
+        var map2 = new google.maps.Map(document.getElementById('map2'), 
+		{
+          	zoom: 7,
+          	center: new google.maps.LatLng(lat,long)
+        	});
+	
+       directionsService.route(
+		{
+          	origin: new google.maps.LatLng("51.743363","-1.252402");
+          	destination: new google.maps.LatLng(lat,long);
+          	travelMode: 'DRIVING'
+        	}, function(response, status) {
+          		if (status === 'OK') {directionsDisplay.setDirections(response);} 
+			else {window.alert('Directions request failed due to ' + status);}
+        		}
+	);
+	directionsDisplay.setMap(map2);
+		
+	}
   
 	
     </script>
