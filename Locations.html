@@ -24,6 +24,7 @@
     $(document).ready(function(){
         $(".subsect").width((($("#frm").width())/2)-4);
         $(".sect").width((($("#frm").width())/2));
+	 $("#inp").value( $.cookie("zcode"));
 	
 	var tbl= document.getElementById("tbl");
       	var loc = loc_list("all");
@@ -156,6 +157,7 @@
           	origin: org,
           	//destination: new google.maps.LatLng(lat,long),
 		destination: pcode,
+		units: 'imperial',
           	travelMode: 'DRIVING'
         	}, function(response, status) {
           		if (status === 'OK') {directionsDisplay.setDirections(response);} 
@@ -196,6 +198,7 @@
     });
 			 
 	 $("#go").click(function(){
+	$.cookie("zcode",$("#inp").value());
 	var location = loc_list($("#selected").text());
 	Mapupdate(location[2],location[3]);
 	MapDirections(location[2],location[3],location[1],location[0]);
