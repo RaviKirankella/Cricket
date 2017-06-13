@@ -118,20 +118,27 @@
 
       }
       
-     function Mapupdate(lat="",long="") {
+     function Mapupdate(lat="",long="",pcode="") {
 	     if(lat=="")
 	     {
         	lat ="51.743363";
         	long= "-1.252402";
+		pcode="OX1 4PP";
 	     }
         var map = new google.maps.Map(document.getElementById("map1"), {
-          zoom: 17,
+          zoom: 15,
 	  mapTypeId: 'hybrid',
           center: new google.maps.LatLng(lat,long)
         });
         
-	var marker = new google.maps.Marker({
+	var marker1 = new google.maps.Marker({
           position: new google.maps.LatLng(lat,long),
+		label:"Ground Location",
+          map: map
+        });
+	  var marker2 = new google.maps.Marker({
+          position: pcode,
+	  label:"Post code takes you to",
           map: map
         });
       }
@@ -223,7 +230,7 @@
 	setCookie("zcode",$("#inp").val(),1000);
 	//if($("#selected").text() !=""){
 	var location = loc_list($("#selected").text());
-	Mapupdate(location[2],location[3]);
+	Mapupdate(location[2],location[3],location[1]);
 	MapDirections(location[2],location[3],location[1],location[0]);
 	//}
 		// else {alert("Select Location");}
