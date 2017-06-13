@@ -9,7 +9,7 @@ function loc_list(type) {
 			[ 'Ipsden', 'OX10 6AL', 51.560684, -1.087598], 
 			[ 'Islip', 'OX5 2SP', 51.823254, -1.239241], 
 			[ 'Kempsford', 'GL7 4EQ', 51.669613, -1.772568], 
-			[ 'Middleton Stoney', '', , ], 
+			[ 'Middleton Stoney', 'OX25 4AQ', 51.907535, -1.235112 ], 
 			[ 'Minster Lovell', 'OX29 0RN', 51.798214, -1.538759], 
 			[ 'OUP (Jordan Hill)', 'OX2 8EU', 51.793405, -1.275522], 
 			[ 'Peppard Stoke Row', 'RG9 5JD', 51.528351, -0.988155], 
