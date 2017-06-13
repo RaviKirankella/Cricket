@@ -230,7 +230,7 @@
 	    var location = loc_list(cur.text());
 	       $("#map1").height(($("#tbl_loc").height())/2);
 	      $("#map2").height(($("#tbl_loc").height())/2);
-	Mapupdate(location[2],location[3]);
+	Mapupdate(location[2],location[3],location[1]);
 	MapDirections(location[2],location[3],location[1],location[0]);
 	
     });
@@ -239,7 +239,7 @@
 	setCookie("zcode",$("#inp").val(),1000);
 	//if($("#selected").text() !=""){
 	var location = loc_list($("#selected").text());
-		 alert(location[0]);
+		 
 	Mapupdate(location[2],location[3],location[1]);
 	MapDirections(location[2],location[3],location[1],location[0]);
 	//}
