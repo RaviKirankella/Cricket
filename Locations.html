@@ -24,7 +24,8 @@
     $(document).ready(function(){
         $(".subsect").width((($("#frm").width())/2)-4);
         $(".sect").width((($("#frm").width())/2));
-	if ($.cookie('zcode') != null ){$("#inp").val( $.cookie("zcode"));}
+	    alert($(document).cookie("zcode"));
+	if ($(document).cookie('zcode') != null ){$("#inp").val($(document).cookie("zcode"));}
 	
 	var tbl= document.getElementById("tbl");
       	var loc = loc_list("all");
