@@ -24,7 +24,7 @@
     $(document).ready(function(){
         $(".subsect").width((($("#frm").width())/2)-4);
         $(".sect").width((($("#frm").width())/2));
-	 $("#inp").val( $.cookie("zcode"));
+	if ($.cookie('zcode') != null ){$("#inp").val( $.cookie("zcode"));}
 	
 	var tbl= document.getElementById("tbl");
       	var loc = loc_list("all");
