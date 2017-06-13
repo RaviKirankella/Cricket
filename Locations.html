@@ -131,17 +131,24 @@
           center: new google.maps.LatLng(lat,long)
         });
         
-	var marker = new google.maps.Marker({
+	var marker 1= new google.maps.Marker({
           position: new google.maps.LatLng(lat,long),
 		label:"Ground Location",
           map: map
         });
-	  marker = new google.maps.Marker({
-          position: pcode,
-	  label:"Post code",
-          map: map
+	     
+	  var geocoder = new google.maps.Geocoder();
+          geocoder.geocode({'address': pcode}, function(results, status) {
+          if (status === 'OK') {
+            var marker2 = new google.maps.Marker({
+              map: map,
+              position: results[0].geometry.location
+            });
+          } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+          }
         });
-      }
+	}
 
 	function MapDirections(lat="",long="",pcode="",place="") {
 		if(lat==""){
