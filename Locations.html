@@ -222,12 +222,12 @@
 			 
 	 $("#go").click(function(){
 	setCookie("zcode",$("#inp").val(),1000);
-	if($("#selected").text() !=""){
+	//if($("#selected").text() !=""){
 	var location = loc_list($("#selected").text());
 	Mapupdate(location[2],location[3]);
 	MapDirections(location[2],location[3],location[1],location[0]);
-	}
-		 else {alert("Select Location");}
+	//}
+		// else {alert("Select Location");}
 	
     });
 			 
