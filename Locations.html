@@ -24,8 +24,8 @@
     $(document).ready(function(){
         $(".subsect").width((($("#frm").width())/2)-4);
         $(".sect").width((($("#frm").width())/2));
-	    alert($(document).cookie("zcode"));
-	if ($(document).cookie('zcode') != null ){$("#inp").val($(document).cookie("zcode"));}
+	   var usr_loc=getCookie('zcode');
+	if (usr_loc!= null ){$("#inp").val(usr_loc);}
 	
 	var tbl= document.getElementById("tbl");
       	var loc = loc_list("all");
@@ -174,6 +174,28 @@
         });
 	}
   
+    function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+
+    function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+   	 }
+    	return "";
+	}
 	
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaBGIiQEFd4xGMwKVmr7EYrA5hxbEEjH0&callback=initMap"></script>
@@ -199,7 +221,7 @@
     });
 			 
 	 $("#go").click(function(){
-	$.cookie("zcode",$("#inp").val());
+	setCookie("zcode",$("#inp").val()),1000);
 	var location = loc_list($("#selected").text());
 	Mapupdate(location[2],location[3]);
 	MapDirections(location[2],location[3],location[1],location[0]);
