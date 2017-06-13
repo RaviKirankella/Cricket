@@ -17,6 +17,7 @@ function loc_list(type) {
 			[ 'Temple Cloud', '', , ], 
 			[ 'Wiley-Blackwells (Horsepath)', 'OX33 1RT', 51.737729, -1.175608], 
 			[ 'Wolvercote (Cutteslowe Park)', 'OX2 8NP', 51.792418, -1.265106], 
+			[ 'Wootton & Boars Hill', 'OX1 5JL', 51.709391, -1.310996], 
 			[ 'Wytham', 'OX2 8QA', 51.775372, -1.312852]];
 	if (type=="valid") {return loc_lst.filter(checkvalid);}
 	else if (type=="all") {return loc_lst;}
