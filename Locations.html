@@ -24,7 +24,7 @@
     $(document).ready(function(){
         $(".subsect").width((($("#frm").width())/2)-4);
         $(".sect").width((($("#frm").width())/2));
-	 $("#inp").value( $.cookie("zcode"));
+	 $("#inp").val( $.cookie("zcode"));
 	
 	var tbl= document.getElementById("tbl");
       	var loc = loc_list("all");
@@ -198,7 +198,7 @@
     });
 			 
 	 $("#go").click(function(){
-	$.cookie("zcode",$("#inp").value());
+	$.cookie("zcode",$("#inp").val());
 	var location = loc_list($("#selected").text());
 	Mapupdate(location[2],location[3]);
 	MapDirections(location[2],location[3],location[1],location[0]);
