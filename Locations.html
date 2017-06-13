@@ -158,8 +158,7 @@
           	origin: org,
           	//destination: new google.maps.LatLng(lat,long),
 		destination: pcode,
-		units: 'imperial',
-          	travelMode: 'DRIVING'
+	       	travelMode: 'DRIVING'
         	}, function(response, status) {
           		if (status === 'OK') {directionsDisplay.setDirections(response);} 
 			else {window.alert('Directions request failed due to ' + status);}
