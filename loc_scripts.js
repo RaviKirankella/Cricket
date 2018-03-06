@@ -4,6 +4,7 @@ function loc_list(type) {
 			[ 'Eynsham', 'OX29 4LF', 51.785588, -1.360644], 
 			[ 'Peppard Stoke Row', 'RG9 5JD', 51.528351, -0.988155], 
 			[ 'Appleton', 'OX13 5QW', 51.6983675, -1.3756933],
+			[ 'Aston Tirrold', 'OX11 9DN', 51.566304, -1.199826],
 			[ 'Bartlemas', 'OX4 2AE', 51.745539, -1.225515], 
 			[ 'Enstone', 'OX7 4AZ', 51.911547, -1.451832], 
 			[ 'Ipsden', 'OX10 6AL', 51.560684, -1.087598], 
