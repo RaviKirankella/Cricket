@@ -144,14 +144,18 @@ h1 {
   
  .faq {
   font-family: Verdana, Geneva, sans-serif;
-  width: 100%;
+  position:fixed;
+  top:0;
+  left:0;
+  width: 100px;
   font-size: 18px;
   padding: 10px;
-  margin: 10px;
+  margin:auto;
   border: none;
+  background: #000;
+  color: #fff;
   cursor: pointer;
-  font-weight: bold;
-  clear:both;
+  float:right;
   }
 
 }
@@ -165,9 +169,7 @@ h1 {
   Your browser does not support HTML5 video.
 </video>
   
-<div class="faq">
-  <a style=" text-decoration:none;  text-color: black; padding: 10px; float: right; background: #fff;" href="FantasyLeagueFAQ.html">FAQs</a>
-</div>
+<button id="faq" onclick="window.location.href='/Cricket/FantasyLeagueFAQ.html'">FAQs</button>
 
 <div class="heading">
   <h1>ISISCC Fantasy League 2020</h1>
