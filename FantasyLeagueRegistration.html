@@ -15,10 +15,17 @@
      height: 100%;
     }
   </style>
-  <script>
-    $('.iframe-full-height').on('load', function(){
-    this.style.height=this.contentDocument.body.scrollHeight +'px';
-});
+<script>
+    $(document).ready(function(){
+       $("iframe").height($(window).height());
+       $("iframe").width($(window).width());
+
+       $( window ).resize(function() {
+            $("iframe").height($(window).height());
+            $("iframe").width($(window).width());
+        });
+    });
+  </script>
   </script>
 </head>
 <body>
