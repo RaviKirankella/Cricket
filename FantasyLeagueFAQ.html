@@ -25,13 +25,14 @@ body {
  display:none;
  text-align:left;
  clear:both;
+ padding: 10px;
   }
  .faq {
   text-align:center;
   margin: 2px;
   border: 1px solid gray;
   border-radius: 4px;
-  padding: 5px 5px 5px 5px;
+  padding: 10px;
   }
   
 .dd-button {
@@ -56,6 +57,15 @@ body {
 
 $(document).ready(function(){
     $("div.drop").click(function(){
+     if($(this).parent().children("div.hide").css("display")== "block") {
+	      $(this).parent().children("div.hide").css("display", "none");
+       }
+      else {
+	     $(this).parent().children("div.hide").css("display", "block");
+      }
+    });
+	
+    $("div.ques").click(function(){
      if($(this).parent().children("div.hide").css("display")== "block") {
 	      $(this).parent().children("div.hide").css("display", "none");
        }
