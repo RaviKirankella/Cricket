@@ -36,43 +36,63 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   
   <script>
+//Runs in a season (bat)
 function getrunsinseason(player) {
 var playerdata = {
-                "O. Walter":[['2015',430],['2016',603],['2017',861],['2018',948],['2019',759]],
-                "R. Kella":[['2015',409],['2016',274],['2017',355],['2018',342],['2019',373]],
                 "K.H. Whiter":[['2015',69],['2016',106],['2017',83],['2018',47],['2019',125]],
-                "J. Walter":[['2015',101],['2016',101],['2017',46],['2018',259],['2019',127]]
+                "J. Walter":[['2015',101],['2016',101],['2017',46],['2018',259],['2019',127]],
+                "O. Walter":[['2015',430],['2016',603],['2017',861],['2018',948],['2019',759]],
+                "K. Ponsford":[['2015',17],['2016',19],['2017',3],['2018',11],['2019',9]],
+                "R. Kella":[['2015',409],['2016',274],['2017',355],['2018',342],['2019',373]],
+                "L. Bowles":[['2017',0],['2018',171],['2019',410]],
+                "S. Cooper":[['2017',209],['2018',48],['2019',70]],
+                "P. Jacobs":[['2015',102],['2016',128],['2017',159],['2018',197],['2019',168]]
 				};	
 return playerdata[player];
 }
+//Wickets in a season (bowl)
 function getwicketsinseason(player) {
 var playerdata = {
-                "O. Walter":[['2015',0],['2016',0],['2017',0],['2018',1],['2019',0]],
-                "R. Kella":[['2015',1],['2016',5],['2017',1],['2018',1],['2019',3]],
                 "K.H. Whiter":[['2015',46],['2016',37],['2017',34],['2018',36],['2019',41]],
-                "J. Walter":[['2015',19],['2016',24],['2017',16],['2018',28],['2019',38]]
+                "J. Walter":[['2015',19],['2016',24],['2017',16],['2018',28],['2019',38]],
+                "O. Walter":[['2015',0],['2016',0],['2017',0],['2018',1],['2019',0]],
+                "K. Ponsford":[['2015',22],['2016',22],['2017',35],['2018',30],['2019',18]],
+                "R. Kella":[['2015',1],['2016',5],['2017',1],['2018',1],['2019',3]],
+                "L. Bowles":[['2017',2],['2018',0],['2019',0]],
+                "S. Cooper":[['2017',5],['2018',12],['2019',0]],
+                "P. Jacobs":[['2015',0],['2016',0],['2017',0],['2018',0],['2019',0]]
 				};	
 return playerdata[player];
 }
+// No of games played in a season (games)
 function getgamesinseason(player) {
 var playerdata = {
-                "O. Walter":[['2015',20],['2016',25],['2017',24],['2018',31],['2019',27]],
-                "R. Kella":[['2015',31],['2016',29],['2017',24],['2018',23],['2019',30]],
                 "K.H. Whiter":[['2015',33],['2016',30],['2017',38],['2018',33],['2019',36]],
-                "J. Walter":[['2015',27],['2016',28],['2017',17],['2018',36],['2019',34]]
+                "J. Walter":[['2015',27],['2016',28],['2017',17],['2018',36],['2019',34]],
+                "O. Walter":[['2015',20],['2016',25],['2017',24],['2018',31],['2019',27]],
+                "K. Ponsford":[['2015',21],['2016',26],['2017',25],['2018',33],['2019',21]],
+                "R. Kella":[['2015',31],['2016',29],['2017',24],['2018',23],['2019',30]],
+                "L. Bowles":[['2017',1],['2018',8],['2019',18]],
+                "S. Cooper":[['2017',7],['2018',7],['2019',3]],
+                "P. Jacobs":[['2015',10],['2016',16],['2017',18],['2018',23],['2019',18]]
 				};	
 return playerdata[player];
 }
-
+//Player prices
 function getplayerprice(player) {
 var playerdata = {
-                "O. Walter":{'Batsman':3000,'All Rounder':3000,'Super Batsman':8000,'Super All Rounder':8000},
-                "R. Kella":{'Batsman':1000,'Bowler':1000,'All Rounder':2000,'Super Batsman':3000,'Super Bowler':1000,'Super All Rounder':3000},
                 "K.H. Whiter":{'Batsman':1000,'Bowler':3000,'All Rounder':3000,'Super Batsman':1000,'Super Bowler':8000,'Super All Rounder':8000},
-                "J. Walter":{'Batsman':1000,'Bowler':2000,'All Rounder':3000,'Super Batsman':2000,'Super Bowler':5000,'Super All Rounder':8000}
-				};	
+                "J. Walter":{'Batsman':1000,'Bowler':2000,'All Rounder':3000,'Super Batsman':2000,'Super Bowler':5000,'Super All Rounder':8000},
+                "O. Walter":{'Batsman':3000,'All Rounder':3000,'Super Batsman':8000,'Super All Rounder':8000},
+                "K. Ponsford":{'Bowler':2000,'All Rounder':2000,'Super Bowler':5000,'Super All Rounder':5000},
+                "R. Kella":{'Batsman':1000,'Bowler':1000,'All Rounder':2000,'Super Batsman':3000,'Super Bowler':1000,'Super All Rounder':3000},
+                "L. Bowles":{'Batsman':1000,'All Rounder':2000,'Super Batsman':3000,'Super All Rounder':3000},
+                "S. Cooper":{'Batsman':1000,'Bowler':1000,'All Rounder':2000,'Super Batsman':1000,'Super Bowler':2000,'Super All Rounder':3000},
+                "P. Jacobs":{'Batsman':1000,'All Rounder':1000,'Super Batsman':1000,'Super All Rounder':1000}
+		};	
 return playerdata[player];
 }
+	  
 </script>
 
     <script>
@@ -207,14 +227,19 @@ return playerdata[player];
     <h1 class="whitetext centertext">Players Corner</h1>
     <button id="faq" onclick="window.location.href='/Cricket/FantasyLeagueFAQ.html'">FAQs</button>
 
-	<div class="players">
-		<div>
-		<a style="color: white; font-size:90%">Select Player to review statistics!</a></div>
-                <button class="playerbutton" OnClick="drawPlayersCharts(this)">O. Walter</button>
-                <button class="playerbutton" OnClick="drawPlayersCharts(this)">R. Kella</button>
+<div class="players">
+	<div>
+	<a style="color: white; font-size:90%">Select Player to view statistics!</a></div>
                 <button class="playerbutton" OnClick="drawPlayersCharts(this)">K.H. Whiter</button>
                 <button class="playerbutton" OnClick="drawPlayersCharts(this)">J. Walter</button>
-		<button class="playerbutton" OnClick="drawChart()">Clear Selection</button>
+                <button class="playerbutton" OnClick="drawPlayersCharts(this)">O. Walter</button>
+                <button class="playerbutton" OnClick="drawPlayersCharts(this)">K. Ponsford</button>
+                <button class="playerbutton" OnClick="drawPlayersCharts(this)">R. Kella</button>
+                <button class="playerbutton" OnClick="drawPlayersCharts(this)">L. Bowles</button>
+                <button class="playerbutton" OnClick="drawPlayersCharts(this)">S. Cooper</button>
+                <button class="playerbutton" OnClick="drawPlayersCharts(this)">P. Jacobs</button>
+		
+	<button class="playerbutton" OnClick="drawChart()">Clear Selection</button>
 	</div>
 	<div class="frame">
 		<div id="overview">
