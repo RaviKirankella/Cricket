@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+  <head>
+    <title>ISISCC Fantasy Cricket League</title>
+    <style>
+	body {
+	font-family: Verdana, Geneva, sans-serif;
+	background-color: gray;
+	}
+	.centertext{
+	text-align:center;
+	}
+	.whitetext{
+	color: white;
+	}
+
+	.frame {
+	background-color:white;
+	padding:2px;
+	margin:5px;
+	height: 100%;
+	}
+	.gobutton {
+	background-color:white;
+	font-weight: bold;
+	border-color: white;
+	border:1px;
+	border-radius:5%;
+	}
+	.playerselectdiv
+	{
+	margin-bottom: 3%;
+	margin-top:3%;
+	padding: 5px;
+	}
+	.ui-helper-hidden, .ui-helper-hidden-accessible {display: none;}	
+    .ui-menu-item {list-style-type: none; color: white; text-align:left;}
+	.infchart {width:50%; height:80%;}
+	.overview {text-align:center;
+		margin:auto;
+	}
+	.players {text-align:center;}
+	.playerbutton {background-color:white;
+			font-weight: bold;
+			border-color: white;
+			border:5px;
+			margin: 5px;
+			padding: 5px;
+			border-radius:5%;}
+	.infchart { width: 50%;
+			float: left;
+			text-align: center;
+	
+	}
+	.playerchart { width: 50%;
+			float: left;
+			text-align: center;
+	
+	}
+
+
+	table {
+		float:none;
+		text-align: center;
+		margin-top:20px;
+		width: 60%;
+		font-size: 90%;
+	}
+	th td {
+		padding:10px;
+		margin: 5px;
+	}
+	
+	h2{
+	text-align: center;
+	}
+    </style>
+	
+  <script src="https://ravikirankella.github.io/Cricket/FantasyLeague.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  
+  <script>
+function getrunsinseason(player) {
+var playerdata = {
+                "O. Walter":[['2015',430],['2016',603],['2017',861],['2018',948],['2019',759]],
+                "R. Kella":[['2015',409],['2016',274],['2017',355],['2018',342],['2019',373]],
+                "K.H. Whiter":[['2015',69],['2016',106],['2017',83],['2018',47],['2019',125]],
+                "J. Walter":[['2015',101],['2016',101],['2017',46],['2018',259],['2019',127]]
+				};	
+return playerdata[player];
+}
+function getwicketsinseason(player) {
+var playerdata = {
+                "O. Walter":[['2015',0],['2016',0],['2017',0],['2018',1],['2019',0]],
+                "R. Kella":[['2015',1],['2016',5],['2017',1],['2018',1],['2019',3]],
+                "K.H. Whiter":[['2015',46],['2016',37],['2017',34],['2018',36],['2019',41]],
+                "J. Walter":[['2015',19],['2016',24],['2017',16],['2018',28],['2019',38]]
+				};	
+return playerdata[player];
+}
+function getgamesinseason(player) {
+var playerdata = {
+                "O. Walter":[['2015',20],['2016',25],['2017',24],['2018',31],['2019',27]],
+                "R. Kella":[['2015',31],['2016',29],['2017',24],['2018',23],['2019',30]],
+                "K.H. Whiter":[['2015',33],['2016',30],['2017',38],['2018',33],['2019',36]],
+                "J. Walter":[['2015',27],['2016',28],['2017',17],['2018',36],['2019',34]]
+				};	
+return playerdata[player];
+}
+
+function getplayerprice(player) {
+var playerdata = {
+                "O. Walter":{'Batsman':3000,'All Rounder':3000,'Super Batsman':8000,'Super All Rounder':8000},
+                "R. Kella":{'Batsman':1000,'Bowler':1000,'All Rounder':2000,'Super Batsman':3000,'Super Bowler':1000,'Super All Rounder':3000},
+                "K.H. Whiter":{'Batsman':1000,'Bowler':3000,'All Rounder':3000,'Super Batsman':1000,'Super Bowler':8000,'Super All Rounder':8000},
+                "J. Walter":{'Batsman':1000,'Bowler':2000,'All Rounder':3000,'Super Batsman':2000,'Super Bowler':5000,'Super All Rounder':8000}
+				};	
+return playerdata[player];
+}
+</script>
+
+    <script>
+      $( function() {
+          var PlayerTags =getlist("Players");
+          $( ".Player" ).autocomplete({source: PlayerTags});
+          } );
+   </script>
+
+<script type="text/javascript">
+
+    function drawPlayersCharts(playernode) {
+		var playername=playernode.innerHTML;
+		var btns = document.getElementsByClassName("playerbutton");
+		for (i = 0; i < btns.length; i++) {
+				btns[i].style.backgroundColor = "white";
+					}
+		playernode.style.backgroundColor = "blue";	
+		document.getElementById("overview").style.display="none";
+		document.getElementById("playercharts").style.display="block";
+		
+	runs=getrunsinseason(playername);
+	wickets=getwicketsinseason(playername);
+	games=getgamesinseason(playername);
+	prices=getplayerprice(playername);
+	document.getElementById("playername").innerHTML =playername;
+	document.getElementById("playertabledata").innerHTML ="";
+	var tabledata="<tr><th>Category</th><th>Price</th></tr>";
+	for (var key in prices) {
+		tabledata=tabledata+"<tr><td>"+key+"</td><td>"+prices[key]+"</td></tr>"
+	}
+	document.getElementById("playertabledata").innerHTML =tabledata;
+    // Define the chart to be drawn.
+    var runsdata = new google.visualization.DataTable();
+      runsdata.addColumn('string', 'Season');
+      runsdata.addColumn('number', 'Runs');
+      runsdata.addRows(runs);
+	var wicketsdata = new google.visualization.DataTable();
+      wicketsdata.addColumn('string', 'Season');
+      wicketsdata.addColumn('number', 'Wickets');
+      wicketsdata.addRows(wickets);
+	var gamessdata = new google.visualization.DataTable();
+      gamessdata.addColumn('string', 'Season');
+      gamessdata.addColumn('number', 'Matches Played');
+      gamessdata.addRows(games);
+	
+	// Set chart options
+      var runschartoptions = {'title':'Runs in Season', 'height':250, 'is3D': true,legend: 'none', fontName:'Verdana, Geneva, sans-serif', 
+							animation:{duration:1000, startup:'true', easing:'in'}};	
+	  var wicketschartoptions = {'title':'Wickets in Season', 'height':250, 'is3D': true,legend: 'none', fontName:'Verdana, Geneva, sans-serif',
+							animation:{duration:1000, startup:'true', easing:'in'}};		
+	  var gameschartoptions = {'title':'Matches Played in Season', 'height':250, 'is3D': true,legend: 'none', fontName:'Verdana, Geneva, sans-serif', 
+							animation:{duration:1000, startup:'true', easing:'in'}};		
+    
+	// Instantiate and draw the chart.
+	  var gameschart = new google.visualization.ColumnChart(document.getElementById('gameschart'));
+      gameschart.draw(gamessdata, gameschartoptions); 
+	  var runschart = new google.visualization.ColumnChart(document.getElementById('runschart'));
+      runschart.draw(runsdata, runschartoptions);
+	  var wicketschart = new google.visualization.ColumnChart(document.getElementById('wicketschart'));
+      wicketschart.draw(wicketsdata, wicketschartoptions);
+
+    }
+	
+  </script>
+
+<script type="text/javascript">
+	window.onload=drawInfluenceCharts;
+	google.charts.load('current', {packages: ['corechart']});
+    //google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+	  
+	  document.getElementById("playercharts").style.display="none";
+	  document.getElementById("overview").style.display="block";
+      // Define the chart to be drawn.
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Season');
+      data.addColumn('number', 'Runs');
+      data.addRows(runs);
+
+	var btns = document.getElementsByClassName("playerbutton");
+		for (i = 0; i < btns.length; i++) {
+				btns[i].style.backgroundColor = "white";
+					}
+
+      // Instantiate and draw the chart.
+      var chart = new google.visualization.ColumnChart(document.getElementById('RunsChart'));
+      chart.draw(data, null);
+    }
+	
+	function drawInfluenceCharts() {
+      // Define the chart to be drawn.
+      var data1 = new google.visualization.DataTable();
+      data1.addColumn('string', 'Type');
+      data1.addColumn('number', 'Influence');
+      data1.addRows([['Runs',49],['No. Matches',20],['Sixes',1],['Twister Rules',3],['Catches',7],['Win%',12],['Tour Matches',4],['NonStat Matches',4]]);
+
+// Set chart options
+      var options1 = {'title':'Influencers (Batsman)', 'height':400, 'is3D': true,pieSliceText: 'label',legend: 'none', 
+					fontName:'Verdana, Geneva, sans-serif',
+					pieSliceTextStyle: {fontSize:9},
+					tooltip: {text:'percentage'}};
+      // Instantiate and draw the chart.
+      var chart1 = new google.visualization.PieChart(document.getElementById('BatsmanInfluenceChart'));
+      chart1.draw(data1, options1);
+
+      // Define the chart to be drawn.
+      var data2 = new google.visualization.DataTable();
+      data2.addColumn('string', 'Type');
+      data2.addColumn('number', 'Influence');
+      data2.addRows([['Wickets',46],['No. Matches',18],['Maidens',7],['Twister Rules',3],['Catches',6],['Win%',12],['Tour Matches',4],['NonStat Matches',4]]);
+
+// Set chart options
+      var options2 = {'title':'Influencers (Bowler)', 'height':400, 'is3D': true,pieSliceText: 'label',legend: 'none', 
+					fontName:'Verdana, Geneva, sans-serif',
+					pieSliceTextStyle: {fontSize:9},
+					tooltip: {text:'percentage'}};
+      // Instantiate and draw the chart.
+      var chart2 = new google.visualization.PieChart(document.getElementById('BowlerInfluenceChart'));
+      chart2.draw(data2, options2);
+    }
+	
+  </script>
+ 
+</head>
+
+
+   
+  <body>
+  
+    <h1 class="whitetext centertext">Players Corner</h1>
+
+	<div class="players">
+		<div>
+		<a style="color: white; font-size:90%">Select Player to review statistics!</a></div>
+                <button class="playerbutton" OnClick="drawPlayersCharts(this)">O. Walter</button>
+                <button class="playerbutton" OnClick="drawPlayersCharts(this)">R. Kella</button>
+                <button class="playerbutton" OnClick="drawPlayersCharts(this)">K.H. Whiter</button>
+                <button class="playerbutton" OnClick="drawPlayersCharts(this)">J. Walter</button>
+		<button class="playerbutton" OnClick="drawChart()">Clear Selection</button>
+	</div>
+	<div class="frame">
+		<div id="overview">
+			<h2>Choose your players carefully!</h2>
+			<div class="infchart" id="BatsmanInfluenceChart"></div>
+			<div class="infchart" id="BowlerInfluenceChart"></div>
+		</div>
+		<div id="playercharts">
+			<div class="playerchart" id="playertable">
+				<h2 id="playername"></h2>
+				<table align="center" id='playertabledata'></table>
+			</div>
+			<div class="playerchart" id="gameschart"></div>	
+			<div class="playerchart" id="runschart"></div>
+			<div class="playerchart" id="wicketschart"></div>
+
+		</div>
+	<div style="clear:both"></div>
+	<div>
+    
+ 
+		
+  </body>
+ 
+ </html> 
