@@ -120,7 +120,7 @@ return playerdata[player];
 	prices=getplayerprice(playername);
 	document.getElementById("playername").innerHTML =playername;
 	document.getElementById("playertabledata").innerHTML ="";
-	var tabledata="<tr><th>Category</th><th>Price</th></tr>";
+	var tabledata="<tr><th>Category</th><th>Base Price</th></tr>";
 	for (var key in prices) {
 		tabledata=tabledata+"<tr><td>"+key+"</td><td>"+prices[key]+"</td></tr>"
 	}
