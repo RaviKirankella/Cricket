@@ -16,6 +16,46 @@
 	display:flex;
 	padding:5px;
 	}
+	
+	#logincontainer {
+	color:white;
+	width: 100%;
+	height: 100%;
+	z-index:9;
+	position: fixed;
+	box-sizing: border-box;
+	background-color:white;
+	opacity: 0.95;
+	}
+	
+	#form_login{
+	background-color: gray ;
+	width:300px;
+	margin-top:100px;
+	opacity: 1;
+	padding:20px;
+	}
+        input[type=text], input[type=password]{
+  	padding: 16px 20px;
+  	border: 1px solid #ccc;
+  	border-radius: 4px;
+  	box-sizing: border-box;
+  	resize: vertical;
+  	width:100%;
+  	margin: 0 0 8px 0;
+	}
+	#inp_btn {
+  	width:100%;
+  	background-color: #4CAF50;
+  	color: white;
+  	padding: 16px 20px;
+  	margin: 8px 0;
+  	border: none;
+  	cursor: pointer;
+  	opacity: 0.9;
+	}
+   
+	 
 	.section1 {
 	width:20%;
 	padding:5px;
@@ -374,7 +414,14 @@ function writetoexcel(player,price) {
 </head>
 
 <body>
-
+<div id="logincontainer" align="center">
+	<form id="form_login">
+	<input type="text" placeholder="Enter Team Name" id="inp_TeamName"><br>
+	<input type="password" placeholder="Enter Key" id="inp_TeamKey"><br>
+	<button id="inp_btn">OK</button>
+	</form>
+</div>
+<div id="maincontainerdiv">
 
 	<div class="header">
 	<h2>ISISCC Fantasy Cricket Player Selector</h2>
@@ -412,7 +459,7 @@ function writetoexcel(player,price) {
 	</div>
 	</div>
 
-
+	</div>
 <div>
 <form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLScl26XJDXU8dmGhoy0XU_tVAzmntM79BDXsNwk2KUeW9jm0Ew/formResponse" target="invisible" method="POST" style="display:none">
 <input type="text" name="entry.738215339" id="PE_Team">
