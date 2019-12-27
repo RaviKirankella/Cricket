@@ -162,15 +162,20 @@ padding:5px 10px 5px 10px;
 			var spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
 			var spreadsheetrange="Teams!A2:B";
 			var teamsdata;
+			var teamname;
+			var teamkey;
 			var url = "https://sheets.googleapis.com/v4/spreadsheets/"+spreadsheetid+"/values/"+spreadsheetrange+"?key=AIzaSyAmi4pvsmS6iGokKlVXGxsFbKxpAnWjWEo";
 			xmlhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
 					var myArr = JSON.parse(this.responseText);
 					teamsdata=myArr["values"];
-					
-					if (checkteam($( "#inp_TeamName" ).val(),$( "#inp_TeamKey" ).val(), teamsdata))
+					teamname=$( "#inp_TeamName" ).val();
+					teamkey=$( "#inp_TeamKey" ).val();
+					if (checkteam(teamname,teamkey, teamsdata))
 					{
 						$( "#logincontainer" ).css("display","none");
+						setCookie("TeamName",teamname);
+						gbl_team=getCookie("TeamName");
 					}
 					else {
 						alert("invalid team name, key combination retry!");
