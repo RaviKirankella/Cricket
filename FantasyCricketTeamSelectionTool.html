@@ -136,7 +136,7 @@ padding:5px 10px 5px 10px;
 	//ExcelDataHandling Layers
 	//Read PlayerData Script and set it to global variable PlayerData
 	var LastActiveVersion=1;
-	var gbl_team="Test Team";
+	var gbl_team;
 	var VersionsList=[];
 	var PlayerData="";
 	var SelectedPlayers=[];
@@ -152,7 +152,7 @@ padding:5px 10px 5px 10px;
 					AddPlayers();
 					}
 			};
-			xmlhttp.open("GET", url, false);
+			xmlhttp.open("GET", url, true);
 			xmlhttp.send();
 		}
 	
@@ -185,7 +185,7 @@ padding:5px 10px 5px 10px;
 					}
 					
 			};
-			xmlhttp.open("GET", url, false);
+			xmlhttp.open("GET", url, true);
 			xmlhttp.send();
 		}
 
@@ -437,6 +437,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
  
  <script>
 	$( document ).ready(function() {
+		alert("document ready");
 		readPlayerData();
 		//VersionsList=getVersions();
 		VersionsList=[1];
@@ -496,6 +497,7 @@ function writetoexcel(player,price) {
 	<p>Select players from the avalable section by clicking on them</p>
 	</div>
 	<div id="versioncontainer">
+		<button type="button" onclick="document.cookie="TeamName=;expires=Thu 01 Jan 1970">DeleteTeamCookie</button>
 	</div>
 	<div class="maincontainer">
 		<div class="section1">
