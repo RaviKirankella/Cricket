@@ -98,8 +98,9 @@ padding:5px 10px 5px 10px;
 	var SelectedPlayers=[];
 	function readPlayerData() {
 			var xmlhttp = new XMLHttpRequest();
-			spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
-			var url = "https://sheets.googleapis.com/v4/spreadsheets/"+spreadsheetid+"/values/A2:K?key=AIzaSyAmi4pvsmS6iGokKlVXGxsFbKxpAnWjWEo";
+			var spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
+			var spreadsheetrange="A2:K";
+			var url = "https://sheets.googleapis.com/v4/spreadsheets/"+spreadsheetid+"/values/"+spreadsheetrange+"?key=AIzaSyAmi4pvsmS6iGokKlVXGxsFbKxpAnWjWEo";
 			xmlhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
 					var myArr = JSON.parse(this.responseText);
