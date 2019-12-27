@@ -43,7 +43,6 @@
 	margin:1px;
 	}
 	.PlayerBtn:hover {  background: blue;  color: white;}
-	.PlayerText { color: white;}
 	
 	.slider {
   -webkit-appearance: none;
@@ -133,7 +132,7 @@ padding:5px 10px 5px 10px;
 			playerdetailtextnode=document.createElement("P");
 			playerdetailtextnode.appendChild(document.createTextNode("\nBasePrice:"+PlayerData[i][3]+" EstimatedPoints:"+PlayerData[i][4]));
 			playerdetailtextnode.classList.add("PlayerDetail");
-			playerdetailtextnode.classList.add("PlayerText");
+			
 			btnnode.appendChild(playertextnode);
 			btnnode.appendChild(playerdetailtextnode);
 			btnnode.classList.add("AvlPlayer");
@@ -193,7 +192,6 @@ padding:5px 10px 5px 10px;
 			playerbtn.addEventListener('click', removeSelectedPlayer,false);
 			playerbtn.classList.add("SelectedPlayer");
 			playerbtn.classList.add("PlayerBtn");
-			playerbtn.classList.add("PlayerText");
 		tablecol1.appendChild(playerbtn);
 		
 		tablecol2=document.createElement("TD");
