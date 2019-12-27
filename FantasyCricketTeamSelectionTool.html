@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+  <head>
+    <title>ISISCC Fantasy Cricket League</title>
+
+    <style>
+	body {
+	font-family: Verdana, Geneva, sans-serif;
+	background-color: gray;
+	width:100%;
+	text-align:center;
+	}
+	.header{
+	color: white;
+	}
+	.maincontainer {
+	display:flex;
+	padding:5px;
+	}
+	.section1 {
+	width:20%;
+	padding:5px;
+	background-color: white;	
+	}
+	.section2 {
+	width:70%;
+	padding:5px;	
+	}
+	.PlayerBtn {background-color:LightGray;
+			font-weight: bold;
+			border-color: LightGray;
+			width:95%;
+			border:5px;
+			margin: 5px;
+			padding: 5px;
+			border-radius:5%;
+	}
+	.PlayerDetail{
+	margin-top:5px;
+	margin-bottom:1px;
+	font-size:9pt;
+	}
+	.PlayerName {
+	margin:1px;
+	}
+	.PlayerBtn:hover {  background: blue;  color: white;}
+	
+	.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 25px;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 25px;
+  background: #4CAF50;
+  cursor: pointer;
+}
+.sliderContainer{
+width: 300px;
+}
+
+th,td{
+padding:5px 10px 5px 10px;
+}
+    </style>
+	
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+   <script src="https://apis.google.com/js/api.js"></script>
+
+
+    <script>
+	//ExcelDataHandling Layers
+	//Read PlayerData Script and set it to global variable PlayerData
+	var LastActiveVersion=1;
+	var gbl_team="Test Team";
+	var VersionsList=[];
+	var PlayerData="";
+	var SelectedPlayers=[];
+	function readPlayerData() {
+			var xmlhttp = new XMLHttpRequest();
+			spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
+			var url = "https://sheets.googleapis.com/v4/spreadsheets/"+spreadsheetid+"/values/A2:K?key=AIzaSyAmi4pvsmS6iGokKlVXGxsFbKxpAnWjWEo";
+			xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+					var myArr = JSON.parse(this.responseText);
+					PlayerData=myArr["values"];
+					AddPlayers();
+					}
+			};
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send();
+		}
+	
+	
+	//Presentation Scripts
+	//Display of Players
+	function AddPlayers() {
+
+		var btnnode;
+		var playertextnode;
+		var playerdetailtextnode;
+		document.getElementById("AvlPlayers").innerHTML="";
+		for(i = 0; i < PlayerData.length; i++) {
+			if (SelectedPlayers.includes(PlayerData[i][0])) {
+				//do nothing
+			}
+			else {
+			btnnode=document.createElement("BUTTON");
+			playertextnode=document.createElement("P");
+			playertextnode.appendChild(document.createTextNode(PlayerData[i][0]));
+			playertextnode.classList.add("PlayerName");
+			playerdetailtextnode=document.createElement("P");
+			playerdetailtextnode.appendChild(document.createTextNode("\nBasePrice:"+PlayerData[i][3]+" EstimatedPoints:"+PlayerData[i][4]));
+			playerdetailtextnode.classList.add("PlayerDetail");
+			btnnode.appendChild(playertextnode);
+			btnnode.appendChild(playerdetailtextnode);
+			btnnode.classList.add("AvlPlayer");
+			btnnode.classList.add("PlayerBtn");
+			btnnode.addEventListener('click', addSelectedPlayer,false);
+			document.getElementById("AvlPlayers").appendChild(btnnode);
+			//playerbuttons += "<br><button class=""AvlPlayers"">"+PlayerData[i][0]+"</button>";
+			}
+			}
+			
+		//document.getElementById("AvlPlayers").innerHTML=playerbuttons;
+		}
+		
+		function AddVersions(versions) {
+		versionbuttons="";
+		var btnnode;
+		var versiontext="";
+		
+		for(i = 0; i < versions.length; i++) {
+			btnnode=document.createElement("BUTTON");
+			versiontext=getCookie("version"+versions[i]+"name");
+			if (versiontext=="") {
+				btnnode.appendChild(document.createTextNode('Version'+versions[i]));
+				}
+			else {
+				btnnode.appendChild(document.createTextNode(versiontext));
+			}	
+			btnnode.classList.add("versionbtn");
+			btnnode.addEventListener('click', test,false);
+			document.getElementById("versioncontainer").appendChild(btnnode);
+			}
+		
+		}
+		
+	function AddSelection(playername) {
+		var tablerow;
+		var tablecol1;
+		var tablecol2;
+		var tablecol3;
+		var tablecol4;
+		var playerbtn;
+		//var slidermin;
+		var slider;
+		var sliderval;
+		var playerdetails="";
+		for(i = 0; i < PlayerData.length; i++) {
+			if (PlayerData[i][0]==playername) {
+			playerdetails=PlayerData[i];
+			}
+			}
+		if (playerdetails!="") {
+		SelectedPlayers.push(playerdetails[0])
+		tablerow=document.createElement("TR");
+		tablecol1=document.createElement("TD");
+			playerbtn=document.createElement("BUTTON");
+			playerbtn.appendChild(document.createTextNode(playerdetails[0]));
+			playerbtn.addEventListener('click', removeSelectedPlayer,false);
+			playerbtn.classList.add("SelectedPlayer");
+			playerbtn.classList.add("PlayerBtn");
+		tablecol1.appendChild(playerbtn);
+		
+		tablecol2=document.createElement("TD");
+			//slidermin=document.createElement("P");
+			//slidermin.appendChild(document.createTextNode(playerdetails[3]));
+			//slidermin.classList.add("slidermin");
+			slider=document.createElement("INPUT");
+			slider.setAttribute("type","range");
+			slider.setAttribute("min",playerdetails[3]);
+			slider.setAttribute("max","50000");
+			slider.setAttribute("step","500");
+			slider.setAttribute("value",playerdetails[3]);
+			slider.classList.add("slider");
+			slider.addEventListener('change', updateSliderValue,false);
+		//tablecol2.appendChild(slidermin);
+		tablecol2.classList.add("sliderContainer");
+		tablecol2.appendChild(slider);
+		
+		tablecol3=document.createElement("TD");
+			tablecol3.classList.add("slidervalue");
+			tablecol3.setAttribute("name",playerdetails[0]);
+			tablecol3.appendChild(document.createTextNode(playerdetails[3]));
+		
+		tablecol4=document.createElement("TD");
+			tablecol4.classList.add("estvalue");
+			tablecol4.appendChild(document.createTextNode(playerdetails[4]));
+		tablerow.appendChild(tablecol1);
+		tablerow.appendChild(tablecol2);
+		tablerow.appendChild(tablecol3);
+		tablerow.appendChild(tablecol4);
+		document.getElementById("selectedplayers").appendChild(tablerow);
+		}
+		}
+	</script>  
+
+<script>
+	//Cookie setting scripts
+	function setCookie(cname,cvalue) {
+	  var d = new Date();
+	  d.setTime(d.getTime() + (120*24*60*60*1000));
+	  var expires = "expires=" + d.toGMTString();
+	  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+
+	function getCookie(cname) {
+	  var name = cname + "=";
+	  var decodedCookie = decodeURIComponent(document.cookie);
+	  var ca = decodedCookie.split(';');
+	  for(var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ') {
+		  c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+		  return c.substring(name.length, c.length);
+		}
+	  }
+	  return "";
+	}
+	
+	function getVersions(){
+	var versions=getCookie("version");
+	if (versions != "") {
+		setCookie("version", [1]);
+		versions=getCookie("version");
+		versions=versions.split(',');
+		}
+	else {
+		versions=versions.split(',');
+		}
+	return versions;
+	}
+	
+	function getLastActiveVersion(versions){
+	var lversion=getCookie("lastactiveversion");
+	if (lversion != "") {
+		lversion=versions[0];
+		}
+	else if (versions.includes(lversion)){
+	
+	}
+	else {
+		lversion=versions[0];
+		}
+	return lversion;
+	}
+</script>
+
+<script>
+ function addSelectedPlayer() {
+	if (parseInt(document.getElementById("avlspend").innerHTML,10)>0){
+	AddSelection(this.childNodes[0].innerHTML);
+	this.parentNode.removeChild(this);
+	updateHeaderTable();
+	}
+	else {
+	 alert("Team value exceeds available spend, cannot add more players");
+	}
+ }
+  function removeSelectedPlayer() {
+	var rownode=this.parentNode.parentNode
+	if (SelectedPlayers.indexOf(this.innerHTML)!=-1){
+	SelectedPlayers.splice(SelectedPlayers.indexOf(this.innerHTML), 1);
+	}
+	rownode.parentNode.removeChild(rownode);
+	updateHeaderTable();
+	AddPlayers();
+	
+ }
+   function test() {
+	alert("hi");
+ }
+ function updateSliderValue() {
+	var rownode=this.parentNode.parentNode;
+	var avlspend=parseInt(document.getElementById("avlspend").innerHTML,10);
+	var prevval;
+	for (var i = 0; i < rownode.childNodes.length; i++) {
+		if (rownode.childNodes[i].className == "slidervalue") {
+			prevval=parseInt(rownode.childNodes[i].innerHTML,10);
+			if (avlspend>0 || prevval>this.value){
+			rownode.childNodes[i].innerHTML = this.value;
+			writetoexcel(rownode.childNodes[i].getAttribute("name"),this.value);
+			}
+			else {
+			alert("Team value exceeds available spend, cannot increase players price further");
+			this.value=prevval;
+			}
+		break;
+		} 
+	}
+	updateHeaderTable();
+ }
+ function updateHeaderTable() {
+	var priceselectednodes=document.getElementsByClassName("slidervalue");
+	var estvaluenodes=document.getElementsByClassName("estvalue");
+	var price=0;
+	var estval=0;
+	for (var i = 0; i < priceselectednodes.length; i++) {
+		price+=parseInt(priceselectednodes[i].innerHTML,10);
+	}
+	for (var i = 0; i < estvaluenodes.length; i++) {
+		estval+=parseInt(estvaluenodes[i].innerHTML,10);
+	}
+	document.getElementById("avlspend").innerHTML=100000-price;
+	document.getElementById("teamcost").innerHTML=price;
+	document.getElementById("estpointstotal").innerHTML=estval;
+ }
+</script>
+ 
+ <script>
+	$( document ).ready(function() {
+		readPlayerData();
+		//VersionsList=getVersions();
+		VersionsList=[1];
+		gbl_team="Test Team";
+		//LastActiveVersion=getLastActiveVersion(VersionsList);
+		LastActiveVersion=1;
+		AddVersions(VersionsList);
+		updateHeaderTable();
+	});
+	
+</script>
+
+<script>
+
+function writetoexcel(player,price) {
+	$( "#PE_Team" ).val(gbl_team);
+	$( "#PE_Version" ).val(LastActiveVersion);
+	$( "#PE_Player" ).val(player);
+	$( "#PE_Price" ).val(price);
+	$( "#PE_submitbtn" ).click();
+
+}
+
+    </script>
+
+</head>
+
+<body>
+
+
+	<div class="header">
+	<h2>ISISCC Fantasy Cricket Player Selector</h2>
+	<p>Select players from the avalable section by clicking on them</p>
+	</div>
+	<div id="versioncontainer">
+	</div>
+	<div class="maincontainer">
+		<div class="section1">
+			<h4>Available for Selection</h4>
+			<div id="AvlPlayers">
+			</div>
+		</div >
+	<div class="section2">
+		<div style="background-color:LightGray">
+		<table align="center" >
+		<tr>
+			<th>Available Spend</th>
+			<th> Team Cost</th>
+			<th> Estimated Points Total</th>
+		</tr>
+		<tr>
+			<td id="avlspend"></td>
+			<td id="teamcost"></td>
+			<td id="estpointstotal"></td>
+		</tr>
+		</table>
+		</div>
+		<table id="selectedplayers" width="100%">
+		<tr style="width=100%"><th style="width=20%">Player</th>
+		<th style="width=60%">Price selection</th>
+		<th style="width=10%">Price Selected</th>
+		<th style="width=10%">Estimated Points</th></tr>
+		</table>
+	</div>
+	</div>
+
+
+<div>
+<form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLScl26XJDXU8dmGhoy0XU_tVAzmntM79BDXsNwk2KUeW9jm0Ew/formResponse" target="invisible" method="POST" style="display:none">
+<input type="text" name="entry.738215339" id="PE_Team">
+<input type="text" name="entry.865011932" id="PE_Version">
+<input type="text" name="entry.385256456" id="PE_Player">
+<input type="text" name="entry.1604730605" id="PE_Price">
+<input type="submit" value="submit" id="PE_submitbtn">
+
+</form>
+<iframe id="invisible" name="invisible" style="display:none;"></iframe>
+</div>
+
+		
+  </body>
+ 
+ </html> 
