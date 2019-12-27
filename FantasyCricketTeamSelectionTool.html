@@ -18,6 +18,7 @@
 	}
 	
 	#logincontainer {
+	display:none;
 	color:white;
 	width: 100%;
 	height: 100%;
@@ -148,11 +149,54 @@ padding:5px 10px 5px 10px;
 					AddPlayers();
 					}
 			};
-			xmlhttp.open("GET", url, true);
+			xmlhttp.open("GET", url, false);
 			xmlhttp.send();
 		}
 	
-	
+	<script>
+
+function validateTeam() {
+
+			var xmlhttp = new XMLHttpRequest();
+			var spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
+			var spreadsheetrange="Teams!A2:B";
+			var teamsdata;
+			var url = "https://sheets.googleapis.com/v4/spreadsheets/"+spreadsheetid+"/values/"+spreadsheetrange+"?key=AIzaSyAmi4pvsmS6iGokKlVXGxsFbKxpAnWjWEo";
+			xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+					var myArr = JSON.parse(this.responseText);
+					teamsdata=myArr["values"];
+					
+					if (checkteam($( "#inp_TeamName" ).val(),$( "#inp_TeamKey" ).val(), teamsdata))
+					{
+						$( "#logincontainer" ).css("display","none");
+					}
+					else {
+						alert("invalid team name, key combination retry!");
+					}
+					
+
+					}
+					
+			};
+			xmlhttp.open("GET", url, false);
+			xmlhttp.send();
+		}
+
+function checkteam(TeamName,TeamKey, teamsdata){
+	var returnval=false;
+	for(i = 0; i < teamsdata.length; i++) {
+	 if(teamsdata[i][0]==TeamName && teamsdata[i][1]==TeamKey) {
+		returnval=true;
+		break;
+		}
+	}
+	return returnval;
+}
+
+    </script>
+	  <script>
+	    
 	//Presentation Scripts
 	//Display of Players
 	function AddPlayers() {
@@ -268,6 +312,8 @@ padding:5px 10px 5px 10px;
 		}
 	</script>  
 
+	  
+	  
 <script>
 	//Cookie setting scripts
 	function setCookie(cname,cvalue) {
@@ -388,7 +434,10 @@ padding:5px 10px 5px 10px;
 		readPlayerData();
 		//VersionsList=getVersions();
 		VersionsList=[1];
-		gbl_team="Test Team";
+		gbl_team=getCookie("TeamName");
+		if (gbl_team==""){
+			$( "#logincontainer" ).css("display","block");
+		}
 		//LastActiveVersion=getLastActiveVersion(VersionsList);
 		LastActiveVersion=1;
 		AddVersions(VersionsList);
@@ -418,7 +467,7 @@ function writetoexcel(player,price) {
 	<form id="form_login">
 	<input type="text" placeholder="Enter Team Name" id="inp_TeamName"><br>
 	<input type="password" placeholder="Enter Key" id="inp_TeamKey"><br>
-	<button id="inp_btn">OK</button>
+	<button id="inp_btn" onclick="validateTeam()>OK</button>
 	</form>
 </div>
 <div id="maincontainerdiv">
