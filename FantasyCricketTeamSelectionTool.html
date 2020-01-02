@@ -140,6 +140,7 @@ padding:5px 10px 5px 10px;
 	var VersionsList=[];
 	var PlayerData="";
 	var SelectedPlayers=[];
+	var teamsdata;
 	function readPlayerData() {
 			var xmlhttp = new XMLHttpRequest();
 			var spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
@@ -155,23 +156,30 @@ padding:5px 10px 5px 10px;
 			xmlhttp.open("GET", url, true);
 			xmlhttp.send();
 		}
-	
-	function validateTeam() {
+	    
+	function loadTeamsData() {
 
 			var xmlhttp = new XMLHttpRequest();
 			var spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
 			var spreadsheetrange="Teams!A2:B";
-			var teamsdata;
-			var teamname;
-			var teamkey;
 			var url = "https://sheets.googleapis.com/v4/spreadsheets/"+spreadsheetid+"/values/"+spreadsheetrange+"?key=AIzaSyAmi4pvsmS6iGokKlVXGxsFbKxpAnWjWEo";
 			xmlhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
 					var myArr = JSON.parse(this.responseText);
-					teamsdata=myArr["values"];
-					teamname=$( "#inp_TeamName" ).val();
-					teamkey=$( "#inp_TeamKey" ).val();
-					if (checkteam(teamname,teamkey, teamsdata))
+					teamsdata=myArr["values"];	
+					}
+					
+			};
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send();
+		}
+	
+	function validateTeam() {	
+			var teamname;
+			var teamkey;
+			teamname=$( "#inp_TeamName" ).val();
+			teamkey=$( "#inp_TeamKey" ).val();
+			if (checkteam(teamname,teamkey, teamsdata))
 					{
 						$( "#logincontainer" ).css("display","none");
 						setCookie("TeamName",teamname);
@@ -180,13 +188,7 @@ padding:5px 10px 5px 10px;
 					else {
 						alert("invalid team name, key combination retry!");
 					}
-					
 
-					}
-					
-			};
-			xmlhttp.open("GET", url, true);
-			xmlhttp.send();
 		}
 
 function checkteam(TeamName,TeamKey, teamsdata){
@@ -198,6 +200,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		}
 	}
 	return returnval;
+	loadTeamsData();
 }
 
     </script>
