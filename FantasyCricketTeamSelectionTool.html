@@ -444,9 +444,9 @@ function checkteam(TeamName,TeamKey, teamsdata){
  
  <script>
 	$( document ).ready(function() {
-		alert("document ready");
 		readPlayerData();
 		loadTeamsData();
+		alert(getCookie("TeamName"));
 		//VersionsList=getVersions();
 		VersionsList=[1];
 		gbl_team=getCookie("TeamName");
