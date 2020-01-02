@@ -442,7 +442,6 @@ function checkteam(TeamName,TeamKey, teamsdata){
  <script>
 	$( document ).ready(function() {
 		alert("document ready");
-		deleteCookie("TeamName");
 		readPlayerData();
 		//VersionsList=getVersions();
 		VersionsList=[1];
@@ -502,7 +501,7 @@ function writetoexcel(player,price) {
 	<p>Select players from the avalable section by clicking on them</p>
 	</div>
 	<div id="versioncontainer">
-		<button type="button" onclick='document.cookie="TeamName=;expires=Thu 01 Jan 1970; path=/;"'>DeleteTeamCookie</button>
+		<button type="button" onclick='deleteCookie("TeamName")'>DeleteTeamCookie</button>
 	</div>
 	<div class="maincontainer">
 		<div class="section1">
