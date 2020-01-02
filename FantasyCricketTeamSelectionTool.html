@@ -328,6 +328,10 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	  var expires = "expires=" + d.toGMTString();
 	  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 	}
+	
+	function deleteCookie(cname) {
+	  document.cookie = cname + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+	}
 
 	function getCookie(cname) {
 	  var name = cname + "=";
@@ -438,6 +442,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
  <script>
 	$( document ).ready(function() {
 		alert("document ready");
+		deleteCookie("TeamName");
 		readPlayerData();
 		//VersionsList=getVersions();
 		VersionsList=[1];
