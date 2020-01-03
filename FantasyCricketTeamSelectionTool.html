@@ -425,6 +425,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		this.style.backgroundColor = "blue";
 		this.style.color= "white";
 		setCookie("LastActiveVersion",activeBtnId[activeBtnId.length-1]);
+		LastActiveVersion=getLastActiveVersion(VersionsList);
 		alert('Activate Version Script')
 		alert( decodeURIComponent(document.cookie));
 	}
