@@ -396,8 +396,9 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	function addNewVersion(){
 		alert(VersionsList);
 		alert(VersionsList[VersionsList.length-1]);
-		VersionsList.push(VersionsList[VersionsList.length-1]+1);
+		VersionsList.push(parseInt(VersionsList[VersionsList.length-1])+1);
 		alert(VersionsList);
+		setCookie("version", VersionsList);
 		AddVersions(VersionsList);
 		
 	}
