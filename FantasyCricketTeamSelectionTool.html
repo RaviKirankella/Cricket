@@ -398,6 +398,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		var newVersionid=parseInt(VersionsList[VersionsList.length-1])+1;
 		VersionsList.push(newVersionid);
 		LastActiveVersion=newVersionid;
+		setCookie("LastActiveVersion",newVersionid);
 		setCookie("version", VersionsList);
 		AddVersions(VersionsList);
 		
@@ -405,12 +406,14 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	
 	function activateVersion(){
 		var btns = document.getElementsByClassName("versionbtn");
+		var activeBtnId=this.id;
 		for (i = 0; i < btns.length; i++) {
 			btns[i].style.backgroundColor = "white";
 			btns[i].style.color = "black";
 					}
 		this.style.backgroundColor = "blue";
 		this.style.color= "white";
+		setCookie("LastActiveVersion",activeBtnId[activeBtnId.length-1]);
 	}
 </script>
 
