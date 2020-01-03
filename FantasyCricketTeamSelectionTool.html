@@ -381,23 +381,23 @@ function checkteam(TeamName,TeamKey, teamsdata){
 				}
 			else {
 				btnnode.appendChild(document.createTextNode(versiontext));
-			}	
+			}
+			btnnode.id='Version'+versions[i];
 			btnnode.classList.add("versionbtn");
 			btnnode.classList.add("buttonstyle");
 			btnnode.addEventListener('click', activateVersion,true);
 			document.getElementById("versioncontainer").appendChild(btnnode);
 			}
-		
+		document.getElementById("Version"+LastActiveVersion).click();
 		}
 	
 	function deleteVersion(){
 		alert(this.innerHTML);
 	}
 	function addNewVersion(){
-		alert(VersionsList);
-		alert(VersionsList[VersionsList.length-1]);
-		VersionsList.push(parseInt(VersionsList[VersionsList.length-1])+1);
-		alert(VersionsList);
+		var newVersionid=parseInt(VersionsList[VersionsList.length-1])+1;
+		VersionsList.push(newVersionid);
+		LastActiveVersion=newVersionid;
 		setCookie("version", VersionsList);
 		AddVersions(VersionsList);
 		
@@ -407,8 +407,10 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		var btns = document.getElementsByClassName("versionbtn");
 		for (i = 0; i < btns.length; i++) {
 			btns[i].style.backgroundColor = "white";
+			btns[i].style.color = "black";
 					}
-		this.style.backgroundColor = "blue";	
+		this.style.backgroundColor = "blue";
+		this.style.color= "white";
 	}
 </script>
 
