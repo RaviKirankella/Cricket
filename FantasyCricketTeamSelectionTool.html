@@ -408,8 +408,10 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	function addNewVersion(){
 		var newVersionid=parseInt(VersionsList[VersionsList.length-1])+1;
 		VersionsList.push(newVersionid);
+		alert(VersionsList);
 		setCookie("LastActiveVersion",newVersionid);
 		LastActiveVersion=getLastActiveVersion(VersionsList);
+		alert(LastActiveVersion);
 		setCookie("version", VersionsList);
 		AddVersions(VersionsList);
 		
