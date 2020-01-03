@@ -353,14 +353,19 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	
 	function getLastActiveVersion(versions){
 	var lversion=getCookie("LastActiveVersion");
+	alert('Last Active Version script');
+	alert(lversion);
 	if (lversion != "") {
 		lversion=versions[0];
 		setCookie("LastActiveVersion",lversion);
+		alert('in 1st if');
 		}
 	else if (versions.includes(lversion)){
+		alert('in 2nd if');
 	
 	}
 	else {
+		alert('in 3rd if');
 		lversion=versions[0];
 		setCookie("LastActiveVersion",lversion);
 		}
