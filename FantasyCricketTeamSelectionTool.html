@@ -239,28 +239,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 			
 		//document.getElementById("AvlPlayers").innerHTML=playerbuttons;
 		}
-		
-		function AddVersions(versions) {
-		versionbuttons="";
-		var btnnode;
-		var versiontext="";
-		
-		for(i = 0; i < versions.length; i++) {
-			btnnode=document.createElement("BUTTON");
-			versiontext=getCookie("version"+versions[i]+"name");
-			if (versiontext=="") {
-				btnnode.appendChild(document.createTextNode('Version'+versions[i]));
-				}
-			else {
-				btnnode.appendChild(document.createTextNode(versiontext));
-			}	
-			btnnode.classList.add("versionbtn");
-			btnnode.addEventListener('click', test,false);
-			document.getElementById("versioncontainer").appendChild(btnnode);
-			}
-		
-		}
-		
+			
 	function AddSelection(playername) {
 		var tablerow;
 		var tablecol1;
@@ -351,7 +330,9 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	  }
 	  return "";
 	}
-	
+</script>
+<script>
+		  
 	function getVersions(){
 	var versions=getCookie("version");
 	if (versions == "") {
@@ -366,17 +347,44 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	}
 	
 	function getLastActiveVersion(versions){
-	var lversion=getCookie("lastactiveversion");
+	var lversion=getCookie("LastActiveVersion");
 	if (lversion != "") {
 		lversion=versions[0];
+		setCookie("LastActiveVersion",lversion);
 		}
 	else if (versions.includes(lversion)){
 	
 	}
 	else {
 		lversion=versions[0];
+		setCookie("LastActiveVersion",lversion);
 		}
 	return lversion;
+	}
+	
+	function AddVersions(versions) {
+		versionbuttons="";
+		var btnnode;
+		var versiontext="";
+		
+		for(i = 0; i < versions.length; i++) {
+			btnnode=document.createElement("BUTTON");
+			versiontext=getCookie("version"+versions[i]+"name");
+			if (versiontext=="") {
+				btnnode.appendChild(document.createTextNode('Version'+versions[i]));
+				}
+			else {
+				btnnode.appendChild(document.createTextNode(versiontext));
+			}	
+			btnnode.classList.add("versionbtn");
+			btnnode.addEventListener('click', test,false);
+			document.getElementById("versioncontainer").appendChild(btnnode);
+			}
+		
+		}
+	
+	function deleteVersion(){
+		alert("deleteVersion"+this.innerHTML);
 	}
 </script>
 
@@ -453,11 +461,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		if (gbl_team==""){
 			$( "#logincontainer" ).css("display","block");
 		}
-		//LastActiveVersion=getLastActiveVersion(VersionsList);
-		LastActiveVersion=getCookie("LastActiveVersion");
-		if (LastActiveVersion=="") {
-			LastActiveVersion=1;
-		}
+		LastActiveVersion=getLastActiveVersion(VersionsList);
 		AddVersions(VersionsList);
 		updateHeaderTable();
 		
@@ -509,6 +513,9 @@ function writetoexcel(player,price) {
 	</div>
 	<div id="versioncontainer">
 		<button type="button" onclick='deleteCookie("TeamName")'>DeleteTeamCookie</button>
+	</div>
+	<div id="curversioncontainer">
+		<button type="button" onclick='deleteVersion()'>DeleteVersion</button>
 	</div>
 	<div class="maincontainer">
 		<div class="section1">
