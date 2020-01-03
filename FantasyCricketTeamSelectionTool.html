@@ -354,15 +354,14 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	
 	function getVersions(){
 	var versions=getCookie("version");
-	if (versions != "") {
-		setCookie("version", 1);
+	if (versions == "") {
+		setCookie("version", [1]);
 		versions=getCookie("version");
 		versions=versions.split(',');
 		}
 	else {
 		versions=versions.split(',');
 		}
-	alert(versions);
 	return versions;
 	}
 	
