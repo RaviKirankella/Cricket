@@ -447,14 +447,17 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		readPlayerData();
 		loadTeamsData();
 		alert(getCookie("TeamName"));
-		//VersionsList=getVersions();
-		VersionsList=[1];
+		VersionsList=getVersions();
+		//VersionsList=[1];
 		gbl_team=getCookie("TeamName");
 		if (gbl_team==""){
 			$( "#logincontainer" ).css("display","block");
 		}
 		//LastActiveVersion=getLastActiveVersion(VersionsList);
-		LastActiveVersion=1;
+		LastActiveVersion=getCookie("LastActiveVersion");
+		if (LastActiveVersion=="") {
+			LastActiveVersion=1;
+		}
 		AddVersions(VersionsList);
 		updateHeaderTable();
 		
