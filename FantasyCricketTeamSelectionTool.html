@@ -400,10 +400,12 @@ function checkteam(TeamName,TeamKey, teamsdata){
 			LastActiveVersion=getLastActiveVersion(VersionsList);
 			AddVersions(VersionsList);
 			setCookie("version", VersionsList);
+			updateHeaderTable();
 		}
 		else {
 			alert('Cannot Delete this version');
 		}
+		
 	}
 	function addNewVersion(){
 		var newVersionid=parseInt(VersionsList[VersionsList.length-1])+1;
@@ -414,6 +416,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		alert(LastActiveVersion);
 		setCookie("version", VersionsList);
 		AddVersions(VersionsList);
+		updateHeaderTable();
 		
 	}
 	
@@ -428,6 +431,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		this.style.color= "white";
 		setCookie("LastActiveVersion",activeBtnId[activeBtnId.length-1]);
 		LastActiveVersion=getLastActiveVersion(VersionsList);
+		updateHeaderTable();
 	}
 </script>
 
