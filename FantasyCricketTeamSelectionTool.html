@@ -413,9 +413,9 @@ function checkteam(TeamName,TeamKey, teamsdata){
 					}
 		this.style.backgroundColor = "blue";
 		this.style.color= "white";
-		alert(activeBtnId);
 		setCookie("LastActiveVersion",activeBtnId[activeBtnId.length-1]);
 		alert(activeBtnId[activeBtnId.length-1]);
+		alert( decodeURIComponent(document.cookie));
 	}
 </script>
 
