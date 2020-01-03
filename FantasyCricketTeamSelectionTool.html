@@ -384,7 +384,10 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		}
 	
 	function deleteVersion(){
-		alert("deleteVersion"+this.innerHTML);
+		alert(this.innerHTML);
+	}
+	function addNewVersion(){
+		alert(this.innerHTML);
 	}
 </script>
 
@@ -511,11 +514,12 @@ function writetoexcel(player,price) {
 	<h2>ISISCC Fantasy Cricket Player Selector</h2>
 	<p>Select players from the avalable section by clicking on them</p>
 	</div>
-	<div id="versioncontainer">
+	<div id="versioncontainer" >
 		<button type="button" onclick='deleteCookie("TeamName")'>DeleteTeamCookie</button>
 	</div>
-	<div id="curversioncontainer">
+	<div id="curversioncontainer" align="right">
 		<button type="button" onclick='deleteVersion()'>DeleteVersion</button>
+		<button type="button" onclick='addNewVersion()'>Add New Version</button>
 	</div>
 	<div class="maincontainer">
 		<div class="section1">
