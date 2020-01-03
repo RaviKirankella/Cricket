@@ -371,6 +371,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		versionbuttons="";
 		var btnnode;
 		var versiontext="";
+		document.getElementById("versioncontainer").innerHTML="";
 		
 		for(i = 0; i < versions.length; i++) {
 			btnnode=document.createElement("BUTTON");
@@ -393,7 +394,8 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		alert(this.innerHTML);
 	}
 	function addNewVersion(){
-		alert(this.innerHTML);
+		alert(VersionsList);
+		alert(VersionsList[-1]);
 	}
 	
 	function activateVersion(){
@@ -529,9 +531,10 @@ function writetoexcel(player,price) {
 	<p>Select players from the avalable section by clicking on them</p>
 	</div>
 	<div id="versioncontainer" >
-		<button type="button" onclick='deleteCookie("TeamName")'>DeleteTeamCookie</button>
+		
 	</div>
 	<div id="curversioncontainer" align="right">
+		<button type="button" onclick='deleteCookie("TeamName")'>DeleteTeamCookie</button>
 		<button type="button" class="buttonstyle" onclick='deleteVersion()'>DeleteVersion</button>
 		<button type="button" class="buttonstyle" onclick='addNewVersion()'>Add New Version</button>
 	</div>
