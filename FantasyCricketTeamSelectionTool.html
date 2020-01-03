@@ -396,8 +396,8 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		var idxVersion=VersionsList.indexOf(LastActiveVersion);
 		if (idxVersion!=0){
 			VersionsList.splice(idxVersion,1);
-			alert(VersionsList);
-			LastActiveVersion=VersionsList[idxVersion-1];
+			setCookie("LastActiveVersion",VersionsList[idxVersion-1]);
+			LastActiveVersion=getLastActiveVersion(VersionsList);
 			AddVersions(VersionsList);
 			setCookie("version", VersionsList);
 		}
@@ -408,8 +408,8 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	function addNewVersion(){
 		var newVersionid=parseInt(VersionsList[VersionsList.length-1])+1;
 		VersionsList.push(newVersionid);
-		LastActiveVersion=newVersionid;
 		setCookie("LastActiveVersion",newVersionid);
+		LastActiveVersion=getLastActiveVersion(VersionsList);
 		setCookie("version", VersionsList);
 		AddVersions(VersionsList);
 		
