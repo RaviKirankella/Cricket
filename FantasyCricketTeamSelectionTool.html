@@ -408,7 +408,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		
 	}
 	function addNewVersion(){
-		var newVersionid=parseInt(VersionsList[VersionsList.length-1])+1;
+		var newVersionid=(parseInt(VersionsList[VersionsList.length-1])+1).toString();
 		VersionsList.push(newVersionid);
 		alert(VersionsList);
 		setCookie("LastActiveVersion",newVersionid);
