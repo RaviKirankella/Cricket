@@ -486,6 +486,8 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		readPlayerData();
 		loadTeamsData();
 		alert(getCookie("TeamName"));
+		alert( decodeURIComponent(document.cookie));
+		alert(getVersions());
 		VersionsList=getVersions();
 		//VersionsList=[1];
 		gbl_team=getCookie("TeamName");
