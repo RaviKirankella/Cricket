@@ -393,7 +393,16 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		}
 	
 	function deleteVersion(){
-		alert(this.innerHTML);
+		var idxVersion=VersionsList.indexOf(LastActiveVersion);
+		if (idxVersion!=0){
+			delete VersionsList[idxVersion];
+			alert(VersionsList);
+			LastActiveVersion=VersionsList[idxVersion-1];
+			AddVersions(VersionsList);
+		}
+		else {
+			alert('Cannot Delete this version');
+		}
 	}
 	function addNewVersion(){
 		var newVersionid=parseInt(VersionsList[VersionsList.length-1])+1;
@@ -415,7 +424,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		this.style.backgroundColor = "blue";
 		this.style.color= "white";
 		setCookie("LastActiveVersion",activeBtnId[activeBtnId.length-1]);
-		alert(activeBtnId[activeBtnId.length-1]);
+		alert('Activate Version Script')
 		alert( decodeURIComponent(document.cookie));
 	}
 </script>
@@ -478,6 +487,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	document.getElementById("avlspend").innerHTML=100000-price;
 	document.getElementById("teamcost").innerHTML=price;
 	document.getElementById("estpointstotal").innerHTML=estval;
+	alert('Update Header Table Script')
 	alert( decodeURIComponent(document.cookie));
  }
 </script>
@@ -488,10 +498,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		loadTeamsData();
 		alert(getCookie("TeamName"));
 		alert( decodeURIComponent(document.cookie));
-		alert('Versionscript');
-		alert(getVersions());
 		VersionsList=getVersions();
-		//VersionsList=[1];
 		gbl_team=getCookie("TeamName");
 		if (gbl_team==""){
 			$( "#logincontainer" ).css("display","block");
