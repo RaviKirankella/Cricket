@@ -396,7 +396,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		var idxVersion=VersionsList.indexOf(LastActiveVersion);
 		alert(LastActiveVersion);
 		if (idxVersion!=0){
-			delete VersionsList[idxVersion];
+			VersionsList.splice(idxVersion,1);
 			alert(VersionsList);
 			LastActiveVersion=VersionsList[idxVersion-1];
 			AddVersions(VersionsList);
