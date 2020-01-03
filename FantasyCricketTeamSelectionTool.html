@@ -394,12 +394,12 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	
 	function deleteVersion(){
 		var idxVersion=VersionsList.indexOf(LastActiveVersion);
-		alert(LastActiveVersion);
 		if (idxVersion!=0){
 			VersionsList.splice(idxVersion,1);
 			alert(VersionsList);
 			LastActiveVersion=VersionsList[idxVersion-1];
 			AddVersions(VersionsList);
+			setCookie("version", VersionsList);
 		}
 		else {
 			alert('Cannot Delete this version');
@@ -426,8 +426,6 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		this.style.color= "white";
 		setCookie("LastActiveVersion",activeBtnId[activeBtnId.length-1]);
 		LastActiveVersion=getLastActiveVersion(VersionsList);
-		alert('Activate Version Script')
-		alert( decodeURIComponent(document.cookie));
 	}
 </script>
 
