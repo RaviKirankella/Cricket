@@ -128,6 +128,8 @@ padding:5px 10px 5px 10px;
 #curversioncontainer {
 	width: 80%;
 	    }
+.buttonstyle {background-color:white; font-weight: bold; border-color: white; border:5px; margin: 5px;
+			padding: 5px; border-radius:5%;}
     </style>
 	
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -380,7 +382,8 @@ function checkteam(TeamName,TeamKey, teamsdata){
 				btnnode.appendChild(document.createTextNode(versiontext));
 			}	
 			btnnode.classList.add("versionbtn");
-			btnnode.addEventListener('click', test,false);
+			btnnode.classList.add("buttonstyle");
+			btnnode.addEventListener('click', activateVersion,true);
 			document.getElementById("versioncontainer").appendChild(btnnode);
 			}
 		
@@ -391,6 +394,14 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	}
 	function addNewVersion(){
 		alert(this.innerHTML);
+	}
+	
+	function activateVersion(){
+		var btns = document.getElementsByClassName("versionbtn");
+		for (i = 0; i < btns.length; i++) {
+			btns[i].style.backgroundColor = "white";
+					}
+		this.style.backgroundColor = "blue";	
 	}
 </script>
 
