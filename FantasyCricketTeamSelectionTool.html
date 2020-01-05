@@ -221,7 +221,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		document.getElementById("AvlPlayers").innerHTML="";
 		for(i = 0; i < PlayerData.length; i++) {
 			if (SelectedPlayers.includes(PlayerData[i][0])) {
-				//do nothing
+				AddSelection(PlayerData[i][0]);
 			}
 			else {
 			btnnode=document.createElement("BUTTON");
@@ -262,8 +262,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 			}
 			}
 		if (playerdetails!="") {
-		SelectedPlayers.push(playerdetails[0])
-		setCookie("V"+LastActiveVersion+"Players",SelectedPlayers);
+
 		tablerow=document.createElement("TR");
 		tablecol1=document.createElement("TD");
 			playerbtn=document.createElement("BUTTON");
@@ -441,6 +440,8 @@ function checkteam(TeamName,TeamKey, teamsdata){
 <script>
  function addSelectedPlayer() {
 	if (parseInt(document.getElementById("avlspend").innerHTML,10)>0){
+	SelectedPlayers.push(this.childNodes[0].innerHTML)
+	setCookie("V"+LastActiveVersion+"Players",SelectedPlayers);
 	AddSelection(this.childNodes[0].innerHTML);
 	this.parentNode.removeChild(this);
 	updateHeaderTable();
