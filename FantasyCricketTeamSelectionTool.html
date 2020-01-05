@@ -222,8 +222,8 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		for(i = 0; i < PlayerData.length; i++) {
 			console.log(PlayerData[i][0]);
 			if (SelectedPlayers.includes(PlayerData[i][0])) {
-				AddSelection(PlayerData[i][0]);
-				console.log('Add Selection');
+				//AddSelection(PlayerData[i][0]);
+				//console.log('Add Selection');
 			}
 			else {
 				console.log('Avl List');
@@ -244,7 +244,9 @@ function checkteam(TeamName,TeamKey, teamsdata){
 			//playerbuttons += "<br><button class=""AvlPlayers"">"+PlayerData[i][0]+"</button>";
 			}
 			}
-			
+		for(i = 0; i < SelectedPlayers.length; i++) {
+			AddSelection(SelectedPlayers[i]);
+		}
 		//document.getElementById("AvlPlayers").innerHTML=playerbuttons;
 		}
 			
