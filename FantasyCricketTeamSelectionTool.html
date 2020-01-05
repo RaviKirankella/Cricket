@@ -450,6 +450,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	var rownode=this.parentNode.parentNode
 	if (SelectedPlayers.indexOf(this.innerHTML)!=-1){
 	SelectedPlayers.splice(SelectedPlayers.indexOf(this.innerHTML), 1);
+		alert(SelectedPlayers);
 	}
 	rownode.parentNode.removeChild(rownode);
 	updateHeaderTable();
@@ -496,20 +497,31 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	alert('Update Header Table Script')
 	alert( decodeURIComponent(document.cookie));
  }
+	function getSelectedPlayers(){
+		var selectedplayers=getCookie("V"+LastActiveVersion+"Players");
+		if (selectedplayers == "") {
+			selectedplayers=[]
+		}
+		else {
+			selectedplayers=selectedplayers.split(',');
+		}
+	return selectedplayers;
+	}
 </script>
  
  <script>
 	$( document ).ready(function() {
 		readPlayerData();
-		loadTeamsData();
+		VersionsList=getVersions();
+		LastActiveVersion=getLastActiveVersion(VersionsList);
 		alert(getCookie("TeamName"));
 		alert( decodeURIComponent(document.cookie));
-		VersionsList=getVersions();
 		gbl_team=getCookie("TeamName");
 		if (gbl_team==""){
 			$( "#logincontainer" ).css("display","block");
 		}
-		LastActiveVersion=getLastActiveVersion(VersionsList);
+		SelectedPlayers=getSelectedPlayers();
+		loadTeamsData();
 		AddVersions(VersionsList);
 		updateHeaderTable();
 		
