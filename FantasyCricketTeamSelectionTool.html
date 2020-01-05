@@ -251,6 +251,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		}
 			
 	function AddSelection(playername) {
+		console.log('AddSelection');
 		var tablerow;
 		var tablecol1;
 		var tablecol2;
@@ -444,6 +445,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 
 <script>
  function addSelectedPlayer() {
+	console.log('addSelectedPlayer');
 	if (parseInt(document.getElementById("avlspend").innerHTML,10)>0){
 	SelectedPlayers.push(this.childNodes[0].innerHTML)
 	setCookie("V"+LastActiveVersion+"Players",SelectedPlayers);
@@ -456,6 +458,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	}
  }
   function removeSelectedPlayer() {
+	  console.log('removeSelectedPlayer');
 	var rownode=this.parentNode.parentNode
 	if (SelectedPlayers.indexOf(this.innerHTML)!=-1){
 	SelectedPlayers.splice(SelectedPlayers.indexOf(this.innerHTML), 1);
@@ -470,6 +473,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	alert("hi");
  }
  function updateSliderValue() {
+	 console.log('updateSliderValue');
 	var rownode=this.parentNode.parentNode;
 	var avlspend=parseInt(document.getElementById("avlspend").innerHTML,10);
 	var prevval;
@@ -489,6 +493,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	updateHeaderTable();
  }
  function updateHeaderTable() {
+	 console.log('updateHeaderTable');
 	var priceselectednodes=document.getElementsByClassName("slidervalue");
 	var estvaluenodes=document.getElementsByClassName("estvalue");
 	var price=0;
@@ -506,6 +511,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	alert( decodeURIComponent(document.cookie));
  }
 	function getSelectedPlayers(){
+		console.log('getSelectedPlayers');
 		var selectedplayers=getCookie("V"+LastActiveVersion+"Players");
 		if (selectedplayers == "") {
 			selectedplayers=[]
