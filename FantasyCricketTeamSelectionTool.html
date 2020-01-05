@@ -263,6 +263,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 			}
 		if (playerdetails!="") {
 		SelectedPlayers.push(playerdetails[0])
+		setCookie("V"+LastActiveVersion+"Players",SelectedPlayers);
 		tablerow=document.createElement("TR");
 		tablecol1=document.createElement("TD");
 			playerbtn=document.createElement("BUTTON");
@@ -400,6 +401,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 			LastActiveVersion=getLastActiveVersion(VersionsList);
 			AddVersions(VersionsList);
 			setCookie("version", VersionsList);
+			deleteCookie("V"+LastActiveVersion+"Players");
 			
 		}
 		else {
@@ -421,6 +423,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	}
 	
 	function activateVersion(){
+		setCookie("V"+LastActiveVersion+"Players",SelectedPlayers);
 		var btns = document.getElementsByClassName("versionbtn");
 		var activeBtnId=this.id;
 		for (i = 0; i < btns.length; i++) {
@@ -431,7 +434,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		this.style.color= "white";
 		setCookie("LastActiveVersion",activeBtnId[activeBtnId.length-1]);
 		LastActiveVersion=getLastActiveVersion(VersionsList);
-		
+		SelectedPlayers=getSelectedPlayers();
 	}
 </script>
 
@@ -450,7 +453,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	var rownode=this.parentNode.parentNode
 	if (SelectedPlayers.indexOf(this.innerHTML)!=-1){
 	SelectedPlayers.splice(SelectedPlayers.indexOf(this.innerHTML), 1);
-		alert(SelectedPlayers);
+	setCookie("V"+LastActiveVersion+"Players",SelectedPlayers);
 	}
 	rownode.parentNode.removeChild(rownode);
 	updateHeaderTable();
