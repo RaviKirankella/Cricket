@@ -220,10 +220,13 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		var playerdetailtextnode;
 		document.getElementById("AvlPlayers").innerHTML="";
 		for(i = 0; i < PlayerData.length; i++) {
+			console.log(PlayerData[i][0]);
 			if (SelectedPlayers.includes(PlayerData[i][0])) {
 				AddSelection(PlayerData[i][0]);
+				console.log('Add Selection');
 			}
 			else {
+				console.log('Avl List');
 			btnnode=document.createElement("BUTTON");
 			playertextnode=document.createElement("P");
 			playertextnode.appendChild(document.createTextNode(PlayerData[i][0]));
