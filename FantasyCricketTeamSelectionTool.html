@@ -387,20 +387,20 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	}
 	
 	function getLastActiveVersion(versions){
-	console.log('getLastActiveVersion');
-	var lversion=getCookie("LastActiveVersion");
+		console.log('getLastActiveVersion');
+		var lversion=getCookie("LastActiveVersion");
 
-	if (lversion == "") {
-		lversion=versions[0];
-		setCookie("LastActiveVersion",lversion);
-		}
-	else if (versions.includes(lversion)){
+		if (lversion == "") {
+			lversion=versions[0];
+			setCookie("LastActiveVersion",lversion);
+			}
+		else if (versions.includes(lversion)){
 	
-	}
-	else {
-		lversion=versions[0];
-		setCookie("LastActiveVersion",lversion);
 		}
+		else {
+			lversion=versions[0];
+			setCookie("LastActiveVersion",lversion);
+			}
 	return lversion;
 	}
 	
@@ -469,7 +469,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		
 	}
 	function renameVersion(){
-		var vName=prompt("Enter version name", "Version"+newVersionid);
+		var vName=prompt("Enter version name", "Version"+LastActiveVersion);
 		if (vName!= null) {
 			setCookie("V"+LastActiveVersion+"Name",vName)
 			document.getElementById("Version"+LastActiveVersion).innerHTML=vName;
