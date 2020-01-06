@@ -326,9 +326,10 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		  
 	function refreshSelectedPlayers(){
 		var selPlayerNodes=document.getElementsByClassName("SelectedPlayerRow");
-		for (var i = 0; i < selPlayerNodes.length; i++) {
-		selPlayerNodes[i].parentNode.removeChild(selPlayerNodes[i]);
-		}
+		var tableNode=document.getElementById("selectedplayers");
+		selPlayerNodes.forEach(function (item, index) {
+			tableNode.removeChild(item);
+		});
 		SelectedPlayers.forEach(function (item, index) {
 			AddSelection(item,SelectedPlayersPrices[index]);
 			});
