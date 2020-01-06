@@ -450,7 +450,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		alert(VersionsList);
 		setCookie("LastActiveVersion",newVersionid);
 		LastActiveVersion=getLastActiveVersion(VersionsList);
-		alert(LastActiveVersion);
+		//alert(LastActiveVersion);
 		setCookie("version", VersionsList);
 		AddVersions(VersionsList);
 		
@@ -461,9 +461,9 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		console.log('activateVersion');
 		var btns = document.getElementsByClassName("versionbtn");
 		var activeBtnId=this.id;
-		if (activeBtnId!=LastActiveVersion){
-			setCookie("V"+LastActiveVersion+"Players",SelectedPlayers);
-		}
+		//if (activeBtnId!=LastActiveVersion){
+		//	setCookie("V"+LastActiveVersion+"Players",SelectedPlayers);
+		//}
 		for (i = 0; i < btns.length; i++) {
 			btns[i].style.backgroundColor = "white";
 			btns[i].style.color = "black";
