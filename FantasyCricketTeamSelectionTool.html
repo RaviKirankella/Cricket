@@ -468,6 +468,14 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		
 		
 	}
+	function renameVersion(){
+		var vName=prompt("Enter version name", "Version"+newVersionid);
+		if (vName!= null) {
+			setCookie("V"+LastActiveVersion+"Name",vName)
+			document.getElementById("Version"+LastActiveVersion).innerHTML=vName;
+		}
+		
+	}
 	
 	function activateVersion(){
 		console.log('activateVersion');
@@ -656,7 +664,8 @@ function writetoexcel(player,price) {
 	</div>
 	<div id="curversioncontainer" align="right">
 		<button type="button" onclick='deleteCookie("TeamName")'>DeleteTeamCookie</button>
-		<button type="button" class="buttonstyle" onclick='deleteVersion()'>DeleteVersion</button>
+		<button type="button" class="buttonstyle" onclick='renameVersion()'>Rename Version</button>
+		<button type="button" class="buttonstyle" onclick='deleteVersion()'>Delete Version</button>
 		<button type="button" class="buttonstyle" onclick='addNewVersion()'>Add New Version</button>
 	</div>
 	<div class="maincontainer">
