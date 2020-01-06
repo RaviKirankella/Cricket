@@ -148,6 +148,7 @@ padding:5px 10px 5px 10px;
 	var SelectedPlayersPrices=[];
 	var teamsdata;
 	function readPlayerData() {
+			console.log('readPlayerData');
 			var xmlhttp = new XMLHttpRequest();
 			var spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
 			var spreadsheetrange="A2:K";
@@ -165,6 +166,7 @@ padding:5px 10px 5px 10px;
 		}
 	    
 	function loadTeamsData() {
+			console.log('loadTeamsData');
 
 			var xmlhttp = new XMLHttpRequest();
 			var spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
@@ -181,7 +183,8 @@ padding:5px 10px 5px 10px;
 			xmlhttp.send();
 		}
 	
-	function validateTeam() {	
+	function validateTeam() {
+			console.log('validateTeam');
 			var teamname;
 			var teamkey;
 			teamname=$( "#inp_TeamName" ).val();
@@ -217,6 +220,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	//Presentation Scripts
 	//Display of Players
 	function AddPlayers() {
+		console.log('AddPlayers');
 
 		var btnnode;
 		var playertextnode;
@@ -335,6 +339,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 <script>
 	//Cookie setting scripts
 	function setCookie(cname,cvalue) {
+	console.log('setCookie',cname,cvalue);	
 	  var d = new Date();
 	  d.setTime(d.getTime() + (120*24*60*60*1000));
 	  var expires = "expires=" + d.toGMTString();
@@ -346,6 +351,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	}
 
 	function getCookie(cname) {
+		console.log('getCookie',cname);	
 	  var name = cname + "=";
 	  var decodedCookie = decodeURIComponent(document.cookie);
 	  var ca = decodedCookie.split(';');
@@ -364,6 +370,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 <script>
 		  
 	function getVersions(){
+	console.log('getVersions');	
 	var versions=getCookie("version");
 	if (versions == "") {
 		setCookie("version", [1]);
@@ -377,6 +384,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	}
 	
 	function getLastActiveVersion(versions){
+	console.log('getLastActiveVersion');
 	var lversion=getCookie("LastActiveVersion");
 
 	if (lversion == "") {
@@ -394,6 +402,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	}
 	
 	function AddVersions(versions) {
+		console.log('AddVersions');
 		versionbuttons="";
 		var btnnode;
 		var versiontext="";
@@ -418,6 +427,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		}
 	
 	function deleteVersion(){
+		console.log('deleteVersion');
 		var idxVersion=VersionsList.indexOf(LastActiveVersion);
 		if (idxVersion!=0){
 			VersionsList.splice(idxVersion,1);
@@ -434,6 +444,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		
 	}
 	function addNewVersion(){
+		console.log('addNewVersion');
 		var newVersionid=(parseInt(VersionsList[VersionsList.length-1])+1).toString();
 		VersionsList.push(newVersionid);
 		alert(VersionsList);
@@ -447,6 +458,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	}
 	
 	function activateVersion(){
+		console.log('activateVersion');
 		setCookie("V"+LastActiveVersion+"Players",SelectedPlayers);
 		var btns = document.getElementsByClassName("versionbtn");
 		var activeBtnId=this.id;
@@ -530,8 +542,9 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	document.getElementById("avlspend").innerHTML=100000-price;
 	document.getElementById("teamcost").innerHTML=price;
 	document.getElementById("estpointstotal").innerHTML=estval;
-	alert('Update Header Table Script')
-	alert( decodeURIComponent(document.cookie));
+	
+	console.log(decodeURIComponent(document.cookie));
+	
  }
 	function getSelectedPlayers(){
 		console.log('getSelectedPlayers');
@@ -564,8 +577,8 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		SelectedPlayers=getSelectedPlayers();
 		SelectedPlayersPrices=getSelectedPlayersPrices();
 		readPlayerData();
-		alert(getCookie("TeamName"));
-		alert( decodeURIComponent(document.cookie));
+		console.log(getCookie("TeamName"));
+		console.log(decodeURIComponent(document.cookie));
 		gbl_team=getCookie("TeamName");
 		if (gbl_team==""){
 			$( "#logincontainer" ).css("display","block");
