@@ -325,11 +325,12 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		}
 		  
 	function refreshSelectedPlayers(){
-		var selPlayerNodes=document.getElementsByClassName("SelectedPlayerRow");
-		var tableNode=document.getElementById("selectedplayers");
-		selPlayerNodes.forEach(function (item, index) {
-			tableNode.removeChild(item);
-		});
+		//var selPlayerNodes=document.getElementsByClassName("SelectedPlayerRow");
+		//var tableNode=document.getElementById("selectedplayers");
+		//selPlayerNodes.forEach(function (item, index) {
+		//	tableNode.removeChild(item);
+		//});
+		$("#selectedplayers").find("tr:not(:first)").remove();
 		SelectedPlayers.forEach(function (item, index) {
 			AddSelection(item,SelectedPlayersPrices[index]);
 			});
