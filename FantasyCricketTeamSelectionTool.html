@@ -544,6 +544,17 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		}
 	return selectedplayers;
 	}
+	function getSelectedPlayersPrices(){
+		console.log('getSelectedPlayersPrices');
+		var selectedPlayersPrice=getCookie("V"+LastActiveVersion+"PlayersPrice");
+		if (selectedPlayersPrice == "") {
+			selectedPlayersPrice=[]
+		}
+		else {
+			selectedPlayersPrice=selectedPlayersPrice.split(',');
+		}
+	return selectedPlayersPrice;
+	}
 </script>
  
  <script>
