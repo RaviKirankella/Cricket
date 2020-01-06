@@ -145,6 +145,7 @@ padding:5px 10px 5px 10px;
 	var VersionsList=[];
 	var PlayerData="";
 	var SelectedPlayers=[];
+	var SelectedPlayersPrices=[];
 	var teamsdata;
 	function readPlayerData() {
 			var xmlhttp = new XMLHttpRequest();
@@ -249,7 +250,6 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		}
 			
 	function AddSelection(playername, playerPrice="") {
-		console.log('AddSelection',playername);
 		var tablerow;
 		var tablecol1;
 		var tablecol2;
@@ -325,7 +325,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		selPlayerNodes[i].parentNode.removeChild(selPlayerNodes[i]);
 		}
 		SelectedPlayers.forEach(function (item, index) {
-			AddSelection(item);
+			AddSelection(item,SelectedPlayersPrices[index]);
 			});
 	}
 	</script>  
@@ -513,17 +513,20 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	updateHeaderTable();
  }
  function updateHeaderTable() {
-	 console.log('updateHeaderTable');
+	console.log('updateHeaderTable');
 	var priceselectednodes=document.getElementsByClassName("slidervalue");
 	var estvaluenodes=document.getElementsByClassName("estvalue");
 	var price=0;
 	var estval=0;
+	SelectedPlayersPrices=[];
 	for (var i = 0; i < priceselectednodes.length; i++) {
 		price+=parseInt(priceselectednodes[i].innerHTML,10);
+		SelectedPlayersPrices.push(priceselectednodes[i].innerHTML);
 	}
 	for (var i = 0; i < estvaluenodes.length; i++) {
 		estval+=parseInt(estvaluenodes[i].innerHTML,10);
 	}
+	setCookie("V"+LastActiveVersion+"PlayersPrice",SelectedPlayersPrices);
 	document.getElementById("avlspend").innerHTML=100000-price;
 	document.getElementById("teamcost").innerHTML=price;
 	document.getElementById("estpointstotal").innerHTML=estval;
@@ -548,6 +551,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		VersionsList=getVersions();
 		LastActiveVersion=getLastActiveVersion(VersionsList);
 		SelectedPlayers=getSelectedPlayers();
+		SelectedPlayersPrices=getSelectedPlayersPrices();
 		readPlayerData();
 		alert(getCookie("TeamName"));
 		alert( decodeURIComponent(document.cookie));
