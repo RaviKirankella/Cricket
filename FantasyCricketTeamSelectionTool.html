@@ -434,12 +434,12 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		var idxVersion=VersionsList.indexOf(LastActiveVersion);
 		if (idxVersion!=0){
 			VersionsList.splice(idxVersion,1);
+			deleteCookie("V"+LastActiveVersion+"Players");
+			deleteCookie("V"+LastActiveVersion+"PlayersPrice");
 			setCookie("LastActiveVersion",VersionsList[idxVersion-1]);
 			LastActiveVersion=getLastActiveVersion(VersionsList);
 			AddVersions(VersionsList);
-			setCookie("version", VersionsList);
-			deleteCookie("V"+LastActiveVersion+"Players");
-			
+			setCookie("version", VersionsList);			
 		}
 		else {
 			alert('Cannot Delete this version');
@@ -448,6 +448,10 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	}
 	function addNewVersion(){
 		console.log('addNewVersion');
+		if (VersionsList.length==4) {
+			alert("You have received max number of versions possible, delete one of the version");
+		}
+		else {
 		var newVersionid=(parseInt(VersionsList[VersionsList.length-1])+1).toString();
 		VersionsList.push(newVersionid);
 		alert(VersionsList);
@@ -456,6 +460,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		//alert(LastActiveVersion);
 		setCookie("version", VersionsList);
 		AddVersions(VersionsList);
+		}
 		
 		
 	}
