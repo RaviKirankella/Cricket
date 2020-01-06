@@ -244,12 +244,6 @@ function checkteam(TeamName,TeamKey, teamsdata){
 			}
 			}
 
-		var splayers=SelectedPlayers;
-		for(i = 0; i < splayers.length; i++) {
-			console.log(splayers[i]);
-			AddSelection(splayers[i]);
-			console.log('Completed');
-		}
 		//document.getElementById("AvlPlayers").innerHTML=playerbuttons;
 		}
 			
@@ -539,6 +533,9 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		}
 		SelectedPlayers=getSelectedPlayers();
 		loadTeamsData();
+		SelectedPlayers.forEach(function (item, index) {
+		  console.log(item, index);
+			});
 		AddVersions(VersionsList);
 		updateHeaderTable();
 		
