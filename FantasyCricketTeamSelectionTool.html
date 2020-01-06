@@ -413,7 +413,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		
 		for(i = 0; i < versions.length; i++) {
 			btnnode=document.createElement("BUTTON");
-			versiontext=getCookie("version"+versions[i]+"name");
+			versiontext=getCookie("V"+versions[i]+"Name");
 			if (versiontext=="") {
 				btnnode.appendChild(document.createTextNode('Version'+versions[i]));
 				}
@@ -436,6 +436,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 			VersionsList.splice(idxVersion,1);
 			deleteCookie("V"+LastActiveVersion+"Players");
 			deleteCookie("V"+LastActiveVersion+"PlayersPrice");
+			deleteCookie("V"+LastActiveVersion+"Name");
 			setCookie("LastActiveVersion",VersionsList[idxVersion-1]);
 			LastActiveVersion=getLastActiveVersion(VersionsList);
 			AddVersions(VersionsList);
@@ -454,7 +455,10 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		else {
 		var newVersionid=(parseInt(VersionsList[VersionsList.length-1])+1).toString();
 		VersionsList.push(newVersionid);
-		alert(VersionsList);
+		var vName=prompt("Enter version name", "Version"+newVersionid);
+		if (vName!= null) {
+			setCookie("V"+newVersionid+"Name",vName)
+		}
 		setCookie("LastActiveVersion",newVersionid);
 		LastActiveVersion=getLastActiveVersion(VersionsList);
 		//alert(LastActiveVersion);
