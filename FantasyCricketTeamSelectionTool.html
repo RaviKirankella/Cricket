@@ -541,6 +541,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	for (var i = 0; i < estvaluenodes.length; i++) {
 		estval+=parseInt(estvaluenodes[i].innerHTML,10);
 	}
+	setCookie("V"+LastActiveVersion+"Players",SelectedPlayers);
 	setCookie("V"+LastActiveVersion+"PlayersPrice",SelectedPlayersPrices);
 	document.getElementById("avlspend").innerHTML=100000-price;
 	document.getElementById("teamcost").innerHTML=price;
