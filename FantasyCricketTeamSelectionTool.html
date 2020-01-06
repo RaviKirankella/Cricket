@@ -574,8 +574,9 @@ function checkteam(TeamName,TeamKey, teamsdata){
  <script>
 	$( document ).ready(function() {
 		VersionsList=getVersions();
+		LastActiveVersion=getLastActiveVersion(VersionsList);
 		AddVersions(VersionsList);
-		//LastActiveVersion=getLastActiveVersion(VersionsList);
+		//
 		//SelectedPlayers=getSelectedPlayers();
 		//SelectedPlayersPrices=getSelectedPlayersPrices();
 		readPlayerData();
