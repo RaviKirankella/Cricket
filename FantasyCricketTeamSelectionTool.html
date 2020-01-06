@@ -334,6 +334,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		SelectedPlayers.forEach(function (item, index) {
 			AddSelection(item,SelectedPlayersPrices[index]);
 			});
+		updateHeaderTable();
 	}
 	</script>  
 
@@ -495,7 +496,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		SelectedPlayers=getSelectedPlayers();
 		SelectedPlayersPrices=getSelectedPlayersPrices();
 		refreshSelectedPlayers();
-		updateHeaderTable();
+		
 	}
 </script>
 
