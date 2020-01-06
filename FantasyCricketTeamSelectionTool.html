@@ -459,9 +459,11 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	
 	function activateVersion(){
 		console.log('activateVersion');
-		setCookie("V"+LastActiveVersion+"Players",SelectedPlayers);
 		var btns = document.getElementsByClassName("versionbtn");
 		var activeBtnId=this.id;
+		if (activeBtnId!=LastActiveVersion){
+			setCookie("V"+LastActiveVersion+"Players",SelectedPlayers);
+		}
 		for (i = 0; i < btns.length; i++) {
 			btns[i].style.backgroundColor = "white";
 			btns[i].style.color = "black";
@@ -481,7 +483,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	console.log('addSelectedPlayer');
 	if (parseInt(document.getElementById("avlspend").innerHTML,10)>0){
 	SelectedPlayers.push(this.childNodes[0].innerHTML)
-	setCookie("V"+LastActiveVersion+"Players",SelectedPlayers);
+	//setCookie("V"+LastActiveVersion+"Players",SelectedPlayers);
 	AddSelection(this.childNodes[0].innerHTML);
 	this.parentNode.removeChild(this);
 	updateHeaderTable();
@@ -495,7 +497,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 	var rownode=this.parentNode.parentNode;
 	if (SelectedPlayers.indexOf(this.innerHTML)!=-1){
 	SelectedPlayers.splice(SelectedPlayers.indexOf(this.innerHTML), 1);
-	setCookie("V"+LastActiveVersion+"Players",SelectedPlayers);
+	//setCookie("V"+LastActiveVersion+"Players",SelectedPlayers);
 	}
 	rownode.parentNode.removeChild(rownode);
 	updateHeaderTable();
