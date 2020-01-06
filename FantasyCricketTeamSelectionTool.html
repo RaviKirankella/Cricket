@@ -535,6 +535,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		loadTeamsData();
 		SelectedPlayers.forEach(function (item, index) {
 		  console.log(item, index);
+			AddSelection(item);
 			});
 		AddVersions(VersionsList);
 		updateHeaderTable();
