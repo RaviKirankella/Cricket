@@ -471,6 +471,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		setCookie("LastActiveVersion",activeBtnId[activeBtnId.length-1]);
 		LastActiveVersion=getLastActiveVersion(VersionsList);
 		SelectedPlayers=getSelectedPlayers();
+		SelectedPlayersPrices=getSelectedPlayersPrices();
 		refreshSelectedPlayers();
 	}
 </script>
@@ -573,9 +574,10 @@ function checkteam(TeamName,TeamKey, teamsdata){
  <script>
 	$( document ).ready(function() {
 		VersionsList=getVersions();
-		LastActiveVersion=getLastActiveVersion(VersionsList);
-		SelectedPlayers=getSelectedPlayers();
-		SelectedPlayersPrices=getSelectedPlayersPrices();
+		AddVersions(VersionsList);
+		//LastActiveVersion=getLastActiveVersion(VersionsList);
+		//SelectedPlayers=getSelectedPlayers();
+		//SelectedPlayersPrices=getSelectedPlayersPrices();
 		readPlayerData();
 		console.log(getCookie("TeamName"));
 		console.log(decodeURIComponent(document.cookie));
@@ -584,7 +586,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 			$( "#logincontainer" ).css("display","block");
 		}
 
-		AddVersions(VersionsList);
+		
 		updateHeaderTable();
 		
 	});
