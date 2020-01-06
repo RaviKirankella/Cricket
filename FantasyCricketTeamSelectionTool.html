@@ -156,6 +156,7 @@ padding:5px 10px 5px 10px;
 					var myArr = JSON.parse(this.responseText);
 					PlayerData=myArr["values"];
 					AddPlayers();
+					refreshSelectedPlayers();
 					}
 			};
 			xmlhttp.open("GET", url, true);
@@ -247,7 +248,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		//document.getElementById("AvlPlayers").innerHTML=playerbuttons;
 		}
 			
-	function AddSelection(playername) {
+	function AddSelection(playername, playerPrice="") {
 		console.log('AddSelection',playername);
 		var tablerow;
 		var tablecol1;
@@ -259,18 +260,28 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		var slider;
 		var sliderval;
 		var playerdetails="";
+		var playerName="";
+		var playerMinVal="";
+		var playerEstPoints="";
 		for(i = 0; i < PlayerData.length; i++) {
 			if (PlayerData[i][0]==playername) {
-			playerdetails=PlayerData[i];
+				playerdetails=PlayerData[i];
+				playerName=playerdetails[0];
+				playerMinVal=playerdetails[3];
+				playerEstPoints=playerdetails[4];
 			}
 			}
 		if (playerdetails!="") {
-		console.log(playerdetails);
+			if(playerPrice==""){
+				playerPrice=playerMinVal;
+			}
+		
 
 		tablerow=document.createElement("TR");
+			tablerow.classList.add("SelectedPlayerRow");
 		tablecol1=document.createElement("TD");
 			playerbtn=document.createElement("BUTTON");
-			playerbtn.appendChild(document.createTextNode(playerdetails[0]));
+			playerbtn.appendChild(document.createTextNode(playerName));
 			playerbtn.addEventListener('click', removeSelectedPlayer,false);
 			playerbtn.classList.add("SelectedPlayer");
 			playerbtn.classList.add("PlayerBtn");
@@ -282,10 +293,10 @@ function checkteam(TeamName,TeamKey, teamsdata){
 			//slidermin.classList.add("slidermin");
 			slider=document.createElement("INPUT");
 			slider.setAttribute("type","range");
-			slider.setAttribute("min",playerdetails[3]);
+			slider.setAttribute("min",playerMinVal);
 			slider.setAttribute("max","50000");
 			slider.setAttribute("step","500");
-			slider.setAttribute("value",playerdetails[3]);
+			slider.setAttribute("value",playerPrice);
 			slider.classList.add("slider");
 			slider.addEventListener('change', updateSliderValue,false);
 		//tablecol2.appendChild(slidermin);
@@ -294,12 +305,12 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		
 		tablecol3=document.createElement("TD");
 			tablecol3.classList.add("slidervalue");
-			tablecol3.setAttribute("name",playerdetails[0]);
-			tablecol3.appendChild(document.createTextNode(playerdetails[3]));
+			tablecol3.setAttribute("name",playerName);
+			tablecol3.appendChild(document.createTextNode(playerPrice));
 		
 		tablecol4=document.createElement("TD");
 			tablecol4.classList.add("estvalue");
-			tablecol4.appendChild(document.createTextNode(playerdetails[4]));
+			tablecol4.appendChild(document.createTextNode(playerEstPoints));
 		tablerow.appendChild(tablecol1);
 		tablerow.appendChild(tablecol2);
 		tablerow.appendChild(tablecol3);
@@ -307,6 +318,16 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		document.getElementById("selectedplayers").appendChild(tablerow);
 		}
 		}
+		  
+	function refreshSelectedPlayers(){
+		var selPlayerNodes=document.getElementsByClassName("SelectedPlayerRow");
+		for (var i = 0; i < selPlayerNodes.length; i++) {
+		selPlayerNodes[i].parentNode.removeChild(selPlayerNodes[i]);
+		}
+		SelectedPlayers.forEach(function (item, index) {
+			AddSelection(item);
+			});
+	}
 	</script>  
 
 	  
@@ -438,11 +459,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		setCookie("LastActiveVersion",activeBtnId[activeBtnId.length-1]);
 		LastActiveVersion=getLastActiveVersion(VersionsList);
 		SelectedPlayers=getSelectedPlayers();
-		loadTeamsData();
-		SelectedPlayers.forEach(function (item, index) {
-		  console.log(item, index);
-			AddSelection(item);
-			});
+		refreshSelectedPlayers();
 	}
 </script>
 
@@ -462,7 +479,7 @@ function checkteam(TeamName,TeamKey, teamsdata){
  }
   function removeSelectedPlayer() {
 	  console.log('removeSelectedPlayer');
-	var rownode=this.parentNode.parentNode
+	var rownode=this.parentNode.parentNode;
 	if (SelectedPlayers.indexOf(this.innerHTML)!=-1){
 	SelectedPlayers.splice(SelectedPlayers.indexOf(this.innerHTML), 1);
 	setCookie("V"+LastActiveVersion+"Players",SelectedPlayers);
@@ -528,16 +545,17 @@ function checkteam(TeamName,TeamKey, teamsdata){
  
  <script>
 	$( document ).ready(function() {
-		readPlayerData();
 		VersionsList=getVersions();
 		LastActiveVersion=getLastActiveVersion(VersionsList);
+		SelectedPlayers=getSelectedPlayers();
+		readPlayerData();
 		alert(getCookie("TeamName"));
 		alert( decodeURIComponent(document.cookie));
 		gbl_team=getCookie("TeamName");
 		if (gbl_team==""){
 			$( "#logincontainer" ).css("display","block");
 		}
-		SelectedPlayers=getSelectedPlayers();
+
 		AddVersions(VersionsList);
 		updateHeaderTable();
 		
