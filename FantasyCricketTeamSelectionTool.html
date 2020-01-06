@@ -437,6 +437,11 @@ function checkteam(TeamName,TeamKey, teamsdata){
 		setCookie("LastActiveVersion",activeBtnId[activeBtnId.length-1]);
 		LastActiveVersion=getLastActiveVersion(VersionsList);
 		SelectedPlayers=getSelectedPlayers();
+		loadTeamsData();
+		SelectedPlayers.forEach(function (item, index) {
+		  console.log(item, index);
+			AddSelection(item);
+			});
 	}
 </script>
 
@@ -532,11 +537,6 @@ function checkteam(TeamName,TeamKey, teamsdata){
 			$( "#logincontainer" ).css("display","block");
 		}
 		SelectedPlayers=getSelectedPlayers();
-		loadTeamsData();
-		SelectedPlayers.forEach(function (item, index) {
-		  console.log(item, index);
-			AddSelection(item);
-			});
 		AddVersions(VersionsList);
 		updateHeaderTable();
 		
