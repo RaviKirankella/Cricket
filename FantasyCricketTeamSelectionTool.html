@@ -491,11 +491,17 @@ function checkteam(TeamName,TeamKey, teamsdata){
 					}
 		this.style.backgroundColor = "blue";
 		this.style.color= "white";
-		setCookie("LastActiveVersion",activeBtnId[activeBtnId.length-1]);
-		LastActiveVersion=getLastActiveVersion(VersionsList);
-		SelectedPlayers=getSelectedPlayers();
-		SelectedPlayersPrices=getSelectedPlayersPrices();
-		refreshSelectedPlayers();
+		if (LastActiveVersion!=activeBtnId[activeBtnId.length-1]) {
+			setCookie("LastActiveVersion",activeBtnId[activeBtnId.length-1]);
+			LastActiveVersion=getLastActiveVersion(VersionsList);
+			SelectedPlayers=getSelectedPlayers();
+			SelectedPlayersPrices=getSelectedPlayersPrices();
+			refreshSelectedPlayers();
+		}
+		else {
+			SelectedPlayers=getSelectedPlayers();
+			SelectedPlayersPrices=getSelectedPlayersPrices();
+		}
 		
 	}
 </script>
