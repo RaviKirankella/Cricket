@@ -604,7 +604,8 @@ function checkteam(TeamName,TeamKey, teamsdata){
  
  <script>
 	$( document ).ready(function() {
-		VersionsList=getVersions();
+		loadTeamsData();
+                VersionsList=getVersions();
 		LastActiveVersion=getLastActiveVersion(VersionsList);
 		AddVersions(VersionsList);
 		//
