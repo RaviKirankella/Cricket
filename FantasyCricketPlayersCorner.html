@@ -54,7 +54,12 @@ var playerdata = {
 		"P. Jacobs":[['2015',102],['2016',128],['2017',159],['2018',197],['2019',168],['2020',157],['2021',130]],
 		"J. Ponsford":[['2015',133],['2016',386],['2017',305],['2018',355],['2019',418],['2020',200],['2021',279]],
 		"M. Stanbury":[['2016',8],['2017',83],['2018',482],['2019',580],['2020',362],['2021',621]],
-		"L. Blatchford":[['2015',350],['2016',380],['2017',598],['2018',15],['2019',11],['2021',721]]
+		"L. Blatchford":[['2015',350],['2016',380],['2017',598],['2018',15],['2019',11],['2021',721]],
+		"Uncapped Player 1":[['2015',393],['2016',281],['2017',544],['2018',347],['2019',378],['2020',130],['2021',447]],
+		"Uncapped Player 2":[['2015',245],['2016',268],['2017',534],['2018',301],['2019',173],['2020',108],['2021',442]],
+		"Uncapped Player 3":[['2015',226],['2016',266],['2017',182],['2018',230],['2019',136],['2020',22],['2021',279]],
+		"Uncapped Player 4":[['2015',222],['2016',232],['2017',169],['2018',192],['2019',118],['2020',14],['2021',158]],
+		"Uncapped Player 5":[['2015',190],['2016',218],['2017',137],['2018',160],['2019',70],['2020',10],['2021',132]]
 				};	
 return playerdata[player];
 }
@@ -76,7 +81,12 @@ var playerdata = {
 		"P. Jacobs":[['2015',0],['2016',0],['2017',0],['2018',0],['2019',0],['2020',0],['2021',0]],
 		"J. Ponsford":[['2015',11],['2016',17],['2017',9],['2018',12],['2019',17],['2020',11],['2021',26]],
 		"M. Stanbury":[['2016',2],['2017',1],['2018',2],['2019',0],['2020',0],['2021',2]],
-		"L. Blatchford":[['2015',1],['2016',2],['2017',0],['2018',0],['2019',0],['2021',0]]
+		"L. Blatchford":[['2015',1],['2016',2],['2017',0],['2018',0],['2019',0],['2021',0]],
+		"Uncapped Player 1":[['2015',25],['2016',13],['2017',17],['2018',17],['2019',24],['2020',7],['2021',20]],
+		"Uncapped Player 2":[['2015',15],['2016',12],['2017',11],['2018',5],['2019',8],['2020',5],['2021',8]],
+		"Uncapped Player 3":[['2015',12],['2016',9],['2017',10],['2018',4],['2019',7],['2020',1],['2021',5]],
+		"Uncapped Player 4":[['2015',9],['2016',6],['2017',7],['2018',4],['2019',4],['2020',0],['2021',4]],
+		"Uncapped Player 5":[['2015',9],['2016',4],['2017',4],['2018',4],['2019',4],['2020',0],['2021',3]]
 				};	
 return playerdata[player];
 }
@@ -120,7 +130,12 @@ var playerdata = {
 		"P. Jacobs":{'AllRounder':2000,'Batter':2000,'Bowler':1000,'SuperAllRounder':2000,'SuperBatter':2000,'SuperBowler':1000},
 		"J. Ponsford":{'AllRounder':4000,'Batter':2000,'Bowler':3000,'SuperAllRounder':7000,'SuperBatter':4000,'SuperBowler':4000},
 		"M. Stanbury":{'AllRounder':3000,'Batter':3000,'Bowler':1000,'SuperAllRounder':5000,'SuperBatter':4000,'SuperBowler':1000},
-		"L. Blatchford":{'AllRounder':2000,'Batter':2000,'Bowler':1000,'SuperAllRounder':4000,'SuperBatter':4000,'SuperBowler':1000}
+		"L. Blatchford":{'AllRounder':2000,'Batter':2000,'Bowler':1000,'SuperAllRounder':4000,'SuperBatter':4000,'SuperBowler':1000},
+		"Uncapped Player 1":{'Batter':2000,'Bowler':2000},
+		"Uncapped Player 2":{'Batter':2000,'Bowler':1000},
+		"Uncapped Player 3":{'Batter':1000,'Bowler':1000},
+		"Uncapped Player 4":{'Batter':1000,'Bowler':1000},
+		"Uncapped Player 5":{'Batter':1000,'Bowler':1000}
 		};	
 return playerdata[player];
 }
@@ -279,6 +294,11 @@ return playerdata[player];
 		<button class="playerbutton" OnClick="drawPlayersCharts(this)">J. Ponsford</button>
 		<button class="playerbutton" OnClick="drawPlayersCharts(this)">M. Stanbury</button>
 		<button class="playerbutton" OnClick="drawPlayersCharts(this)">L. Blatchford</button>
+		<button class="playerbutton" OnClick="drawPlayersCharts(this)">Uncapped Player 1</button>
+		<button class="playerbutton" OnClick="drawPlayersCharts(this)">Uncapped Player 2</button>
+		<button class="playerbutton" OnClick="drawPlayersCharts(this)">Uncapped Player 3</button>
+		<button class="playerbutton" OnClick="drawPlayersCharts(this)">Uncapped Player 4</button>
+		<button class="playerbutton" OnClick="drawPlayersCharts(this)">Uncapped Player 5</button>
 		
 	<button class="playerbutton" OnClick="drawChart()">Clear Selection</button>
 	</div>
