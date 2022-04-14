@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+  <head>
+    <title>ISISCC Fantasy Cricket League</title>
+    <style>
+	body {	font-family: Verdana, Geneva, sans-serif; background-color: gray;}
+	.centertext{ text-align:center;}
+	.whitetext{color: white;}
+	.frame { background-color:white; padding:2px; margin:5px; height: 100%;	}
+	.gobutton {background-color:white; font-weight: bold; border-color: white; border:1px; border-radius:5%;}
+	.playerselectdiv { margin-bottom: 3%; margin-top:3%; padding: 5px; }
+	.ui-helper-hidden, .ui-helper-hidden-accessible {display: none;}	
+        .ui-menu-item {list-style-type: none; color: white; text-align:left;}
+	.infchart {width:50%; height:80%;}
+	.overview {text-align:center; margin:auto; }
+	.players {text-align:center;}
+	.playerbutton {background-color:white; font-weight: bold; border-color: white; border:5px; margin: 5px;
+			padding: 5px; border-radius:5%;}
+	.infchart { width: 50%; float: left; text-align: center; }
+	.playerchart { width: 50%; float: left; text-align: center; }
+   @media only screen and (max-width: 600px) {
+	.infchart { width: 100%; float:none; clear:both; }
+	.playerchart { width: 100%; float:none; clear:both; }
+		}
+	table { float:none; text-align: center; margin-top:20px; width: 60%; font-size: 90%; }
+	th td { padding:10px; margin: 5px; }
+	h2{ text-align: center;	}	    
+  #faq { font-family: Verdana, Geneva, sans-serif; position:fixed; top:0; right:0; width: 100px; font-size: 18px; 
+	  padding: 10px; margin:10px; border: none; background: #fff; color: #000; cursor: pointer; float:right;}
+  #faq:hover {  background: #ddd;  color: black;}
+    </style>
+	
+  <script src="https://ravikirankella.github.io/Cricket/FantasyLeague.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="https://apis.google.com/js/api.js"></script>    
+  
+  <script>
+
+	
+  </script>
+ 
+</head>
+
+
+   
+  <body>
+  
+    <h1 class="whitetext centertext">Auction 2022</h1>
+    <button id="faq" onclick="window.location.href='/Cricket/FantasyLeagueFAQ.html'">FAQs</button>
+
+<div class="players">
+	<div>
+	<a style="color: white; font-size:90%">Select Player to view statistics!</a></div>
+	
+		<button class="playerbutton" OnClick="drawPlayersCharts(this)">Thamesis</button>
+		<button class="playerbutton" OnClick="drawPlayersCharts(this)">PerfectCoverDrive</button>
+		<button class="playerbutton" OnClick="drawPlayersCharts(this)">Shitonthevilla</button>
+		<button class="playerbutton" OnClick="drawPlayersCharts(this)">Melchester Rovers</button>
+		<button class="playerbutton" OnClick="drawPlayersCharts(this)">Whiter than White</button>
+		<button class="playerbutton" OnClick="drawPlayersCharts(this)">Can I Nick It?</button>
+		<button class="playerbutton" OnClick="drawPlayersCharts(this)">Stokes Foakes Woakes</button>
+		<button class="playerbutton" OnClick="drawPlayersCharts(this)">Lord Stanners waifs</button>
+		
+	<button class="playerbutton" OnClick="drawChart()">Clear Selection</button>
+	</div>
+	<div class="frame">
+		<div id="overview">
+
+		</div>
+
+	</div>
+		
+  </body>
+ 
+ </html> 
