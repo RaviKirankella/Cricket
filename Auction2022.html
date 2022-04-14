@@ -78,7 +78,9 @@
 		var tablecol1;
 		var tablecol2;
 		var tablecol3;
-		var tabledata="<tr><th>Player Nomination</th><th>Price Paid</th><th>Team</th></tr>";
+		var tabledata="<tr><th>Player Nomination<button onclick="sortTable(0)">&uarr;&darr;</button></th>";
+		tabledata+="<th>Price Paid<button onclick="sortTable(1)">&uarr;&darr;</button></th>";
+		tabledata+="<th>Team<button onclick="sortTable(2)">&uarr;&darr;</button></th></tr>";
 		for(i = 0; i < teamdata.length; i++) {
 			playernomination=teamdata[i][0];
 			pricepaid=teamdata[i][1];
@@ -92,7 +94,7 @@
 		document.getElementById("table").innerHTML =tabledata;		
 		}
 
-	  function sortTable(columnnode) {
+	  function sortTable(sortcolumn) {
 		  var table, rows, switching, i, x, y, shouldSwitch;
 		  table = document.getElementById("myTable");
 		  rows = table.rows;
@@ -110,8 +112,8 @@
 		      shouldSwitch = false;
 		      /*Get the two elements you want to compare,
 		      one from current row and one from the next:*/
-		      x = rows[i].getElementsByTagName("TD")[0];
-		      y = rows[i + 1].getElementsByTagName("TD")[0];
+		      x = rows[i].getElementsByTagName("TD")[sortcolumn];
+		      y = rows[i + 1].getElementsByTagName("TD")[sortcolumn];
 		      //check if the two rows should switch place:
 		      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
 			//if so, mark as a switch and break the loop:
