@@ -77,7 +77,7 @@
 		var tablecol1;
 		var tablecol2;
 		var tablecol3;
-		var tabledata="<table><tr><th>Player Nomination</th><th>Price Paid</th><th>Team</th></tr>";
+		var tabledata="<tr><th>Player Nomination</th><th>Price Paid</th><th>Team</th></tr>";
 		for(i = 0; i < teamdata.length; i++) {
 			playernomination=teamdata[i][0];
 			pricepaid=teamdata[i][1];
@@ -87,13 +87,15 @@
 			}
 
 			}
-		tabledata=tabledata+"</table>";
-		document.getElementById("teaminfo").innerHTML =tabledata;		
+
+		document.getElementById("table").innerHTML =tabledata;		
 		}
 	  
 	  
 	  loadTeamsData();
-	
+	  $(function() {
+  		$('table').tablesorter()
+	  }
   </script>
  
 </head>
@@ -122,7 +124,7 @@
 	</div>
 	<div class="frame">
 		<div id="teaminfo">
-
+			<table id="table"></table>
 		</div>
 
 	</div>
