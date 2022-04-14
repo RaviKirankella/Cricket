@@ -60,6 +60,15 @@
 	  
 	  	function addTeamTable(teamnode) {
 			var teamname=teamnode.innerHTML;
+			var btns = document.getElementsByClassName("playerbutton");
+			for (i = 0; i < btns.length; i++) {
+				btns[i].style.backgroundColor = "white";
+					}
+			teamnode.style.backgroundColor = "blue";	
+			if (teamname=="Clear Selection"){
+				teamname="All";
+				teamnode.style.backgroundColor = "white";
+			}
 			AddTable(teamsdata,teamname);
 		}
 	  
@@ -109,7 +118,7 @@
 		<button class="playerbutton" OnClick="addTeamTable(this)">Stokes Foakes Woakes</button>
 		<button class="playerbutton" OnClick="addTeamTable(this)">Lord Stanners waifs</button>
 		
-	<button class="playerbutton" OnClick="drawChart()">Clear Selection</button>
+	<button class="playerbutton" OnClick="addTeamTable(this)">Clear Selection</button>
 	</div>
 	<div class="frame">
 		<div id="teaminfo">
