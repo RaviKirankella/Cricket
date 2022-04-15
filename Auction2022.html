@@ -98,7 +98,7 @@
 		  var table, rows, switching, i, x, y, shouldSwitch;
 		  table = document.getElementById("table");
 		  rows = table.rows;
-		  var headercol= rows[0].getElementsByTagName("TD")[sortcolumn]
+		  var headercol= rows[0].getElementsByTagName("TD")[sortcolumn];
 		  headercol.innerHTML=columnname.concat("<button onclick=\"sortTable_desc(1,'",columnname,"','",type,"')\">&uarr;</button>");
 		  switching = true;
 		  /*Make a loop that will continue until
@@ -145,7 +145,7 @@
 		  var table, rows, switching, i, x, y, shouldSwitch;
 		  table = document.getElementById("table");
 		  rows = table.rows;
-		  var headercol= rows[0].getElementsByTagName("TD")[sortcolumn]
+		  var headercol= rows[0].getElementsByTagName("TD")[sortcolumn];
 		  headercol.innerHTML=columnname.concat("<button onclick=\"sortTable_asc(1,'",columnname,"','",type,"')\">&darr;</button>");
 		  switching = true;
 		  /*Make a loop that will continue until
