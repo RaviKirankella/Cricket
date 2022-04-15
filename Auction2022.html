@@ -99,7 +99,7 @@
 		  table = document.getElementById("table");
 		  rows = table.rows;
 		  var headercol= rows[0].getElementsByTagName("TH")[sortcolumn];
-		  headercol.innerHTML=columnname.concat("<button onclick=\"sortTable_desc(1,'",columnname,"','",type,"')\">&uarr;</button>");
+		  headercol.innerHTML=columnname.concat("<button onclick=\"sortTable_desc(",sortcolumn,",'",columnname,"','",type,"')\">&uarr;</button>");
 		  switching = true;
 		  /*Make a loop that will continue until
 		  no switching has been done:*/
@@ -146,7 +146,7 @@
 		  table = document.getElementById("table");
 		  rows = table.rows;
 		  var headercol= rows[0].getElementsByTagName("TH")[sortcolumn];
-		  headercol.innerHTML=columnname.concat("<button onclick=\"sortTable_asc(1,'",columnname,"','",type,"')\">&darr;</button>");
+		  headercol.innerHTML=columnname.concat("<button onclick=\"sortTable_asc(",sortcolumn,",'",columnname,"','",type,"')\">&darr;</button>");
 		  switching = true;
 		  /*Make a loop that will continue until
 		  no switching has been done:*/
