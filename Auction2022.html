@@ -78,9 +78,9 @@
 		var tablecol1;
 		var tablecol2;
 		var tablecol3;
-		var tabledata="<tr><th>Player Nomination<button onclick=\"sortTable_asc(0)\">&uarr;&darr;</button></th>";
-		tabledata+="<th>Price Paid<button onclick=\"sortTable_asc(1,'int')\">&uarr;&darr;</button></th>";
-		tabledata+="<th>Team<button onclick=\"sortTable_asc(2)\">&uarr;&darr;</button></th></tr>";
+		var tabledata="<tr><th>Player Nomination<button onclick=\"sortTable_asc(0,'Player Nomination')\">&uarr;&darr;</button></th>";
+		tabledata+="<th>Price Paid<button onclick=\"sortTable_asc(1,'Price Paid','int')\">&uarr;&darr;</button></th>";
+		tabledata+="<th>Team<button onclick=\"sortTable_asc(2,'Team')\">&uarr;&darr;</button></th></tr>";
 		for(i = 0; i < teamdata.length; i++) {
 			playernomination=teamdata[i][0];
 			pricepaid=teamdata[i][1];
@@ -94,7 +94,7 @@
 		document.getElementById("table").innerHTML =tabledata;		
 		}
 
-	  function sortTable_asc(sortcolumn,type="text") {
+	  function sortTable_asc(sortcolumn,columnname,type="text") {
 		  var table, rows, switching, i, x, y, shouldSwitch;
 		  table = document.getElementById("table");
 		  rows = table.rows;
@@ -139,7 +139,7 @@
 		  }
 		}
 
-	  function sortTable_desc(sortcolumn,type="text") {
+	  function sortTable_desc(sortcolumn,columnname,type="text") {
 		  var table, rows, switching, i, x, y, shouldSwitch;
 		  table = document.getElementById("table");
 		  rows = table.rows;
