@@ -227,9 +227,12 @@
 	  }
 	  if (parseInt(isCapped)==1){	
 		points=points+10;
+	    note+="Game played +10 ="+points.toString()+"<br>";
 		//console.log("Capped Match points",points);
 		points=points+((parseInt(row[fl_points_hdr.indexOf('Catches')])|| 0)*10);
-		note+="Game played +10 ="+points.toString()+"<br>";
+		note+=(parseInt(row[fl_points_hdr.indexOf('Catches')])|| 0).toString()+" Catches * 10= "+points.toString()+"<br>";
+		points=points+((parseInt(row[fl_points_hdr.indexOf('Runouts')])|| 0)*10);
+		note+=(parseInt(row[fl_points_hdr.indexOf('Runouts')])|| 0).toString()+" Runouts * 10= "+points.toString()+"<br>";
 		//console.log("Capped catches",points);		
 	  }	  
 	  
