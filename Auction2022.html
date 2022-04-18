@@ -156,10 +156,15 @@
 	  function popup(player){
 	  let cond=fl_points["PlayerNomination"].eq(player);
 	  let playerinfo=fl_points.loc({rows:cond});
+	  if (playerinfo.shape[0]==0){
+	  document.getElementById('pointsinfo').innerHTML="<p style=\"text-align: center\">No data to display<p>";
+	  }
+	  else {
 	  playerinfo.addColumn("PointsDetail",playerinfo.apply(calculate_fl_points_with_detail),{ inplace: true });
 	  //console.log(playerinfo);
 	  playerinfo=playerinfo.loc({columns:["PlayerNomination","GameId","GameName","Won?","Player","Points","PointsDetail"]});
 	  print_table(playerinfo,document.getElementById('pointsinfo'))
+	  }
 	  document.getElementById('id01').style.display='block'
 	  }
 	  function calculate_fl_points_with_detail(row,with_notes=true){
@@ -359,7 +364,7 @@
 			pricepaid=teamdata[i][1];
 			team=teamdata[i][2];
 			if ((teamname=="All") || (teamname==team)){
-			tabledata=tabledata+"<tr><td>"+playernomination+"</td><td>"+pricepaid+"</td><td>"+team+"</td></tr>"
+			tabledata=tabledata+"<tr><td onclick=\"popup('"+playernomination+"')\">"+playernomination+"</td><td>"+pricepaid+"</td><td>"+team+"</td></tr>"
 			}
 			}
 			if (doc_ready) {
