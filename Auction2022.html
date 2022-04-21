@@ -344,11 +344,15 @@
 			var btns = document.getElementsByClassName("playerbutton");
 			for (i = 0; i < btns.length; i++) {
 				btns[i].style.backgroundColor = "white";
+                                btns[i].style.color = "black";
+
 					}
-			teamnode.style.backgroundColor = "blue";	
+			teamnode.style.backgroundColor = "blue";
+                        teamnode.style.color = "white";	
 			if (teamname=="Clear Selection"){
 				teamname="All";
 				teamnode.style.backgroundColor = "white";
+                                teamnode.style.color = "black";
 			}
 			AddTable(teamsdata,teamname);
 		}
