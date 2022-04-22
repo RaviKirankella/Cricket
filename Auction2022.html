@@ -26,7 +26,7 @@
 			      padding: 5px; border-radius:5%;}
     .modal-dialog{overflow-y: initial !important}
     .w3-container{height: 80vh; overflow-y: auto;}
-    .detail {display: none; min-width:30px;font-size: 80%;}
+    .detail {display: none; min-width:40px;font-size: 80%;}
     #faq { font-family: Verdana, Geneva, sans-serif; position:fixed; top:0; right:0; width: 100px; font-size: 18px; 
 	  padding: 10px; margin:10px; border: none; background: #fff; color: #000; cursor: pointer; float:right;}
     #faq:hover {  background: #ddd;  color: black;}
@@ -127,7 +127,7 @@
 		  node.innerHTML=String(table_data);
 	  }
 	  
-	  function print_table(table,node){
+     function print_table(table,node){
 		  let table_data='<table><tr>';
 		  let table_hdr=table.columns;
 		  for (i=0;i<table_hdr.length;i++){
@@ -146,7 +146,7 @@
 	  
 	  }
 	  
-	  function popup(player){
+     function popup(player){
 		  let cond=fl_points["PlayerNomination"].eq(player);
 		  let playerinfo=fl_points.loc({rows:cond});
 		  document.getElementById('playernomination').innerHTML=player;
