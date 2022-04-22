@@ -7,43 +7,32 @@
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style>
 	body {	font-family: Verdana, Geneva, sans-serif; background-color: gray;}
+	table { float:none; text-align: center; margin-top:20px; width: 100%; font-size: 90%; }
+	th td { padding:10px; margin: 5px; }
+	h2{ text-align: center;	}	    
+
 	.centertext{ text-align:center;}
 	.whitetext{color: white;}
 	.frame { background-color:white; padding:2px; margin:5px; height: 100%;}
 	.framesplit {float:left; width:48%;padding:2px; min-width:315px;}
 	.bottom {clear:both;}
-	.gobutton {background-color:white; font-weight: bold; border-color: white; border:1px; border-radius:5%;}
 	.playerselectdiv { margin-bottom: 3%; margin-top:3%; padding: 5px; }
 	.ui-helper-hidden, .ui-helper-hidden-accessible {display: none;}	
-        .ui-menu-item {list-style-type: none; color: white; text-align:left;}
+    .ui-menu-item {list-style-type: none; color: white; text-align:left;}
 	.infchart {width:50%; height:80%;}
 	.overview {text-align:center; margin:auto; }
 	.players {text-align:center;}
 	.playerbutton {background-color:white; font-weight: bold; border-color: white; border:5px; margin: 5px;
-			padding: 5px; border-radius:5%;}
-	.infchart { width: 50%; float: left; text-align: center; }
-	.playerchart { width: 50%; float: left; text-align: center; }
-   @media only screen and (max-width: 600px) {
-	.infchart { width: 100%; float:none; clear:both; }
-	.playerchart { width: 100%; float:none; clear:both; }
+			      padding: 5px; border-radius:5%;}
+    .modal-dialog{overflow-y: initial !important}
+    .w3-container{height: 80vh; overflow-y: auto;}
+	.detail {display: none;}
+	#faq { font-family: Verdana, Geneva, sans-serif; position:fixed; top:0; right:0; width: 100px; font-size: 18px; 
+	  padding: 10px; margin:10px; border: none; background: #fff; color: #000; cursor: pointer; float:right;}
+    #faq:hover {  background: #ddd;  color: black;}
+    @media only screen and (max-width: 600px) {
         .framesplit {width: 100%;}
 		}
-	table { float:none; text-align: center; margin-top:20px; width: 100%; font-size: 90%; }
-	th td { padding:10px; margin: 5px; }
-	h2{ text-align: center;	}	    
-  #faq { font-family: Verdana, Geneva, sans-serif; position:fixed; top:0; right:0; width: 100px; font-size: 18px; 
-	  padding: 10px; margin:10px; border: none; background: #fff; color: #000; cursor: pointer; float:right;}
-  #faq:hover {  background: #ddd;  color: black;}
-  .modal-dialog{
-    overflow-y: initial !important
-}
-  .w3-container{
-    height: 80vh;
-    overflow-y: auto;
-}
-	.detail {
-	display: none;
-	}
 
     </style>
 	
@@ -102,222 +91,223 @@
 		}
 	
 	  function fl_leaderboard(){
-	  let scoreshdr=scores[0];  	  
-	  scoresdata = new dfd.DataFrame(scores.slice(1),{columns:scoreshdr});
-	  nominations = new dfd.DataFrame(teamsdata,{columns:["PlayerNomination","PricePaid","Team","EstimatedPoints","Capped?","Category","Player"]});	
-	  fl_points=dfd.merge({left:nominations,right:scoresdata,on:["Player"],how:"inner"});
-	  fl_points.resetIndex({inplace: true });
-	  fl_points_hdr=fl_points.columns;
-	  fl_points.addColumn("Points",fl_points.apply(calculate_fl_points),{ inplace: true });
-	  document.getElementById("leaderboardhdr").innerHTML="<h2>Leader Board</h2>";
-	  print_grouped_info(fl_points,document.getElementById("leaderboard"),"Team","Points");
-	  doc_ready=true;
+		  let scoreshdr=scores[0];  	  
+		  scoresdata = new dfd.DataFrame(scores.slice(1),{columns:scoreshdr});
+		  nominations = new dfd.DataFrame(teamsdata,{columns:["PlayerNomination","PricePaid","Team","EstimatedPoints","Capped?","Category","Player"]});	
+		  fl_points=dfd.merge({left:nominations,right:scoresdata,on:["Player"],how:"inner"});
+		  fl_points.resetIndex({inplace: true });
+		  fl_points_hdr=fl_points.columns;
+		  fl_points.addColumn("Points",fl_points.apply(calculate_fl_points),{ inplace: true });
+		  fl_points.addColumn("PointsDetail",fl_points.apply(calculate_fl_points_with_detail),{ inplace: true });
+		  document.getElementById("leaderboardhdr").innerHTML="<h2>Leader Board</h2>";
+		  print_grouped_info(fl_points,document.getElementById("leaderboard"),"Team","Points");
+		  doc_ready=true;
 	  }
 	  
 	  function print_grouped_info(data,node,columnname="Team",sumcol="Points"){
-	  let grp=data.groupby([columnname]);
-	  let print_data=grp.col([sumcol]).sum();
-	  print_data.sortValues(sumcol+"_sum", {ascending:false, inplace: true });
-	  print_data.resetIndex({inplace: true });
-	  
-	  let table_data='<table><tr><th>'+columnname+'</th><th>'+sumcol+'</th></tr>';
-	  for (i=0;i<print_data.shape[0];i++){
-		table_data+='<tr>';
-		for (j=0;j<print_data.shape[1];j++){
-			if(columnname=="PlayerNomination"){
-		   table_data+='<td onclick="popup(\''+print_data.iat(i,0)+'\')" title="click to see detail">'+print_data.iat(i,j)+'</td>';
-		   }
-		   else {
-		   table_data+='<td>'+print_data.iat(i,j)+'</td>';
-		   }
-		}
-		table_data+='</tr>';
-	  }
-	  table_data+='</table>';
-	  node.innerHTML=String(table_data);
+		  let grp=data.groupby([columnname]);
+		  let print_data=grp.col([sumcol]).sum();
+		  print_data.sortValues(sumcol+"_sum", {ascending:false, inplace: true });
+		  print_data.resetIndex({inplace: true });
+		  
+		  let table_data='<table><tr><th>'+columnname+'</th><th>'+sumcol+'</th></tr>';
+		  for (i=0;i<print_data.shape[0];i++){
+			table_data+='<tr>';
+			for (j=0;j<print_data.shape[1];j++){
+				if(columnname=="PlayerNomination"){
+			   table_data+='<td onclick="popup(\''+print_data.iat(i,0)+'\')" title="click to see detail">'+print_data.iat(i,j)+'</td>';
+			   }
+			   else {
+			   table_data+='<td>'+print_data.iat(i,j)+'</td>';
+			   }
+			}
+			table_data+='</tr>';
+		  }
+		  table_data+='</table>';
+		  node.innerHTML=String(table_data);
 	  }
 	  
 	  function print_table(table,node){
-	  let table_data='<table><tr>';
-	  let table_hdr=table.columns;
-	  for (i=0;i<table_hdr.length;i++){
-		table_data+='<th>'+table_hdr[i]+'</th>';
-	  }
-	  table_data+='</tr>';
-	  for (i=0;i<table.shape[0];i++){
-		table_data+='<tr>';
-		for (j=0;j<table.shape[1];j++){
-		   table_data+='<td>'+table.iat(i,j)+'</td>';
-		}
-		table_data+='</tr>';
-	  }
-	  table_data+='</table>';
-	  node.innerHTML=String(table_data);
+		  let table_data='<table><tr>';
+		  let table_hdr=table.columns;
+		  for (i=0;i<table_hdr.length;i++){
+			table_data+='<th>'+table_hdr[i]+'</th>';
+		  }
+		  table_data+='</tr>';
+		  for (i=0;i<table.shape[0];i++){
+			table_data+='<tr>';
+			for (j=0;j<table.shape[1];j++){
+			   table_data+='<td>'+table.iat(i,j)+'</td>';
+			}
+			table_data+='</tr>';
+		  }
+		  table_data+='</table>';
+		  node.innerHTML=String(table_data);
 	  
 	  }
 	  
 	  function popup(player){
-	  let cond=fl_points["PlayerNomination"].eq(player);
-	  let playerinfo=fl_points.loc({rows:cond});
-	  if (playerinfo.shape[0]==0){
-	  document.getElementById('pointsinfo').innerHTML="<p style=\"text-align: center\">No data to display<p>";
-	  }
-	  else {
-	  playerinfo.addColumn("PointsDetail",playerinfo.apply(calculate_fl_points_with_detail),{ inplace: true });
-	  //console.log(playerinfo);
-	  playerinfo=playerinfo.loc({columns:["PlayerNomination","GameId","GameName","Won?","Player","Points","PointsDetail"]});
-	  print_table(playerinfo,document.getElementById('pointsinfo'))
-	  }
-	  document.getElementById('id01').style.display='block'
-	  }
+		  let cond=fl_points["PlayerNomination"].eq(player);
+		  let playerinfo=fl_points.loc({rows:cond});
+		  document.getElementById('playernomination').innerHTML=player;
+		  if (playerinfo.shape[0]==0){
+		  document.getElementById('pointsinfo').innerHTML="<p style=\"text-align: center\">No data to display<p>";
+		  }
+		  else {
+		  playerinfo=playerinfo.loc({columns:["GameId","GameName","Won?","Player","Points","PointsDetail"]});
+		  print_table(playerinfo,document.getElementById('pointsinfo'))
+		  }
+		  document.getElementById('id01').style.display='block'
+       }
+	  
 	  function calculate_fl_points_with_detail(row,with_notes=true){
-	  let pointsdetail=calculate_fl_points(row,with_notes);
-	  return pointsdetail;
+		  let pointsdetail=calculate_fl_points(row,with_notes);
+		  return pointsdetail;
 	  }
 	  
 	  function calculate_fl_points(row,with_notes=false){
-	  let points=0;
-	  let category=row[fl_points_hdr.indexOf('Category')];
-	  let isCapped=row[fl_points_hdr.indexOf('Capped?')];
-	  let player=row[fl_points_hdr.indexOf('Player')];
-	  let note="";
-	  //console.log(fl_points_hdr);
-	  //console.log(row);
-	  //console.log(player,category);
-	  if (with_notes){console.log(category,isCapped,player);}
-	  
-	  if ((category=="Batter") || (category=="SuperBatter") || (category=="AllRounder") || (category=="SuperAllRounder")){
-		let runs=(parseInt(row[fl_points_hdr.indexOf('Runs')])|| 0);
-		if (with_notes){console.log(runs);}
-		points=points+(runs*1);
-		note+=runs.toString()+" Runs *1 = "+points.toString()+"<br>";
-		//console.log("Batting Runs",runs,points);
-		points=points+((parseInt(row[fl_points_hdr.indexOf('Sixes')])|| 0)*5);	
-		note+=row[fl_points_hdr.indexOf('Sixes')]+" Sixes *10 = "+points.toString()+"<br>";
-		//console.log("Batting Sixes",points);
-	  }
-	  
-	  if ((category=="Bowler") || (category=="SuperBowler") || (category=="AllRounder") || (category=="SuperAllRounder")){
-		//console.log("Bowling Wickets",points);
-		points=points+((parseInt(row[fl_points_hdr.indexOf('Wkts')])|| 0)*20);
-		note+=(parseInt(row[fl_points_hdr.indexOf('Wkts')])|| 0).toString()+" Wickets * 20= "+points.toString()+"<br>";
-		//console.log("Bowling Wickets",points);
-		points=points+((parseInt(row[fl_points_hdr.indexOf('Mdns')])|| 0)*5);
-		note+=(parseInt(row[fl_points_hdr.indexOf('Mdns')])|| 0).toString()+" Maidens * 10= "+points.toString()+"<br>";
-		//console.log("Bowling Mdns",points);
-	  }	
-	  if ((category=="SuperBatter") || (category=="SuperBowler") || (category=="SuperAllRounder")){
-		points=points*2
-		note+="Super cat double up ="+points.toString()+"<br>";
-		//console.log("superdoube",points);
-	  }
-	  if ((category=="Batter") || (category=="SuperBatter") || (category=="AllRounder") || (category=="SuperAllRounder")){
-		let howout=row[fl_points_hdr.indexOf('HowOut')];
-		if ((howout=="Not Out") || (howout=="LBW") || (howout=="Run Out")) {
-		points=points+5;
-		note+="Batting bonus +5 ="+points.toString()+"<br>";
-		}
-		else {
-		note+="Batting bonus +0 ="+points.toString()+"<br>";
-		}
-	  if ((category=="Bowler") || (category=="SuperBowler") || (category=="AllRounder") || (category=="SuperAllRounder")){
-		let overs=(parseInt(row[fl_points_hdr.indexOf('Overs')])|| 0);
-		let minovers=Math.round((parseInt(row[fl_points_hdr.indexOf('MaxPerBowler')])|| 0)/2,0);
-		if ((overs!=0) && (overs<minovers)){
-		points=points+5;
-		note+="Bowling bonus +5 ="+points.toString()+"<br>";
-		}
-		else {
-		note+="Bowling bonus +0 ="+points.toString()+"<br>";
-		}
-	  }	
+		  let points=0;
+		  let category=row[fl_points_hdr.indexOf('Category')];
+		  let isCapped=row[fl_points_hdr.indexOf('Capped?')];
+		  let player=row[fl_points_hdr.indexOf('Player')];
+		  let note="";
+		  //console.log(fl_points_hdr);
+		  //console.log(row);
+		  //console.log(player,category);
+		  if (with_notes){console.log(category,isCapped,player);}
+		  
+		  if ((category=="Batter") || (category=="SuperBatter") || (category=="AllRounder") || (category=="SuperAllRounder")){
+			let runs=(parseInt(row[fl_points_hdr.indexOf('Runs')])|| 0);
+			if (with_notes){console.log(runs);}
+			points=points+(runs*1);
+			note+=runs.toString()+" Runs *1 = "+points.toString()+"<br>";
+			//console.log("Batting Runs",runs,points);
+			points=points+((parseInt(row[fl_points_hdr.indexOf('Sixes')])|| 0)*5);	
+			note+=row[fl_points_hdr.indexOf('Sixes')]+" Sixes *10 = "+points.toString()+"<br>";
+			//console.log("Batting Sixes",points);
+		  }
+		  
+		  if ((category=="Bowler") || (category=="SuperBowler") || (category=="AllRounder") || (category=="SuperAllRounder")){
+			//console.log("Bowling Wickets",points);
+			points=points+((parseInt(row[fl_points_hdr.indexOf('Wkts')])|| 0)*20);
+			note+=(parseInt(row[fl_points_hdr.indexOf('Wkts')])|| 0).toString()+" Wickets * 20= "+points.toString()+"<br>";
+			//console.log("Bowling Wickets",points);
+			points=points+((parseInt(row[fl_points_hdr.indexOf('Mdns')])|| 0)*5);
+			note+=(parseInt(row[fl_points_hdr.indexOf('Mdns')])|| 0).toString()+" Maidens * 10= "+points.toString()+"<br>";
+			//console.log("Bowling Mdns",points);
+		  }	
+		  if ((category=="SuperBatter") || (category=="SuperBowler") || (category=="SuperAllRounder")){
+			points=points*2
+			note+="Super cat double up ="+points.toString()+"<br>";
+			//console.log("superdoube",points);
+		  }
+		  if ((category=="Batter") || (category=="SuperBatter") || (category=="AllRounder") || (category=="SuperAllRounder")){
+			let howout=row[fl_points_hdr.indexOf('HowOut')];
+			if ((howout=="Not Out") || (howout=="LBW") || (howout=="Run Out")) {
+			points=points+5;
+			note+="Batting bonus +5 ="+points.toString()+"<br>";
+			}
+			else {
+			note+="Batting bonus +0 ="+points.toString()+"<br>";
+			}
+		  if ((category=="Bowler") || (category=="SuperBowler") || (category=="AllRounder") || (category=="SuperAllRounder")){
+			let overs=(parseInt(row[fl_points_hdr.indexOf('Overs')])|| 0);
+			let minovers=Math.round((parseInt(row[fl_points_hdr.indexOf('MaxPerBowler')])|| 0)/2,0);
+			if ((overs!=0) && (overs<minovers)){
+			points=points+5;
+			note+="Bowling bonus +5 ="+points.toString()+"<br>";
+			}
+			else {
+			note+="Bowling bonus +0 ="+points.toString()+"<br>";
+			}
+		  }	
 
+		  }
+		  if (parseInt(isCapped)==1){	
+			points=points+10;
+			note+="Game played +10 ="+points.toString()+"<br>";
+			//console.log("Capped Match points",points);
+			points=points+((parseInt(row[fl_points_hdr.indexOf('Catches')])|| 0)*10);
+			note+=(parseInt(row[fl_points_hdr.indexOf('Catches')])|| 0).toString()+" Catches * 10= "+points.toString()+"<br>";
+			points=points+((parseInt(row[fl_points_hdr.indexOf('Runouts')])|| 0)*10);
+			note+=(parseInt(row[fl_points_hdr.indexOf('Runouts')])|| 0).toString()+" Runouts * 10= "+points.toString()+"<br>";
+			//console.log("Capped catches",points);		
+		  }	  
+		  
+		  if (parseInt(row[fl_points_hdr.indexOf('Won?')])==1){
+			points=Math.round((points*1.25)-0.5,0);
+			note+="Winning game 25% bonus ="+points.toString()+"<br>";
+			//console.log("Won 25%",points);
+			}
+		  if ((parseInt(row[fl_points_hdr.indexOf('PointsMultiplier')])|| 1)!=1){
+		  points=points*(parseInt(row[fl_points_hdr.indexOf('PointsMultiplier')])|| 1);
+		  note+="Tour/nonStats bonus * "+(parseInt(row[fl_points_hdr.indexOf('PointsMultiplier')])|| 1).toString()+"="+points.toString()+"<br>";
+		  //console.log("multiplier",points);
+		  }
+		  
+		  if (with_notes){
+		  points='<p onclick=showhide(this)>Click here to show detail</p><p class="detail">'+note+'</p>';
+		  }
+		  
+		  return points;
 	  }
-	  if (parseInt(isCapped)==1){	
-		points=points+10;
-	    note+="Game played +10 ="+points.toString()+"<br>";
-		//console.log("Capped Match points",points);
-		points=points+((parseInt(row[fl_points_hdr.indexOf('Catches')])|| 0)*10);
-		note+=(parseInt(row[fl_points_hdr.indexOf('Catches')])|| 0).toString()+" Catches * 10= "+points.toString()+"<br>";
-		points=points+((parseInt(row[fl_points_hdr.indexOf('Runouts')])|| 0)*10);
-		note+=(parseInt(row[fl_points_hdr.indexOf('Runouts')])|| 0).toString()+" Runouts * 10= "+points.toString()+"<br>";
-		//console.log("Capped catches",points);		
-	  }	  
-	  
-	  if (parseInt(row[fl_points_hdr.indexOf('Won?')])==1){
-		points=Math.round((points*1.25)-0.5,0);
-		note+="Winning game 25% bonus ="+points.toString()+"<br>";
-		//console.log("Won 25%",points);
-		}
-	  if ((parseInt(row[fl_points_hdr.indexOf('PointsMultiplier')])|| 1)!=1){
-	  points=points*(parseInt(row[fl_points_hdr.indexOf('PointsMultiplier')])|| 1);
-	  note+="Tour/nonStats bonus * "+(parseInt(row[fl_points_hdr.indexOf('PointsMultiplier')])|| 1).toString()+"="+points.toString()+"<br>";
-	  //console.log("multiplier",points);
-	  }
-	  
-	  if (with_notes){
-	  points='<p onclick=showhide(this)>Click here to show detail</p><p class="detail">'+note+'</p>';
-	  }
-	  
-	  return points;
-	  }
-	   function showhide(node){
-	   let text=node.innerHTML;
-	   if (text=="Click here to show detail"){
-	   node.innerHTML='Hide detail';
-	   
-	   let child=node.parentNode.lastChild;
-	   child.style.display = "block"
-	   }
-	   else {
-	   node.innerHTML='Click here to show detail';
-	   let child=node.parentNode.lastChild;
-	   child.style.display = "None"
-	   }
+	  function showhide(node){
+		   let text=node.innerHTML;
+		   if (text=="Click here to show detail"){
+		   node.innerHTML='Hide detail';
+		   
+		   let child=node.parentNode.lastChild;
+		   child.style.display = "block"
+		   }
+		   else {
+		   node.innerHTML='Click here to show detail';
+		   let child=node.parentNode.lastChild;
+		   child.style.display = "None"
+		   }
 	   }
 		
 	  function computeuncapped(scores) {
 	  
-	  let scoreshdr=scores[0];
-	  //console.log(teamsdata);
-	  	  
-	  scoresdata = new dfd.DataFrame(scores.slice(1),{columns:scoreshdr});
-	  nominations = new dfd.DataFrame(teamsdata,{columns:["PlayerNomination","PricePaid","Team","EstimatedPoints","Capped?","Category","Player"]});
-	  let uncapped_df=dfd.merge({left:scoresdata,right:nominations,on:["Player"],how:"left"});
-	  cond=uncapped_df["Capped?"].isNa()
-	  uncapped_batters=uncapped_df.loc({rows:cond,columns:["GameId","GameName","Player","Sixes","Runs","Won?","PointsMultiplier"]});
-	  uncapped_batters.addColumn("Points",uncapped_batters.apply(calculate_uncapped_batter_points),{ inplace: true });
-	  uncapped_batters.sortValues("Points", {ascending:false, inplace: true });
-	  uncapped_batters.resetIndex({inplace: true });
-	  
-	  uncapped_bowlers=uncapped_df.loc({rows:cond,columns:["GameId","GameName","Player","Mdns","Wkts","Won?","PointsMultiplier"]});
-	  console.log(uncapped_bowlers);
-	  uncapped_bowlers.addColumn("Points",uncapped_bowlers.apply(calculate_uncapped_bowler_points),{ inplace: true });
-	  uncapped_bowlers.sortValues("Points", {ascending:false, inplace: true });
-	  uncapped_bowlers.resetIndex({inplace: true });
-	  
-	  console.log(uncapped_bowlers.shape[0]);
-	  for (i=0;i<uncapped_batters.shape[0];i++) {
-		
-		for(j = 0; j < teamsdata.length; j++) {
-			if (teamsdata[j][0]=="Uncapped (Batter) "+(i+1).toString()){
-			console.log(teamsdata[j]);
-			teamsdata[j][6]=uncapped_batters.at(i,"Player");
-			console.log(teamsdata[j]);
+		  let scoreshdr=scores[0];
+		  //console.log(teamsdata);
+			  
+		  scoresdata = new dfd.DataFrame(scores.slice(1),{columns:scoreshdr});
+		  nominations = new dfd.DataFrame(teamsdata,{columns:["PlayerNomination","PricePaid","Team","EstimatedPoints","Capped?","Category","Player"]});
+		  let uncapped_df=dfd.merge({left:scoresdata,right:nominations,on:["Player"],how:"left"});
+		  cond=uncapped_df["Capped?"].isNa()
+		  uncapped_batters=uncapped_df.loc({rows:cond,columns:["GameId","GameName","Player","Sixes","Runs","Won?","PointsMultiplier"]});
+		  uncapped_batters.addColumn("Points",uncapped_batters.apply(calculate_uncapped_batter_points),{ inplace: true });
+		  uncapped_batters.sortValues("Points", {ascending:false, inplace: true });
+		  uncapped_batters.resetIndex({inplace: true });
+		  
+		  uncapped_bowlers=uncapped_df.loc({rows:cond,columns:["GameId","GameName","Player","Mdns","Wkts","Won?","PointsMultiplier"]});
+		  console.log(uncapped_bowlers);
+		  uncapped_bowlers.addColumn("Points",uncapped_bowlers.apply(calculate_uncapped_bowler_points),{ inplace: true });
+		  uncapped_bowlers.sortValues("Points", {ascending:false, inplace: true });
+		  uncapped_bowlers.resetIndex({inplace: true });
+		  
+		  console.log(uncapped_bowlers.shape[0]);
+		  for (i=0;i<uncapped_batters.shape[0];i++) {
+			
+			for(j = 0; j < teamsdata.length; j++) {
+				if (teamsdata[j][0]=="Uncapped (Batter) "+(i+1).toString()){
+				console.log(teamsdata[j]);
+				teamsdata[j][6]=uncapped_batters.at(i,"Player");
+				console.log(teamsdata[j]);
+				}
 			}
-		}
-	  }
-	  for (i=0;i<uncapped_bowlers.shape[0];i++) {
-		
-		for(j = 0; j < teamsdata.length; j++) {
-			if (teamsdata[j][0]=="Uncapped (Bowler) "+(i+1).toString()){
-			console.log(teamsdata[j]);
-			teamsdata[j][6]=uncapped_bowlers.at(i,"Player");
-			console.log(teamsdata[j]);
+		  }
+		  for (i=0;i<uncapped_bowlers.shape[0];i++) {
+			
+			for(j = 0; j < teamsdata.length; j++) {
+				if (teamsdata[j][0]=="Uncapped (Bowler) "+(i+1).toString()){
+				console.log(teamsdata[j]);
+				teamsdata[j][6]=uncapped_bowlers.at(i,"Player");
+				console.log(teamsdata[j]);
+				}
 			}
-		}
-	  }
-	  
+		  }
+		  
 
 	  }
 	  
@@ -533,7 +523,7 @@
       <header class="w3-containerh w3-teal"> 
         <span onclick="document.getElementById('id01').style.display='none'" 
         class="w3-button w3-display-topright">&times;</span>
-        <h2>Player points detail</h2>
+        <h2 id="playernomination">Player points detail</h2>
       </header>
       <div class="w3-container">
         <div id="pointsinfo"></div>
