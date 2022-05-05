@@ -277,13 +277,15 @@
 		  cond=uncapped_df["Capped?"].isNa()
 		  uncapped_batters=uncapped_df.loc({rows:cond,columns:["GameId","GameName","Player","Sixes","Runs","Won?","PointsMultiplier"]});
 		  uncapped_batters.addColumn("Points",uncapped_batters.apply(calculate_uncapped_batter_points),{ inplace: true });
-		  uncapped_batters.sortValues("Points", {ascending:false, inplace: true });
+		  uncapped_batters=uncapped_batters.groupby(['Player']).col(['Points']).sum();
+		  uncapped_batters.sortValues("Points_sum", {ascending:false, inplace: true });
 		  uncapped_batters.resetIndex({inplace: true });
 		  
 		  uncapped_bowlers=uncapped_df.loc({rows:cond,columns:["GameId","GameName","Player","Mdns","Wkts","Won?","PointsMultiplier"]});
 		  console.log(uncapped_bowlers);
 		  uncapped_bowlers.addColumn("Points",uncapped_bowlers.apply(calculate_uncapped_bowler_points),{ inplace: true });
-		  uncapped_bowlers.sortValues("Points", {ascending:false, inplace: true });
+		  uncapped_bowlers=uncapped_bowlers.groupby(['Player']).col(['Points']).sum();
+		  uncapped_bowlers.sortValues("Points_sum", {ascending:false, inplace: true });
 		  uncapped_bowlers.resetIndex({inplace: true });
 		  
 		  console.log(uncapped_bowlers.shape[0]);
