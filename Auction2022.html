@@ -154,8 +154,9 @@
 		  document.getElementById('pointsinfo').innerHTML="<p style=\"text-align: center\">No data to display<p>";
 		  }
 		  else {
-		  playerinfo=playerinfo.loc({columns:["GameId","GameName","Won?","Player","Points","PointsDetail"]});
-		  print_table(playerinfo,document.getElementById('pointsinfo'))
+			  playerinfo=playerinfo.loc({columns:["GameId","GameName","Won?","Player","Points","PointsDetail"]});
+			  playerinfo.sortValues("GameId", {ascending:false, inplace: true });
+			  print_table(playerinfo,document.getElementById('pointsinfo'));
 		  }
 		  document.getElementById('id01').style.display='block'
        }
