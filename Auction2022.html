@@ -407,7 +407,8 @@
 	  chartdata.drop({ columns: ["GameId"], inplace: true });
 	  //chartdata.asType("GameId", "string",true);
 	  //chartdata.setIndex({column: "GameId", drop: true, inplace: true});
-	  chartdata.plot("pointsinfo").line();
+	  const layout = {legend:{orientation:"h", x:0.25},};
+	  chartdata.plot("pointsinfo").line({layout});
 	  document.getElementById('id01').style.display='block'
 	  }
 
