@@ -22,6 +22,7 @@
 	.infchart {width:50%; height:80%;}
 	.overview {text-align:center; margin:auto; }
 	.players {text-align:center;}
+	.chart {color: blue;}
 	.playerbutton {background-color:white; font-weight: bold; border-color: white; border:5px; margin: 5px;
 			      padding: 5px; border-radius:5%;}
     .modal-dialog{overflow-y: initial !important}
@@ -99,7 +100,7 @@
 		  fl_points_hdr=fl_points.columns;
 		  fl_points.addColumn("Points",fl_points.apply(calculate_fl_points),{ inplace: true });
 		  fl_points.addColumn("PointsDetail",fl_points.apply(calculate_fl_points_with_detail),{ inplace: true });
-		  document.getElementById("leaderboardhdr").innerHTML="<h2>Leader Board</h2>";
+		  document.getElementById("leaderboardhdr").innerHTML='<h2 class="chart" OnClick="AddChart(\'All\')"><u>Leader Board</u><sup> new</sup></h2>';
 		  print_grouped_info(fl_points,document.getElementById("leaderboard"),"Team","Points");
 		  doc_ready=true;
 	  }
@@ -369,7 +370,7 @@
 			}
 			if (doc_ready) {
 			if (teamname=="All") {
-			document.getElementById("leaderboardhdr").innerHTML="<h2>Leader Board</h2>";
+			document.getElementById("leaderboardhdr").innerHTML='<h2 class="chart" OnClick="AddChart(\''+teamname+'\')"><u>Leader Board</u><sup> new</sup></h2>';
 			print_grouped_info(fl_points,document.getElementById("leaderboard"),"Team","Points");
 			}
 			else {
@@ -383,6 +384,31 @@
 
 		document.getElementById("table").innerHTML =tabledata;		
 		}
+		
+	  function AddChart(teamname){
+	  console.log("here");
+	  let var_teams=fl_points.column('Team').unique();
+	  let chartdata=new dfd.DataFrame();
+	  for(i = 0; i < var_teams.count(); i++){
+		  let cond=fl_points["Team"].eq(var_teams.iat(i));
+		  let team_sum=fl_points.loc({rows:cond}).groupby(['GameId']).col(['Points']).sum();
+		  //team_sum.setIndex({column: "GameId", inplace: true});
+		  team_sum.rename({ "Points_sum": var_teams.iat(i) }, { inplace: true });
+		  if (i==0){
+			chartdata=team_sum;
+		  }
+		  else {
+			chartdata=dfd.merge({left:chartdata,right:team_sum,on:["GameId"],how:"outer"});
+		  }
+	  }
+	  chartdata=chartdata.cumSum({ axis: 0 });
+	  document.getElementById('playernomination').innerHTML="Progression";
+	  chartdata.drop({ columns: ["GameId"], inplace: true });
+	  //chartdata.asType("GameId", "string",true);
+	  //chartdata.setIndex({column: "GameId", drop: true, inplace: true});
+	  chartdata.plot("pointsinfo").line();
+	  document.getElementById('id01').style.display='block'
+	  }
 
 	  function sortTable_asc(sortcolumn,columnname,type="text") {
 		  var table, rows, switching, i, x, y, shouldSwitch;
