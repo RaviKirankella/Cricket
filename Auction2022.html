@@ -402,7 +402,8 @@
 		  }
 	  }
 	  chartdata=chartdata.cumSum({ axis: 0 });
-	  document.getElementById('playernomination').innerHTML="Progression";
+	  document.getElementById('playernomination').innerHTML="Leader Chart";
+	  document.getElementById('pointsinfo').innerHTML="";
 	  chartdata.drop({ columns: ["GameId"], inplace: true });
 	  //chartdata.asType("GameId", "string",true);
 	  //chartdata.setIndex({column: "GameId", drop: true, inplace: true});
