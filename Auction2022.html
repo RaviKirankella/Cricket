@@ -520,8 +520,16 @@
 	  chartdata.drop({ columns: ["GameId"], inplace: true });
 	  //chartdata.asType("GameId", "string",true);
 	  //chartdata.setIndex({column: "GameId", drop: true, inplace: true});
-	  const layout = {legend:{orientation:"h", x:0.25},
+	  let swidth=document.getElementById('pointsinfo').width;
+	  console.log(swidth);
+	  let layout = {legend:{orientation:"h", x:0.2},
 					dragmode:"pan",};
+	  if (swidth<600){
+		layout = {legend:{orientation:"h"},
+					dragmode:"pan",
+					width:swidth,};
+					}
+	 
 	  chartdata.plot("pointsinfo").line({layout});
 	  document.getElementById('id01').style.display='block'
 	  }
