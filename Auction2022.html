@@ -28,11 +28,17 @@
     .modal-dialog{overflow-y: initial !important}
     .w3-container{height: 80vh; overflow-y: auto;}
     .detail {display: none; min-width:40px;font-size: 80%;}
+	.grid-container {display: grid;
+			grid-template-columns: auto auto;}
+	.grid-item {padding: 1px;
+		}
+	
     #faq { font-family: Verdana, Geneva, sans-serif; position:fixed; top:0; right:0; width: 100px; font-size: 18px; 
 	  padding: 10px; margin:10px; border: none; background: #fff; color: #000; cursor: pointer; float:right;}
     #faq:hover {  background: #ddd;  color: black;}
     @media only screen and (max-width: 600px) {
         .framesplit {width: 100%;}
+		.pointsinfo {max-width: 600px;}
 		}
 
     </style>
@@ -146,6 +152,24 @@
 		  node.innerHTML=String(table_data);
 	  
 	  }
+
+     function table_html(table){
+		  let table_data='<table><tr>';
+		  let table_hdr=table.columns;
+		  for (i=0;i<table_hdr.length;i++){
+			table_data+='<th>'+table_hdr[i]+'</th>';
+		  }
+		  table_data+='</tr>';
+		  for (i=0;i<table.shape[0];i++){
+			table_data+='<tr>';
+			for (j=0;j<table.shape[1];j++){
+			   table_data+='<td>'+table.iat(i,j)+'</td>';
+			}
+			table_data+='</tr>';
+		  }
+		  table_data+='</table>';
+		  return table_data;
+	  }	  
 	  
      function popup(player){
 		  let cond=fl_points["PlayerNomination"].eq(player);
@@ -334,6 +358,8 @@
 		return points;
 	}	  
 	  
+
+	  
 	  	function addTeamTable(teamnode) {
 			var teamname=teamnode.innerHTML;
 			var btns = document.getElementsByClassName("playerbutton");
@@ -349,8 +375,79 @@
 				teamnode.style.backgroundColor = "white";
                                 teamnode.style.color = "black";
 			}
+			if (teamname=='Games'){
+			addgameinfo();
+			}
+			else {
 			AddTable(teamsdata,teamname);
+			}
 		}
+		
+	  function addgameinfo(){
+	  if (doc_ready) {
+	    document.getElementById("leaderboardhdr").innerHTML='<h2>Games so far..</h2>';
+		let games=fl_points.groupby(['GameId','GameName','Won?']).col(['Points']).sum();
+		games.sortValues("GameId", {ascending:false, inplace: true });
+		//document.getElementById("leaderboard").innerHTML=fl_points;
+		document.getElementById("leaderboard").innerHTML="";
+		//games.plot("leaderboard").table();
+		var tabledata="<table><tr><th>GameId<button onclick=\"sortTable_asc(0,'GameId')\">&uarr;&darr;</button></th>";
+		tabledata+="<th>GameName<button onclick=\"sortTable_asc(1,'GameName','int')\">&uarr;&darr;</button></th>";
+		tabledata+="<th>Won?<button onclick=\"sortTable_asc(2,'Won?')\">&uarr;&darr;</button></th>";
+		tabledata+="<th>Points<button onclick=\"sortTable_asc(2,'Points')\">&uarr;&darr;</button></th></tr>";
+		for(i = 0; i < games.shape[0]; i++) {
+			tabledata=tabledata+"<tr onclick=\"scorecard('"+games.iat(i,0)+"','"+games.iat(i,1)+"')\">";
+			tabledata=tabledata+"<td>"+games.iat(i,0)+"</td>";
+			tabledata=tabledata+"<td>"+games.iat(i,1)+"</td>";
+			tabledata=tabledata+"<td>"+games.iat(i,2)+"</td>";
+			tabledata=tabledata+"<td>"+games.iat(i,3)+"</td>";
+			tabledata=tabledata+"</tr>";
+			}
+		document.getElementById("leaderboard").innerHTML=tabledata+"</table>";
+		}
+	  }
+	  
+	  function scorecard(GameId,GameName){
+		  let cond=fl_points["GameId"].eq(GameId);
+		  let game_points=fl_points.loc({rows:cond});
+		  let pop_up_data="";
+		  let scoreshdr=scores[0];
+		  let game_scoresdata = new dfd.DataFrame(scores.slice(1),{columns:scoreshdr});
+		  cond=game_scoresdata["GameId"].eq(GameId);
+		  game_scoresdata=game_scoresdata.loc({rows:cond});
+		  document.getElementById('playernomination').innerHTML=GameId+"-"+GameName;
+		  if (game_points.shape[0]==0){
+		  document.getElementById('pointsinfo').innerHTML="<p style=\"text-align: center\">No data to display<p>";
+		  }
+		  else {
+			  game_points=game_points.loc({columns:["PlayerNomination","Points","PointsDetail"]});
+			  game_points.sortValues("Points", {ascending:false, inplace: true });
+			  let game_table_data=table_html(game_points);
+			  let batting_card=table_html(game_scoresdata.loc({columns:["Player","HowOut","Sixes","Runs"]}));
+			  cond=game_scoresdata["Overs"].ne('');
+			  let bowling_card=table_html(game_scoresdata.loc({rows:cond,columns:["Player","Overs","Mdns","RunsScored","Wkts"]}));
+			  cond=game_scoresdata["Catches"].ne('0');
+			  let catches_card=table_html(game_scoresdata.loc({rows:cond,columns:["Player","Catches"]}));
+			  cond=game_scoresdata["Runouts"].ne('0');
+			  let runouts_card=table_html(game_scoresdata.loc({rows:cond,columns:["Player","Runouts"]}));			  
+			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Batting Card</b></h3>";
+			  pop_up_data=pop_up_data+batting_card;
+			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Bowling Card</b></h3>";
+			  pop_up_data=pop_up_data+bowling_card;
+			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Catches & Runouts</b></h3>";
+			  pop_up_data=pop_up_data+"<div class=\"grid-container\">";
+			  pop_up_data=pop_up_data+"<div class=\"grid-item\">"+catches_card+"</div>";
+			  pop_up_data=pop_up_data+"<div class=\"grid-item\">"+runouts_card+"</div>";
+			  pop_up_data=pop_up_data+"</div><br>";
+			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Points in this game</h3>";
+			  pop_up_data=pop_up_data+game_table_data;
+
+			  
+			  document.getElementById('pointsinfo').innerHTML=pop_up_data;
+		  }
+		  document.getElementById('id01').style.display='block'
+       }
+	  
 	  
 	  	function AddTable(teamdata,teamname="All") {
 		var tablerow;
@@ -540,6 +637,7 @@
 		<button class="playerbutton" OnClick="addTeamTable(this)">Lord Stanners waifs</button>
 		
 	<button class="playerbutton" OnClick="addTeamTable(this)">Clear Selection</button>
+	<button class="playerbutton" OnClick="addTeamTable(this)">Games</button>
 	</div>
 	<div class="frame">
                 <div class="framesplit" id="pointsboard">
