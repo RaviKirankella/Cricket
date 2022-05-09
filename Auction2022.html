@@ -238,6 +238,7 @@
 			note+=(parseInt(row[fl_points_hdr.indexOf('Mdns')])|| 0).toString()+" Maidens * 5= "+points.toString()+"<br>";
 			//console.log("Bowling Mdns",points);
 		  }	
+		  
 		  if ((category=="SuperBatter") || (category=="SuperBowler") || (category=="SuperAllRounder")){
 			points=points*2
 			note+="Super cat double up ="+points.toString()+"<br>";
@@ -252,6 +253,7 @@
 			else {
 			note+="Batting bonus +0 ="+points.toString()+"<br>";
 			}
+			}
 		  if ((category=="Bowler") || (category=="SuperBowler") || (category=="AllRounder") || (category=="SuperAllRounder")){
 			let overs=(parseInt(row[fl_points_hdr.indexOf('Overs')])|| 0);
 			let minovers=Math.round((parseInt(row[fl_points_hdr.indexOf('MaxPerBowler')])|| 0)/2,0);
@@ -264,7 +266,6 @@
 			}
 		  }	
 
-		  }
 		  if (parseInt(isCapped)==1){	
 			points=points+10;
 			note+="Game played +10 ="+points.toString()+"<br>";
@@ -322,15 +323,17 @@
 		  uncapped_batters=uncapped_batters.groupby(['Player']).col(['Points']).sum();
 		  uncapped_batters.sortValues("Points_sum", {ascending:false, inplace: true });
 		  uncapped_batters.resetIndex({inplace: true });
+		  uncapped_batters.print();
 		  
 		  uncapped_bowlers=uncapped_df.loc({rows:cond,columns:["GameId","GameName","Player","Mdns","Wkts","Won?","PointsMultiplier"]});
-		  console.log(uncapped_bowlers);
+		  
 		  uncapped_bowlers.addColumn("Points",uncapped_bowlers.apply(calculate_uncapped_bowler_points),{ inplace: true });
 		  uncapped_bowlers=uncapped_bowlers.groupby(['Player']).col(['Points']).sum();
 		  uncapped_bowlers.sortValues("Points_sum", {ascending:false, inplace: true });
 		  uncapped_bowlers.resetIndex({inplace: true });
+		  uncapped_bowlers.print();
 		  
-		  console.log(uncapped_bowlers.shape[0]);
+		  //console.log(uncapped_bowlers.shape[0]);
 		  for (i=0;i<uncapped_batters.shape[0];i++) {
 			
 			for(j = 0; j < teamsdata.length; j++) {
@@ -529,7 +532,8 @@
 	  chartdata.drop({ columns: ["GameId"], inplace: true });
 	  //chartdata.asType("GameId", "string",true);
 	  //chartdata.setIndex({column: "GameId", drop: true, inplace: true});
-	  let swidth=document.getElementById('pointsinfo').width;
+	  //let swidth=document.getElementById('pointsinfo').width;
+	  let swidth=screen.width;
 	  console.log(swidth);
 	  let layout = {legend:{orientation:"h", x:0.2},
 					dragmode:"pan",};
