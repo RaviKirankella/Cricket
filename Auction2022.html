@@ -119,6 +119,11 @@
 		  fl_points.addColumn("PointsDetail",fl_points.apply(calculate_fl_points_with_detail),{ inplace: true });
 		  document.getElementById("leaderboardhdr").innerHTML='<h2 class="chart" OnClick="AddChart(\'All\')"><u>Leader Board</u><sup> new</sup></h2>';
 		  print_grouped_info(fl_points,document.getElementById("leaderboard"),"Team","Points");
+		  document.getElementById("leaderboard").innerHTML+="<br><p style=\"text-align:center; font-size: 80%;\">Latest game <a class=\"hvr\" onclick=\"scorecard('"+fl_points.at(fl_points.shape[0]-1,"GameId")+"','"+fl_points.at(fl_points.shape[0]-1,"GameName")+"')\"><b>"+fl_points.at(fl_points.shape[0]-1,"GameId")+" - "+fl_points.at(fl_points.shape[0]-1,"GameName")+"</b><sup> click me</sup></a></p>"
+		  if (fl_points.at(fl_points.shape[0]-1,"Won?")==1){
+		  document.getElementById("leaderboard").innerHTML+="&#129351;";
+		  }
+
 		  doc_ready=true;
 	  }
 	  
@@ -211,11 +216,11 @@
 		  //console.log(fl_points_hdr);
 		  //console.log(row);
 		  //console.log(player,category);
-		  if (with_notes){console.log(category,isCapped,player);}
+		  //if (with_notes){console.log(category,isCapped,player);}
 		  
 		  if ((category=="Batter") || (category=="SuperBatter") || (category=="AllRounder") || (category=="SuperAllRounder")){
 			let runs=(parseInt(row[fl_points_hdr.indexOf('Runs')])|| 0);
-			if (with_notes){console.log(runs);}
+			//if (with_notes){console.log(runs);}
 			points=points+(runs*1);
 			note+=runs.toString()+" Runs *1 = "+points.toString()+"<br>";
 			//console.log("Batting Runs",runs,points);
@@ -330,9 +335,9 @@
 			
 			for(j = 0; j < teamsdata.length; j++) {
 				if (teamsdata[j][0]=="Uncapped (Batter) "+(i+1).toString()){
-				console.log(teamsdata[j]);
+				//console.log(teamsdata[j]);
 				teamsdata[j][6]=uncapped_batters.at(i,"Player");
-				console.log(teamsdata[j]);
+				//console.log(teamsdata[j]);
 				}
 			}
 		  }
@@ -340,9 +345,9 @@
 			
 			for(j = 0; j < teamsdata.length; j++) {
 				if (teamsdata[j][0]=="Uncapped (Bowler) "+(i+1).toString()){
-				console.log(teamsdata[j]);
+				//console.log(teamsdata[j]);
 				teamsdata[j][6]=uncapped_bowlers.at(i,"Player");
-				console.log(teamsdata[j]);
+				//console.log(teamsdata[j]);
 				}
 			}
 		  }
@@ -480,6 +485,10 @@
 			if (teamname=="All") {
 			document.getElementById("leaderboardhdr").innerHTML='<h2 class="chart" OnClick="AddChart(\''+teamname+'\')"><u>Leader Board</u><sup> new</sup></h2>';
 			print_grouped_info(fl_points,document.getElementById("leaderboard"),"Team","Points");
+			document.getElementById("leaderboard").innerHTML+="<br><p style=\"text-align:center; font-size: 80%;\">Latest game <a class=\"hvr\" onclick=\"scorecard('"+fl_points.at(fl_points.shape[0]-1,"GameId")+"','"+fl_points.at(fl_points.shape[0]-1,"GameName")+"')\"><b>"+fl_points.at(fl_points.shape[0]-1,"GameId")+" - "+fl_points.at(fl_points.shape[0]-1,"GameName")+"</b><sup> click me</sup></a></p>"
+			if (fl_points.at(fl_points.shape[0]-1,"Won?")==1){
+				  document.getElementById("leaderboard").innerHTML+="&#129351;";
+				  }
 			}
 			else {
 			let cond=fl_points["Team"].eq(teamname);
@@ -499,7 +508,7 @@
 		}
 		
 	  function AddChart(teamname){
-	  console.log("here");
+	  //console.log("here");
 	  let var_teams=fl_points.column('Team').unique();
 	  let chartdata=new dfd.DataFrame();
 	  for(i = 0; i < var_teams.count(); i++){
