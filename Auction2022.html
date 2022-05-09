@@ -225,7 +225,7 @@
 			note+=runs.toString()+" Runs *1 = "+points.toString()+"<br>";
 			//console.log("Batting Runs",runs,points);
 			points=points+((parseInt(row[fl_points_hdr.indexOf('Sixes')])|| 0)*5);	
-			note+=row[fl_points_hdr.indexOf('Sixes')]+" Sixes *10 = "+points.toString()+"<br>";
+			note+=row[fl_points_hdr.indexOf('Sixes')]+" Sixes *5 = "+points.toString()+"<br>";
 			//console.log("Batting Sixes",points);
 		  }
 		  
@@ -235,7 +235,7 @@
 			note+=(parseInt(row[fl_points_hdr.indexOf('Wkts')])|| 0).toString()+" Wickets * 20= "+points.toString()+"<br>";
 			//console.log("Bowling Wickets",points);
 			points=points+((parseInt(row[fl_points_hdr.indexOf('Mdns')])|| 0)*5);
-			note+=(parseInt(row[fl_points_hdr.indexOf('Mdns')])|| 0).toString()+" Maidens * 10= "+points.toString()+"<br>";
+			note+=(parseInt(row[fl_points_hdr.indexOf('Mdns')])|| 0).toString()+" Maidens * 5= "+points.toString()+"<br>";
 			//console.log("Bowling Mdns",points);
 		  }	
 		  if ((category=="SuperBatter") || (category=="SuperBowler") || (category=="SuperAllRounder")){
