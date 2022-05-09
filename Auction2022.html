@@ -32,6 +32,17 @@
 			grid-template-columns: auto auto;}
 	.grid-item {padding: 1px;
 		}
+	.sortbutton {    color: black;
+			border: none;
+			outline: none;
+			background-color: inherit;
+			margin-left: none;
+			padding: 1px;
+			font-weight: bolder;
+	}
+	.hvr:hover {
+	color:blue;
+	}
 	
     #faq { font-family: Verdana, Geneva, sans-serif; position:fixed; top:0; right:0; width: 100px; font-size: 18px; 
 	  padding: 10px; margin:10px; border: none; background: #fff; color: #000; cursor: pointer; float:right;}
@@ -122,7 +133,7 @@
 			table_data+='<tr>';
 			for (j=0;j<print_data.shape[1];j++){
 				if(columnname=="PlayerNomination"){
-			   table_data+='<td onclick="popup(\''+print_data.iat(i,0)+'\')" title="click to see detail">'+print_data.iat(i,j)+'</td>';
+			   table_data+='<td class=\"hvr\" onclick="popup(\''+print_data.iat(i,0)+'\')" title="click to see detail">'+print_data.iat(i,j)+'</td>';
 			   }
 			   else {
 			   table_data+='<td>'+print_data.iat(i,j)+'</td>';
@@ -391,12 +402,12 @@
 		//document.getElementById("leaderboard").innerHTML=fl_points;
 		document.getElementById("leaderboard").innerHTML="";
 		//games.plot("leaderboard").table();
-		var tabledata="<table><tr><th>GameId<button onclick=\"sortTable_asc(0,'GameId')\">&uarr;&darr;</button></th>";
-		tabledata+="<th>GameName<button onclick=\"sortTable_asc(1,'GameName','int')\">&uarr;&darr;</button></th>";
-		tabledata+="<th>Won?<button onclick=\"sortTable_asc(2,'Won?')\">&uarr;&darr;</button></th>";
-		tabledata+="<th>Points<button onclick=\"sortTable_asc(2,'Points')\">&uarr;&darr;</button></th></tr>";
+		var tabledata="<table><tr><th>GameId<button class=\"sortbutton\"  onclick=\"sortTable_asc(0,'GameId',this,'int')\">&uarr;&darr;</button></th>";
+		tabledata+="<th>GameName<button class=\"sortbutton\" onclick=\"sortTable_asc(1,'GameName',this,'text')\">&uarr;&darr;</button></th>";
+		tabledata+="<th>Won?<button class=\"sortbutton\" onclick=\"sortTable_asc(2,'Won?',this,'text')\">&uarr;&darr;</button></th>";
+		tabledata+="<th>Points<button class=\"sortbutton\" onclick=\"sortTable_asc(3,'Points',this,'text')\">&uarr;&darr;</button></th></tr>";
 		for(i = 0; i < games.shape[0]; i++) {
-			tabledata=tabledata+"<tr onclick=\"scorecard('"+games.iat(i,0)+"','"+games.iat(i,1)+"')\">";
+			tabledata=tabledata+"<tr class=\"hvr\" onclick=\"scorecard('"+games.iat(i,0)+"','"+games.iat(i,1)+"')\">";
 			tabledata=tabledata+"<td>"+games.iat(i,0)+"</td>";
 			tabledata=tabledata+"<td>"+games.iat(i,1)+"</td>";
 			tabledata=tabledata+"<td>"+games.iat(i,2)+"</td>";
@@ -420,7 +431,7 @@
 		  document.getElementById('pointsinfo').innerHTML="<p style=\"text-align: center\">No data to display<p>";
 		  }
 		  else {
-			  game_points=game_points.loc({columns:["PlayerNomination","Points","PointsDetail"]});
+			  game_points=game_points.loc({columns:["Team","PlayerNomination","Points","PointsDetail"]});
 			  game_points.sortValues("Points", {ascending:false, inplace: true });
 			  let game_table_data=table_html(game_points);
 			  let batting_card=table_html(game_scoresdata.loc({columns:["Player","HowOut","Sixes","Runs"]}));
@@ -454,15 +465,15 @@
 		var tablecol1;
 		var tablecol2;
 		var tablecol3;
-		var tabledata="<tr><th>Player Nomination<button onclick=\"sortTable_asc(0,'Player Nomination')\">&uarr;&darr;</button></th>";
-		tabledata+="<th>Price Paid<button onclick=\"sortTable_asc(1,'Price Paid','int')\">&uarr;&darr;</button></th>";
-		tabledata+="<th>Team<button onclick=\"sortTable_asc(2,'Team')\">&uarr;&darr;</button></th></tr>";
+		var tabledata="<tr><th>Player Nomination<button class=\"sortbutton\" onclick=\"sortTable_asc(0,'Player Nomination',this,'text')\">&uarr;&darr;</button></th>";
+		tabledata+="<th>Price Paid<button class=\"sortbutton\" onclick=\"sortTable_asc(1,'Price Paid',this,'int')\">&uarr;&darr;</button></th>";
+		tabledata+="<th>Team<button class=\"sortbutton\" onclick=\"sortTable_asc(2,'Team',this,'text')\">&uarr;&darr;</button></th></tr>";
 		for(i = 0; i < teamdata.length; i++) {
 			playernomination=teamdata[i][0];
 			pricepaid=teamdata[i][1];
 			team=teamdata[i][2];
 			if ((teamname=="All") || (teamname==team)){
-			tabledata=tabledata+"<tr><td onclick=\"popup('"+playernomination+"')\">"+playernomination+"</td><td>"+pricepaid+"</td><td>"+team+"</td></tr>"
+			tabledata=tabledata+"<tr><td class=\"hvr\" onclick=\"popup('"+playernomination+"')\">"+playernomination+"</td><td>"+pricepaid+"</td><td>"+team+"</td></tr>"
 			}
 			}
 			if (doc_ready) {
@@ -509,17 +520,19 @@
 	  chartdata.drop({ columns: ["GameId"], inplace: true });
 	  //chartdata.asType("GameId", "string",true);
 	  //chartdata.setIndex({column: "GameId", drop: true, inplace: true});
-	  const layout = {legend:{orientation:"h", x:0.25},};
+	  const layout = {legend:{orientation:"h", x:0.25},
+					dragmode:"pan",};
 	  chartdata.plot("pointsinfo").line({layout});
 	  document.getElementById('id01').style.display='block'
 	  }
 
-	  function sortTable_asc(sortcolumn,columnname,type="text") {
+	  function sortTable_asc(sortcolumn,columnname,node,type="text") {
 		  var table, rows, switching, i, x, y, shouldSwitch;
-		  table = document.getElementById("table");
+		  //table = document.getElementById("table");
+		  table=node.parentNode.parentNode.parentNode;
 		  rows = table.rows;
 		  var headercol= rows[0].getElementsByTagName("TH")[sortcolumn];
-		  headercol.innerHTML=columnname.concat("<button onclick=\"sortTable_desc(",sortcolumn,",'",columnname,"','",type,"')\">&uarr;</button>");
+		  headercol.innerHTML=columnname.concat("<button class=\"sortbutton\" onclick=\"sortTable_desc(",sortcolumn,",'",columnname,"',this,'",type,"')\">&uarr;</button>");
 		  switching = true;
 		  /*Make a loop that will continue until
 		  no switching has been done:*/
@@ -561,12 +574,13 @@
 		  }
 		}
 
-	  function sortTable_desc(sortcolumn,columnname,type="text") {
+	  function sortTable_desc(sortcolumn,columnname,node,type="text") {
 		  var table, rows, switching, i, x, y, shouldSwitch;
-		  table = document.getElementById("table");
+		  //table = document.getElementById("table");
+		  table=node.parentNode.parentNode.parentNode;
 		  rows = table.rows;
 		  var headercol= rows[0].getElementsByTagName("TH")[sortcolumn];
-		  headercol.innerHTML=columnname.concat("<button onclick=\"sortTable_asc(",sortcolumn,",'",columnname,"','",type,"')\">&darr;</button>");
+		  headercol.innerHTML=columnname.concat("<button class=\"sortbutton\" onclick=\"sortTable_asc(",sortcolumn,",'",columnname,"',this,'",type,"')\">&darr;</button>");
 		  switching = true;
 		  /*Make a loop that will continue until
 		  no switching has been done:*/
