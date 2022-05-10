@@ -473,9 +473,9 @@
 		var tablecol1;
 		var tablecol2;
 		var tablecol3;
-		var tabledata="<tr><th>Player Nomination<button class=\"sortbutton\" onclick=\"sortTable_asc(0,'Player Nomination',this,'text')\">&uarr;&darr;</button></th>";
-		tabledata+="<th>Price Paid<button class=\"sortbutton\" onclick=\"sortTable_asc(1,'Price Paid',this,'int')\">&uarr;&darr;</button></th>";
-		tabledata+="<th>Team<button class=\"sortbutton\" onclick=\"sortTable_asc(2,'Team',this,'text')\">&uarr;&darr;</button></th></tr>";
+		var tabledata="<tr><th>Player Nomination<button class=\"sortbutton\" onclick=\"sortTable_asc(0,'Player Nomination',this,'text')\">&#8693;</button></th>";
+		tabledata+="<th>Price Paid<button class=\"sortbutton\" onclick=\"sortTable_asc(1,'Price Paid',this,'int')\">&#8693;</button></th>";
+		tabledata+="<th>Team<button class=\"sortbutton\" onclick=\"sortTable_asc(2,'Team',this,'text')\">&#8693;</button></th></tr>";
 		for(i = 0; i < teamdata.length; i++) {
 			playernomination=teamdata[i][0];
 			pricepaid=teamdata[i][1];
