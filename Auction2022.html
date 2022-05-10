@@ -66,6 +66,7 @@
 	var teamsdata="";
 	var scores="";
 	var fl_points=new dfd.DataFrame();
+	var scoresdata=new dfd.DataFrame();	  
 	var fl_points_hdr=[];
 	var doc_ready=false;
 
@@ -99,6 +100,8 @@
 					if (this.readyState == 4 && this.status == 200) {
 					var myArr = JSON.parse(this.responseText);
 					scores=myArr["values"];
+				        let scoreshdr=scores[0];			  
+		  			scoresdata = new dfd.DataFrame(scores.slice(1),{columns:scoreshdr});
 					computeuncapped(scores);
 					fl_leaderboard();
 					}
@@ -119,7 +122,7 @@
 		  fl_points.addColumn("PointsDetail",fl_points.apply(calculate_fl_points_with_detail),{ inplace: true });
 		  document.getElementById("leaderboardhdr").innerHTML='<h2 class="chart" OnClick="AddChart(\'All\')"><u>Leader Board</u><sup> new</sup></h2>';
 		  print_grouped_info(fl_points,document.getElementById("leaderboard"),"Team","Points");
-		  document.getElementById("leaderboard").innerHTML+="<br><p style=\"text-align:center; font-size: 80%;\">Latest game <a class=\"hvr\" onclick=\"scorecard('"+fl_points.at(fl_points.shape[0]-1,"GameId")+"','"+fl_points.at(fl_points.shape[0]-1,"GameName")+"')\"><b>"+fl_points.at(fl_points.shape[0]-1,"GameId")+" - "+fl_points.at(fl_points.shape[0]-1,"GameName")+"</b><sup> click me</sup></a></p>"
+		  document.getElementById("leaderboard").innerHTML+="<br><p style=\"text-align:center; font-size: 80%;\">Latest game <a class=\"hvr\" onclick=\"scorecard('"+scoresdata.at(scoresdata.shape[0]-1,"GameId")+"','"+scoresdata.at(scoresdata.shape[0]-1,"GameName")+"')\"><b>"+scoresdata.at(scoresdata.shape[0]-1,"GameId")+" - "+scoresdata.at(scoresdata.shape[0]-1,"GameName")+"</b><sup> click me</sup></a></p>"
 		  if (fl_points.at(fl_points.shape[0]-1,"Won?")==1){
 		  document.getElementById("leaderboard").innerHTML+="&#129351;";
 		  }
