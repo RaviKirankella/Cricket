@@ -470,10 +470,11 @@
 	  chartdata.drop({ columns: ["GameId"], inplace: true });
 	  let swidth=screen.width;
 	  console.log(swidth);
-	  let layout = {legend:{orientation:"h", x:0.2},
+	  let layout = {legend:{orientation:"h", xanchor:"auto"},
 					dragmode:"pan",};
 	  if (swidth<600){
-		layout = {legend:{orientation:"h"},
+		layout = {legend:{orientation:"h", xanchor:"auto"},
+				  margin:{l:10, r:10},
 					dragmode:"pan",
 					width:swidth,};
 					}
