@@ -451,7 +451,8 @@
 		}
 		
 	  function AddChart(teamname){
-	  let var_teams=fl_points.column('Team').unique();
+	  //let var_teams=fl_points.column('Team').unique();
+	  let var_teams=fl_points.groupby(["Team"]).col(["Points"]).sum().sortValues("Points_sum", {ascending:false}).column('Team').unique();
 	  let chartdata=new dfd.DataFrame();
 	  for(i = 0; i < var_teams.count(); i++){
 		  let cond=fl_points["Team"].eq(var_teams.iat(i));
@@ -471,6 +472,7 @@
 	  let swidth=screen.width;
 	  console.log(swidth);
 	  let layout = {legend:{orientation:"h", xanchor:"auto"},
+					grid:{yside:"right plot",ygap:0}, 
 					dragmode:"pan",};
 	  if (swidth<600){
 		layout = {legend:{orientation:"h", xanchor:"auto"},
