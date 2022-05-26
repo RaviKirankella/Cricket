@@ -129,7 +129,7 @@
 		  grouped_data.rename({ "Points_sum": "Points" }, { inplace: true });
 		  grouped_data.resetIndex({inplace: true });
 		  document.getElementById("leaderboard").innerHTML=table_html(grouped_data);
-		  document.getElementById("leaderboard").innerHTML+="<br><p id="lastgame" style=\"text-align:center; font-size: 80%;\">Latest game <a class=\"hvr\" onclick=\"scorecard('"+scoresdata.at(scoresdata.shape[0]-1,"GameId")+"','"+scoresdata.at(scoresdata.shape[0]-1,"GameName")+"')\"><b>"+scoresdata.at(scoresdata.shape[0]-1,"GameId")+" - "+scoresdata.at(scoresdata.shape[0]-1,"GameName")+"</b><sup> click me</sup></a></p>"
+		  document.getElementById("leaderboard").innerHTML+="<br><p id=\"lastgame\" style=\"text-align:center; font-size: 80%;\">Latest game <a class=\"hvr\" onclick=\"scorecard('"+scoresdata.at(scoresdata.shape[0]-1,"GameId")+"','"+scoresdata.at(scoresdata.shape[0]-1,"GameName")+"')\"><b>"+scoresdata.at(scoresdata.shape[0]-1,"GameId")+" - "+scoresdata.at(scoresdata.shape[0]-1,"GameName")+"</b><sup> click me</sup></a></p>"
 		  if (scoresdata.at(scoresdata.shape[0]-1,"Won?")==1){
 		  document.getElementById("lastgame").innerHTML+="&#129351;";
 		  }
