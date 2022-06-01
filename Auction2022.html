@@ -130,7 +130,7 @@
 		  grouped_data.resetIndex({inplace: true });
 		  document.getElementById("leaderboard").innerHTML=table_html(grouped_data);
 		  document.getElementById("leaderboard").innerHTML+="<br><p id=\"lastgame\" style=\"text-align:center; font-size: 80%;\">Latest game <a class=\"hvr\" onclick=\"scorecard('"+scoresdata.at(scoresdata.shape[0]-1,"GameId")+"','"+scoresdata.at(scoresdata.shape[0]-1,"GameName")+"')\"><b>"+scoresdata.at(scoresdata.shape[0]-1,"GameId")+" - "+scoresdata.at(scoresdata.shape[0]-1,"GameName")+"</b><sup> click me</sup></a></p>"
-		  document.getElementById("leaderboard").innerHTML+="<br><p  style=\"text-align:center; font-size: 100%;\"><a class=\"hvr\" onclick=\"show_season_stats()\"><h3>season stats</h3><sup> new</sup></a></p>"
+		  document.getElementById("leaderboard").innerHTML+="<br><h3 class=\"hvr\" onclick=\"show_season_stats()\">season stats<sup> new</sup></h3>"
 		  if (scoresdata.at(scoresdata.shape[0]-1,"Won?")==1){
 		  document.getElementById("lastgame").innerHTML+="&#129351;";
 		  }
