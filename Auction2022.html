@@ -140,7 +140,7 @@
 	  
 	 function show_season_stats(){
 		let data=scoresdata.copy();
-		data.column("Runs").apply((x)=>{return parseInt(x)}, {inplace: true});
+		data.["Runs"].apply((x)=>{return parseInt(x)}, {inplace: true});
 		data.column("Sixes").apply((x)=>{return parseInt(x)}, {inplace: true});
 		data.column("Overs").apply((x)=>{return parseInt(x)}, {inplace: true});
 		data.column("Mdns").apply((x)=>{return parseInt(x)}, {inplace: true});
