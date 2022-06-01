@@ -150,7 +150,7 @@
 		 
 	  	let grouped_data=data.groupby(["Player"]).col(["Sixes","Runs"]).sum();
 		let pop_up_data="";
-		grouped_data.column("Runs").apply((x)=>{return parseInt(x)}, {inplace: true});
+		
 		grouped_data.sortValues("Runs_sum", {ascending:false, inplace: true });
 	  	grouped_data.rename({ "Runs_sum": "Runs" }, { inplace: true });
 	  	grouped_data.rename({ "Sixes_sum": "Sixes" }, { inplace: true });
