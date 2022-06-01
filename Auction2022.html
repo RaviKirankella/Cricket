@@ -143,8 +143,8 @@
 		data.asType("Runs","int32",true);
 		data.asType("Sixes","int32",true);
 		data.asType("Overs","int32",true);
-		data["Overs"].fillNa(0,{inplace: true})
-		data["Overs"].print();
+		cond=data["Overs"].ne('')
+		data.loc({rows:cond}).print();
 		data.asType("Mdns","int32",true).fillNa(0,{inplace: true});
 		data.asType("RunsScored","int32",true).fillNa(0, {inplace: true});
 		data.asType("Wkts","int32",true).fillNa(0,{inplace: true});
