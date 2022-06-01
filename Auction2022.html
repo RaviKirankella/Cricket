@@ -146,7 +146,7 @@
 	  	grouped_data.rename({ "Sixes_sum": "Sixes" }, { inplace: true });
 		grouped_data.resetIndex({inplace: true });
 	  	pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Batting Stats</b></h3>";
-	  	pop_up_data=pop_up_data+table_html(grouped_data)
+	  	pop_up_data=pop_up_data+table_html(grouped_data);
 	  	
 	  	grouped_data=scoresdata.groupby(["Player"]).col(["Overs","Mdns","RunsScored","Wkts"]).sum();
 	        grouped_data.sortValues("Wkts_sum", {ascending:false, inplace: true });
@@ -156,9 +156,10 @@
 	  	grouped_data.rename({ "Wkts_sum": "Wkts" }, { inplace: true });
 		grouped_data.resetIndex({inplace: true });
 	  	pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Bowling Stats</b></h3>";
-	  	pop_up_data=pop_up_data+table_html(grouped_data)	  
+	  	pop_up_data=pop_up_data+table_html(grouped_data);  
 	  	
-	 	set_popup_body(pop_up_data)
+	 	set_popup_body(pop_up_data);
+		display_popup();
 	 }
 
 	 
