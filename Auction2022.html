@@ -139,7 +139,16 @@
 	  }
 	  
 	 function show_season_stats(){
-	  	let grouped_data=scoresdata.groupby(["Player"]).col(["Sixes","Runs"]).sum();
+		let data=scoresdata.copy();
+		data.column("Runs").apply((x)=>{return parseInt(x)}, {inplace: true});
+		data.column("Sixes").apply((x)=>{return parseInt(x)}, {inplace: true});
+		data.column("Overs").apply((x)=>{return parseInt(x)}, {inplace: true});
+		data.column("Mdns").apply((x)=>{return parseInt(x)}, {inplace: true});
+		data.column("RunsScored").apply((x)=>{return parseInt(x)}, {inplace: true});
+		data.column("Wkts").apply((x)=>{return parseInt(x)}, {inplace: true});
+		 
+		 
+	  	let grouped_data=data.groupby(["Player"]).col(["Sixes","Runs"]).sum();
 		let pop_up_data="";
 		grouped_data.column("Runs").apply((x)=>{return parseInt(x)}, {inplace: true});
 		grouped_data.sortValues("Runs_sum", {ascending:false, inplace: true });
@@ -149,7 +158,7 @@
 	  	pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Batting Stats</b></h3>";
 	  	pop_up_data=pop_up_data+table_html(grouped_data);
 	  	
-	  	grouped_data=scoresdata.groupby(["Player"]).col(["Overs","Mdns","RunsScored","Wkts"]).sum();
+	  	grouped_data=data.groupby(["Player"]).col(["Overs","Mdns","RunsScored","Wkts"]).sum();
 	        grouped_data.sortValues("Wkts_sum", {ascending:false, inplace: true });
 	  	grouped_data.rename({ "Overs_sum": "Overs" }, { inplace: true });
 	  	grouped_data.rename({ "Mdns_sum": "Mdns" }, { inplace: true });
