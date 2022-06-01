@@ -140,12 +140,8 @@
 	  
 	 function show_season_stats(){
 		let data=scoresdata.copy();
-		data["Runs"].apply((x)=>{return parseInt(x)}, {inplace: true});
-		data.column("Sixes").apply((x)=>{return parseInt(x)}, {inplace: true});
-		data.column("Overs").apply((x)=>{return parseInt(x)}, {inplace: true});
-		data.column("Mdns").apply((x)=>{return parseInt(x)}, {inplace: true});
-		data.column("RunsScored").apply((x)=>{return parseInt(x)}, {inplace: true});
-		data.column("Wkts").apply((x)=>{return parseInt(x)}, {inplace: true});
+		data.asType({"Runs","int32",true});
+
 		 
 		 
 	  	let grouped_data=data.groupby(["Player"]).col(["Sixes","Runs"]).sum();
