@@ -142,10 +142,10 @@
 		let data=scoresdata.copy();
 		data.asType("Runs","int32",true);
 		data.asType("Sixes","int32",true);
-		data.asType("Overs","int32",true).fillNa(0);
-		data.asType("Mdns","int32",true).fillNa(0);
-		data.asType("RunsScored","int32",true).fillNa(0);
-		data.asType("Wkts","int32",true).fillNa(0);
+		data.asType("Overs","int32",true).fillNa(0,inplace: true);
+		data.asType("Mdns","int32",true).fillNa(0,inplace: true);
+		data.asType("RunsScored","int32",true).fillNa(0,inplace: true);
+		data.asType("Wkts","int32",true).fillNa(0,inplace: true);
 
 		 
 		 
