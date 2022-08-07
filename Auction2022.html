@@ -443,7 +443,7 @@
 		document.getElementById("leaderboard").innerHTML="";
 		document.getElementById("leaderboard").innerHTML=table_html(games,true,"popup_scorecard");
 		
-		let grouped_data=fl_points.groupby(["PlayerNomination","Team"]).col(["Points"]).sum();
+		let grouped_data=fl_points.groupby(["PlayerNomination","PricePaid","Team"]).col(["Points"]).sum();
 		grouped_data.sortValues("Points_sum", {ascending:false, inplace: true });
 		grouped_data.rename({ "Points_sum": "Points" }, { inplace: true });
 		grouped_data.resetIndex({inplace: true });
@@ -477,7 +477,7 @@
 				else {
 					document.getElementById("leaderboardhdr").innerHTML="<h2>Points: "+points_total+"</h2>";
 				}
-				let grouped_data=team_points.groupby(["PlayerNomination"]).col(["Points"]).sum();
+				let grouped_data=team_points.groupby(["PlayerNomination","PricePaid"]).col(["Points"]).sum();
 				grouped_data.sortValues("Points_sum", {ascending:false, inplace: true });
 				grouped_data.rename({ "Points_sum": "Points" }, { inplace: true });
 				grouped_data.resetIndex({inplace: true });
