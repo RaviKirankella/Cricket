@@ -447,7 +447,7 @@
 		grouped_data.sortValues("Points_sum", {ascending:false, inplace: true });
 		grouped_data.rename({ "Points_sum": "Points" }, { inplace: true });
 		grouped_data.resetIndex({inplace: true });
-		document.getElementById("teaminfo").innerHTML=table_html(grouped_data.loc({"columns":["PlayerNomination","Points","Team"]}),true,"popup_showplayerinfo");
+		document.getElementById("teaminfo").innerHTML=table_html(grouped_data.loc({"columns":["PlayerNomination","PricePaid","Points","Team"]}),true,"popup_showplayerinfo");
 		}
 	  }
 
