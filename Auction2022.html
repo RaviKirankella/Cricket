@@ -439,15 +439,18 @@
 	  if (doc_ready) {
 	    document.getElementById("leaderboardhdr").innerHTML='<h2>Games so far..</h2>';
 		let games=fl_points.groupby(['GameId','GameName','Won?']).col(['Points']).sum();
+		games.rename({ "Points_sum": "Points" }, { inplace: true });
 		games.sortValues("GameId", {ascending:false, inplace: true });
 		document.getElementById("leaderboard").innerHTML="";
 		document.getElementById("leaderboard").innerHTML=table_html(games,true,"popup_scorecard");
 		
 		let grouped_data=fl_points.groupby(["PlayerNomination","PricePaid","Team"]).col(["Points"]).sum();
 		grouped_data.sortValues("Points_sum", {ascending:false, inplace: true });
+		grouped_data.addColumn("Points / £1000",grouped_data.column("Points_sum").div(grouped_data.column("PricePaid")).mul(1000).round(2).fillNa(0),{inplace: true });
 		grouped_data.rename({ "Points_sum": "Points" }, { inplace: true });
 		grouped_data.resetIndex({inplace: true });
-		document.getElementById("teaminfo").innerHTML=table_html(grouped_data.loc({"columns":["PlayerNomination","PricePaid","Points","Team"]}),true,"popup_showplayerinfo");
+		
+		document.getElementById("teaminfo").innerHTML=table_html(grouped_data.loc({"columns":["PlayerNomination","Points","Points / £1000","PricePaid","Team"]}),true,"popup_showplayerinfo");
 		}
 	  }
 
@@ -479,9 +482,10 @@
 				}
 				let grouped_data=team_points.groupby(["PlayerNomination","PricePaid"]).col(["Points"]).sum();
 				grouped_data.sortValues("Points_sum", {ascending:false, inplace: true });
+				grouped_data.addColumn("Points / £1000",grouped_data.column("Points_sum").div(grouped_data.column("PricePaid")).mul(1000).round(2).fillNa(0),{inplace: true });
 				grouped_data.rename({ "Points_sum": "Points" }, { inplace: true });
 				grouped_data.resetIndex({inplace: true });
-				document.getElementById("leaderboard").innerHTML=table_html(grouped_data,false,"popup_showplayerinfo");			
+				document.getElementById("leaderboard").innerHTML=table_html(grouped_data,true,"popup_showplayerinfo");			
 			
 			}
 		}
