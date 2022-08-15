@@ -122,7 +122,7 @@
 		  fl_points_hdr=fl_points.columns;
 		  fl_points.addColumn("Points",fl_points.apply(calculate_fl_points),{ inplace: true });
 		  fl_points.addColumn("PointsDetail",fl_points.apply(calculate_fl_points_with_detail),{ inplace: true });
-		  document.getElementById("leaderboardhdr").innerHTML='<h2 class="chart" OnClick="AddChart(\'All\')"><u>Leader Board</u><sup> new</sup></h2>';
+		  document.getElementById("leaderboardhdr").innerHTML='<h2 class="chart" OnClick="AddChart(\'All\')"><u>Leader Board</h2><a href="/Cricket/Changes2023.html" target="_blank">2023 league.. upcoming changes</a>';
 		  //print_grouped_info(fl_points,document.getElementById("leaderboard"),"Team","Points");
 		  grouped_data=fl_points.groupby(["Team"]).col(["Points"]).sum();
 		  grouped_data.sortValues("Points_sum", {ascending:false, inplace: true });
