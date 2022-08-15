@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ISISCC Fantasy League 2023 Changes</title>  
+<meta name="viewport" content="width=device-width, initial-scale=1">
+ <style>
+body {
+  font-family: Verdana, Geneva, sans-serif;
+  text-align:center;
+  margin:auto;
+  width:80%;
+  background-color:#808080;
+  }
+@media only screen and (max-width: 600px) {
+  body {
+    width:95%;
+  }
+}
+h1 {
+  color:white;
+  }	 
+
+#myBtn {
+  font-family: Verdana, Geneva, sans-serif;
+  position:fixed;
+  top:0;
+  right:0;
+  width: 100px;
+  font-size: 18px;
+  padding: 10px;
+  margin: 10px;
+  border: none;
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+  float:right;
+}
+#myBtn:hover {
+  background: #ddd;
+  color: black;
+}
+.ques {
+ text-align:left;
+ font-weight:bold;
+ float:left;
+ max-width:90%;
+ cursor: pointer;
+ vertical-align: middle;
+ padding: 5px 2px 0px 2px;
+  }
+ .drop {
+  float:left;
+  max-width: 5%;
+  font-weight:bold;
+  }
+.hide{
+ display:none;
+ text-align:left;
+ clear:both;
+ padding: 10px;
+  }
+ .faq {
+  text-align:center;
+  margin: 5px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: white;
+  }
+  
+.dd-button {
+  display: inline-block;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 2px 5px 3px 5px;
+  margin-left:5px;
+  background-color: #ffffff;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+	 
+i {
+  border: solid #808080;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 5px;
+}
+table {
+  border-collapse: collapse;
+  background-color: white;
+}
+
+table, th, td {
+  border: 1px solid #808080;
+
+}
+
+
+  </style>
+ 
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ <script>
+
+$(document).ready(function(){
+    $("div.drop").click(function(){
+     if($(this).parent().children("div.hide").css("display")== "block") {
+	      $(this).parent().children("div.hide").css("display", "none");
+       }
+      else {
+	     $(this).parent().children("div.hide").css("display", "block");
+      }
+    });
+	
+    $("div.ques").click(function(){
+     if($(this).parent().children("div.hide").css("display")== "block") {
+	      $(this).parent().children("div.hide").css("display", "none");
+       }
+      else {
+	     $(this).parent().children("div.hide").css("display", "block");
+      }
+    });
+});
+
+</script>
+</head>
+<body>
+ <h1>2023 Changes</h1>
+ <h4>To have your say write to <a href="mailto:ravikiran59@gmail.com">Ravi Kiran Kella</a> </h4>
+<div>
+   <div class="faq">
+     <div style="clear:both"></div>
+     <div class="ques">Change to points on money left at the end of the auction</div>
+     <div class="drop dd-button"><i class="down"></i></div>
+     <div class="hide">In 2022 1 point was awarded to every 1000 bucks that is left. This will be increased to 10 points</div>
+     <div style="clear:both"></div>
+  </div>
+  
+  <div class="faq">
+     <div style="clear:both"></div>
+     <div class="ques">Player retention and price match rules</div>
+     <div class="drop dd-button"><i class="down"></i></div>
+     <div class="hide">Every team that renews its membership (i.e same onwer and name) from 2022 to 2023 will be give an option to either retain a player 
+     or have an option to match price at acution.<br>
+     <h4>Player retention</h4>
+      <ul>
+		    <li>You can retain a player nomination from your 2022 line up at a price fo 18,000 or price you paid last year,which ever is higher</li>
+        <li>Player nomination retained will not be part of the auction and you start your team with the player and amount deducted from your 100,000</li>
+      <ul>
+     <h4>Price match</h4>
+      <ul>
+		    <li>If you donot retain any player nomination, you could request for a price match</li>
+        <li>You will have to name the player nomination you would like to price match, prior to the auction</li>
+        <li>These players will be auctioned first (auction starts with them in the order of last year price) and once the bidding is ended, you would be asked if you would like tp purchase the player</li>
+        <li>You shouldnot participate in the bidding process for this player and wait for your turn to be asked to Price match, else the option will be invalidated</li>
+      <ul>      
+     </div>
+     <div style="clear:both"></div>
+  </div>
+
+   <div class="faq">
+     <div style="clear:both"></div>
+     <div class="ques">Introduction of Game cards and Player cards</div>
+     <div class="drop dd-button"><i class="down"></i></div>
+     <div class="hide">A new set of card will be introduced and allowed to purchase as part of the acution. 
+     The cards would help you to control the point scoringand some action during the season. Below is how they work
+     <h4>Game cards</h4>
+      <ul>
+		    <li>They will let you nominate a match where points are doubled or trippled based on the card</li>
+        <li>You wont be able to use this card on already doubled or tripped games such as Tour, chartiy and any other nominated games where doubling or tripling is preset</li>
+        <li>When you use this card, the points will be doubled or trippled for everyone not just you</li>
+       </ul>
+     <h4>Player cards</h4>
+      <ul>
+		    <li>They will let you nominate a player (note, not player category or nomination) whose points are doubled or trippled based on the card</li>
+        <li>For example if you own a player A as a super batman and super all rounder and some one else owns it as a Super bowler and bowler (they would benifit too)</li>
+       </ul>
+     <h4>Pre vs Post match game and player cards</h4>
+      <ul>
+		    <li>Both Game and Player cards come in two flavours. Pre match and post match</li>
+        <li>For Pre-match you should request the use of the card before 12 PM on the day of the game</li>
+        <li>For Post-match you should request the use of the card before midnight after the game ends</li>
+       </ul>
+       Exact number of cards and types will be published closer to Auction
+     </div>
+     <div style="clear:both"></div>
+  </div>
+
+
+
+</div>
+  
+
+<button id="myBtn" onclick="window.location.href='/Cricket/ISISCCFantasyLeague.html'">Home</button>
+</body>
