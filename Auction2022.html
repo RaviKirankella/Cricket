@@ -427,9 +427,7 @@
 				teamnode.style.backgroundColor = "white";
                                 teamnode.style.color = "black";
 			}
-                        if (teamname=='Shitonthevilla&#127942;'){
-			teamname="Shitonthevilla";
-			}
+                        
 			if (teamname=='Games'){
 			addgameinfo();
 			}
@@ -478,7 +476,7 @@
 				let team_points=fl_points.loc({rows: cond});
 				let points_total=team_points["Points"].sum();
 				if (teamname=="Shitonthevilla") {
-					document.getElementById("leaderboardhdr").innerHTML="<h2>Points: "+points_total+"<a&#127942;</a></h2>";
+					document.getElementById("leaderboardhdr").innerHTML="<h2>Points: "+points_total+"<a>&#127942;</a></h2>";
 				}
 				else {
 					document.getElementById("leaderboardhdr").innerHTML="<h2>Points: "+points_total+"</h2>";
@@ -686,7 +684,7 @@
 	
 		<button class="playerbutton" OnClick="addTeamTable(this)">Thamesis</button>
 		<button class="playerbutton" OnClick="addTeamTable(this)">PerfectCoverDrive</button>
-		<a><button class="playerbutton" OnClick="addTeamTable(this)">Shitonthevilla</button>&#127942;</a>
+		<a class="playerbutton"><button class="playerbutton" OnClick="addTeamTable(this)">Shitonthevilla</button>&#127942;</a>
 		<button class="playerbutton" OnClick="addTeamTable(this)">Melchester Rovers</button>
 		<button class="playerbutton" OnClick="addTeamTable(this)">Whiter than White</button>
 		<button class="playerbutton" OnClick="addTeamTable(this)">Can I Nick It?</button>
