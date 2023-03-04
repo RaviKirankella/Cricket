@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ISISCC Fantasy League</title>  
+<meta name="viewport" content="width=device-width, initial-scale=1">
+ <style>
+body {
+  font-family: Verdana, Geneva, sans-serif;
+  text-align:center;
+  margin:auto;
+  width:80%;
+  background-color:#808080;
+  }
+@media only screen and (max-width: 600px) {
+  body {
+    width:95%;
+  }
+}
+h1 {
+  color:white;
+  }	 
+
+#myBtn {
+  font-family: Verdana, Geneva, sans-serif;
+  position:fixed;
+  top:0;
+  right:0;
+  width: 100px;
+  font-size: 18px;
+  padding: 10px;
+  margin: 10px;
+  border: none;
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+  float:right;
+}
+#myBtn:hover {
+  background: #ddd;
+  color: black;
+}
+.ques {
+ text-align:left;
+ font-weight:bold;
+ float:left;
+ max-width:90%;
+ cursor: pointer;
+ vertical-align: middle;
+ padding: 5px 2px 0px 2px;
+  }
+ .drop {
+  float:left;
+  max-width: 5%;
+  font-weight:bold;
+  }
+.hide{
+ display:none;
+ text-align:left;
+ clear:both;
+ padding: 10px;
+  }
+ .faq {
+  text-align:center;
+  margin: 5px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: white;
+  }
+  
+.dd-button {
+  display: inline-block;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 2px 5px 3px 5px;
+  margin-left:5px;
+  background-color: #ffffff;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+	 
+i {
+  border: solid #808080;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 5px;
+}
+table {
+  border-collapse: collapse;
+  background-color: white;
+}
+
+table, th, td {
+  border: 1px solid #808080;
+
+}
+
+
+  </style>
+ 
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ <script>
+
+$(document).ready(function(){
+    $("div.drop").click(function(){
+     if($(this).parent().children("div.hide").css("display")== "block") {
+	      $(this).parent().children("div.hide").css("display", "none");
+       }
+      else {
+	     $(this).parent().children("div.hide").css("display", "block");
+      }
+    });
+	
+    $("div.ques").click(function(){
+     if($(this).parent().children("div.hide").css("display")== "block") {
+	      $(this).parent().children("div.hide").css("display", "none");
+       }
+      else {
+	     $(this).parent().children("div.hide").css("display", "block");
+      }
+    });
+});
+
+</script>
+</head>
+<body>
+ <h1>Know more!</h1>
+<a style="color: white; font-size:90%" href="/Cricket/Changes2023.html" target="_blank">2023 league.. upcoming changes</a>
+
+<div>
+   <div class="faq">
+     <div style="clear:both"></div>
+     <div class="ques">How do i buy players?</div>
+     <div class="drop dd-button"><i class="down"></i></div>
+     <div class="hide">To buy players you would need to register a team. It costs £10 for which you would be given 100,000 chips using which you can purchase players at an auction that would be held before start of the season. Named/Capped players will be available at a defined base price from which the  bidding starts.</div>
+     <div style="clear:both"></div>
+  </div>
+
+<div class="faq">
+     <div style="clear:both"></div>	
+     <div class="ques">What do i win/get?</div>
+    <div class="drop dd-button"><i class="down"></i></div>
+    <div class="hide">The money collected as part of registration of teams will be used towards prizes and awarded at the end of the season. There will be a variety of prizes to be won, including the team with most points. Any money that is left will be given to the club's charity</div>
+     <div style="clear:both"></div>   
+  </div>
+	    
+  <div class="faq">
+     <div style="clear:both"></div>	
+     <div class="ques">Who are named/capped players?</div>
+    <div class="drop dd-button"><i class="down"></i></div>
+    <div class="hide">Based on the playing patterns in last couple of seasons, we have selected players who have played considerable 
+	    amount of games. These players would be requested for consent to be made available as named/capped players in 
+	    6 categories namely Batsman, Bowler, All Rounder, Super Batsman, Super Bowler and Super All rounder. 
+	    Each category is entered into auction as a different player and set at different base prices for 
+	    purchase individually.</div>
+     <div style="clear:both"></div>   
+  </div>
+	
+  <div class="faq">
+     <div style="clear:both"></div>	
+     <div class="ques">What is super category?</div>
+    <div class="drop dd-button"><i class="down"></i></div>
+    <div class="hide">All named/capped players in 6 categories namely Batsman, Bowler, All Rounder, Super Batsman, Super Bowler and Super All rounder. The categories define how you earn points. 
+	    <ul>
+		    <li>For a player in batsman category you would earn points based on his batting but not bowling</li>
+		    <li>For a player in bowler category you would earn points based on his bowling but no batting</li>
+		    <li>For a player in All rounder category you would earn points on both batting and bowling</li>
+		    <li>For a player in super category you would do the same, except that you would double all bowling and batting points</li>
+	    </ul>
+	    There are other ways you earn points see, how to earn points for full list.
+	</div>
+     <div style="clear:both"></div>   
+  </div>
+	
+<div class="faq">
+     <div style="clear:both"></div>	
+     <div class="ques">How do i earn points?</div>
+    <div class="drop dd-button"><i class="down"></i></div>
+    <div class="hide">You earn points for the players purchased and their category. Yes! you earn points for all the players you have purchased 
+	    and you dont need to specify which 11 you choose for a game. Below is a full list points
+	    <br>
+	    <table>
+		<tr><th>Category</th><th>Points</th><th>Batsman</th><th>Bowler</th><th>All Rounder</th><th>Double on Super?</th><th>Applicable for</th></tr>
+		<tr><td>Runs</td><td>1 per run</td><td>Yes</td><td>No</td><td>Yes</td><td>Yes</td><td>All</td></tr>
+		<tr><td>Wickets</td><td>20 per wicket</td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td><td>All</td></tr>
+		<tr><td>Catches/ runouts</td><td>10 per catch/ runout</td><td>Yes</td><td>Yes</td><td>Yes</td><td>No</td><td>Named players only</td></tr>
+		<tr><td>Six</td><td>5 per six</td><td>Yes</td><td>No</td><td>Yes</td><td>Yes</td><td>All</td></tr>
+		<tr><td>Madien</td><td>5 per maiden</td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td><td>All</td></tr>
+		<tr><td>Games Played</td><td>10 per game</td><td>Yes</td><td>Yes</td><td>Yes</td><td>No</td><td>Named players only</td></tr>
+	    </table>
+	    <br>
+	    And then a few twisters to decrease predictability.
+	    <ul>
+		    <li>For Batsman & All Rounders who are either Not out or Run Out or LBW at the end of the innings they would earn 5 points (includes super category and points dont double; applicable only for named/capped players)</li>
+		    <li>For Bowlers & All Rounders who bowled in an innings but have only bowled less than or equal to 50% of the max allowance will earn 5 points (includes super category and points dont double; applicable only for named/capped players)</li>
+		    <li>25% extra on all points earned on a winning game (applicable for both named/capped and unnamed players; rounded to base integer [i.e 10.9 will be just 10 not 11])</li>
+		    <li>All points earned in tour will be doubled up (applicable for both named/capped and unnamed players)</li>
+		    <li>All points in non stats match (ex: chairman's game etc) will be tripled (applicable for both named/capped and unnamed players)</li>		    
+	    </ul>
+	    At the end of the auction all chips that you have left will be converted into points (1 point for each 1000 left). 
+	    Teams that donot have atleast 10 players will attract a <b>penalty of 50 points per game</b>
+	</div>
+     <div style="clear:both"></div>   
+  </div>
+ 
+  <div class="faq">
+     <div style="clear:both"></div>	
+     <div class="ques">How are these rules arrived and will it not create a bias on who is defining them?</div>
+    <div class="drop dd-button"><i class="down"></i></div>
+    <div class="hide">The rules are derived based on statistical analysis to create a balance. 
+	    Data from the last 5 seasons has been used for this purpose. 
+	    With respect to bias, the members who have been involved in defining the rules (introduced/changed for this season) will be forbidden to register a team (for this season) </div>
+     <div style="clear:both"></div>   
+  </div>
+
+<div class="faq">
+     <div style="clear:both"></div>	
+     <div class="ques">Can i be a named/capped player?</div>
+    <div class="drop dd-button"><i class="down"></i></div>
+    <div class="hide">Yes, of course. Please send an email to ravikiran59@gmail.com and you will be sent a form to provide consent on using your name and ISISCC cricketing stats</div>
+     <div style="clear:both"></div>   
+  </div>
+
+<div class="faq">
+     <div style="clear:both"></div>	
+     <div class="ques">When will the list of named/capped players be announced?</div>
+    <div class="drop dd-button"><i class="down"></i></div>
+    <div class="hide">We are in the process of obtaining consent from the players. Once the process is complete the players will be listed on this website. So please keep coming back!</div>
+     <div style="clear:both"></div>   
+  </div>
+
+<div class="faq">
+     <div style="clear:both"></div>	
+     <div class="ques">What about the players who do play for ISISCC next year who are not named/capped players?</div>
+    <div class="drop dd-button"><i class="down"></i></div>
+    <div class="hide">The auction will also include purchase on unnamed players. 
+	    They will be only available in categories Batsman and Bowler. 
+	    Unnamed Player 1 (batsman) will refer to the person who made most runs in the season once capped players are excluded. 
+	    Similarly Unnamed Player1 (Bowler) will refer to the person who took most wickets in the season once named/capped players are excluded.</div>
+     <div style="clear:both"></div>   
+  </div>
+
+<div class="faq">
+     <div style="clear:both"></div>	
+     <div class="ques">More questions?</div>
+    <div class="drop dd-button"><i class="down"></i></div>
+    <div class="hide">Please send an email to ravikiran59@gmail.com</div>
+     <div style="clear:both"></div>   
+  </div>
+	
+	
+</div>
+
+<button id="myBtn" onclick="window.location.href='/Cricket/ISISCCFantasyLeague.html'">Home</button>
+</body>
