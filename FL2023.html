@@ -477,7 +477,8 @@
 				let cond=fl_points["Team"].eq(teamname);
 				let team_points=fl_points.loc({rows: cond});
 				let points_total=team_points["Points"].sum();
-				if (teamname=="Shitonthevilla") {
+				//Add  winner's team name
+				if (teamname=="winnerteamname") {
 					document.getElementById("leaderboardhdr").innerHTML="<h2>Points: "+points_total+"<a>&#127942;</a></h2>";
 				}
 				else {
