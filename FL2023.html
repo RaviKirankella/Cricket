@@ -232,7 +232,7 @@
 			  let game_table_data=table_html(game_points,true);
 			  let batting_card=table_html(game_scoresdata.loc({columns:["Player","HowOut","Sixes","Runs"]}));
 			  cond=game_scoresdata["Overs"].fillna('').ne('');
-			  let bowling_card=table_html(game_scoresdata.loc({rows:cond,columns:["Player","Overs","Mdns","RunsScored","Wkts"]}));
+			  let bowling_card=table_html(game_scoresdata.sortValues("BowlingOrder", {ascending:false, inplace: true }).loc({rows:cond,columns:["Player","Overs","Mdns","RunsScored","Wkts"]}));
 			  cond=game_scoresdata["Catches"].ne('0');
 			  let catches_card=table_html(game_scoresdata.loc({rows:cond,columns:["Player","Catches"]}));
 			  cond=game_scoresdata["Runouts"].ne('0');
@@ -318,6 +318,8 @@
 			note+=(parseInt(row[fl_points_hdr.indexOf('Catches')])|| 0).toString()+" Catches * 10= "+points.toString()+"<br>";
 			points=points+((parseInt(row[fl_points_hdr.indexOf('Runouts')])|| 0)*10);
 			note+=(parseInt(row[fl_points_hdr.indexOf('Runouts')])|| 0).toString()+" Runouts * 10= "+points.toString()+"<br>";
+			points=points+((parseInt(row[fl_points_hdr.indexOf('Stumpings')])|| 0)*10);
+			note+=(parseInt(row[fl_points_hdr.indexOf('Stumpings')])|| 0).toString()+" Stumpings * 10= "+points.toString()+"<br>";			  
 		  }	  
 		  
 		  if (parseInt(row[fl_points_hdr.indexOf('Won?')])==1){
