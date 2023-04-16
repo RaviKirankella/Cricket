@@ -96,7 +96,7 @@
 
 			var xmlhttp = new XMLHttpRequest();
 			var spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
-			var spreadsheetrange="Scores2023!A1:P";
+			var spreadsheetrange="Scores2023!A1:Q";
 			var url = "https://sheets.googleapis.com/v4/spreadsheets/"+spreadsheetid+"/values/"+spreadsheetrange+"?key=AIzaSyAmi4pvsmS6iGokKlVXGxsFbKxpAnWjWEo";
 			xmlhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
@@ -161,7 +161,7 @@
 	  	pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Batting Stats</b></h3>";
 	  	pop_up_data=pop_up_data+table_html(grouped_data);
 	  	
-		cond=data["Overs"].fillNa(-1).ne(-1);
+		cond=game_scoresdata["BowlingOrder"].ne('DNB');
 	  	grouped_data=data.loc({rows:cond}).groupby(["Player"]).col(["Overs","Mdns","RunsScored","Wkts"]).sum();
 	        grouped_data.sortValues("Wkts_sum", {ascending:false, inplace: true });
 	  	grouped_data.rename({ "Overs_sum": "Overs" }, { inplace: true });
@@ -231,22 +231,24 @@
 			  game_points.sortValues("Points", {ascending:false, inplace: true });
 			  let game_table_data=table_html(game_points,true);
 			  let batting_card=table_html(game_scoresdata.loc({columns:["Player","HowOut","Sixes","Runs"]}));
-			  cond=game_scoresdata["Overs"].fillNa(-1).ne(-1);
-			  let bowling_card=game_scoresdata.loc({rows:cond});
-			  bowling_card=bowling_card.sortValues("BowlingOrder", {ascending:false, inplace: true });
-			  bowling_card=table_html(game_scoresdata.loc({columns:["Player","Overs","Mdns","RunsScored","Wkts"]}));
+			  cond=game_scoresdata["BowlingOrder"].ne('DNB');
+			  let bowling_card=table_html(game_scoresdata.loc({rows:cond}).sortValues("BowlingOrder").loc({columns:["Player","Overs","Mdns","RunsScored","Wkts"]}));
+			  cond=game_scoresdata["Catches"].ne('0');
 			  cond=game_scoresdata["Catches"].ne('0');
 			  let catches_card=table_html(game_scoresdata.loc({rows:cond,columns:["Player","Catches"]}));
 			  cond=game_scoresdata["Runouts"].ne('0');
-			  let runouts_card=table_html(game_scoresdata.loc({rows:cond,columns:["Player","Runouts"]}));			  
+			  let runouts_card=table_html(game_scoresdata.loc({rows:cond,columns:["Player","Runouts"]}));
+			  cond=game_scoresdata["Stumpings"].ne('0');
+			  let stumpings_card=table_html(game_scoresdata.loc({rows:cond,columns:["Player","Stumpings"]}));				  
 			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Batting Card</b></h3>";
 			  pop_up_data=pop_up_data+batting_card;
 			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Bowling Card</b></h3>";
 			  pop_up_data=pop_up_data+bowling_card;
-			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Catches & Runouts</b></h3>";
+			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Catches, Runouts & Stumpings</b></h3>";
 			  pop_up_data=pop_up_data+"<div class=\"grid-container\">";
 			  pop_up_data=pop_up_data+"<div class=\"grid-item\">"+catches_card+"</div>";
 			  pop_up_data=pop_up_data+"<div class=\"grid-item\">"+runouts_card+"</div>";
+			  pop_up_data=pop_up_data+"<div class=\"grid-item\">"+stumpings_card+"</div>";
 			  pop_up_data=pop_up_data+"</div><br>";
 			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Points in this game</h3>";
 			  pop_up_data=pop_up_data+game_table_data;
