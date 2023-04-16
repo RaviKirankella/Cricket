@@ -274,14 +274,14 @@
 			points=points+(runs*1);
 			note+=runs.toString()+" Runs *1 = "+points.toString()+"<br>";
 			points=points+((parseInt(row[fl_points_hdr.indexOf('Sixes')])|| 0)*10);	
-			note+=row[fl_points_hdr.indexOf('Sixes')]+" Sixes *5 = "+points.toString()+"<br>";
+			note+=row[fl_points_hdr.indexOf('Sixes')]+" Sixes *10 = "+points.toString()+"<br>";
 		  }
 		  
 		  if ((category=="Bowler") || (category=="SuperBowler") || (category=="AllRounder") || (category=="SuperAllRounder")){
 			points=points+((parseInt(row[fl_points_hdr.indexOf('Wkts')])|| 0)*20);
 			note+=(parseInt(row[fl_points_hdr.indexOf('Wkts')])|| 0).toString()+" Wickets * 20= "+points.toString()+"<br>";
 			points=points+((parseInt(row[fl_points_hdr.indexOf('Mdns')])|| 0)*10);
-			note+=(parseInt(row[fl_points_hdr.indexOf('Mdns')])|| 0).toString()+" Maidens * 5= "+points.toString()+"<br>";
+			note+=(parseInt(row[fl_points_hdr.indexOf('Mdns')])|| 0).toString()+" Maidens * 10= "+points.toString()+"<br>";
 
 		  }	
 		  
