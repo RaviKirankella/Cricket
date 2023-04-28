@@ -232,7 +232,13 @@
 			  let game_table_data=table_html(game_points,true);
 			  let batting_card=table_html(game_scoresdata.loc({columns:["Player","HowOut","Sixes","Runs"]}));
 			  cond=game_scoresdata["BowlingOrder"].ne('DNB');
-			  let bowling_card=table_html(game_scoresdata.loc({rows:cond}).sortValues("BowlingOrder").loc({columns:["Player","Overs","Mdns","RunsScored","Wkts"]}));
+			  let bowling_card="";
+			  if (game_scoresdata.loc({rows:cond}).shape[0]==0){
+				bowling_card=table_html(game_scoresdata.loc({rows:cond}).loc({columns:["Player","Overs","Mdns","RunsScored","Wkts"]}));
+			  }
+			  else {
+				bowling_card=table_html(game_scoresdata.loc({rows:cond}).sortValues("BowlingOrder").loc({columns:["Player","Overs","Mdns","RunsScored","Wkts"]}));
+			  }
 			  cond=game_scoresdata["Catches"].ne('0');
 			  cond=game_scoresdata["Catches"].ne('0');
 			  let catches_card=table_html(game_scoresdata.loc({rows:cond,columns:["Player","Catches"]}));
