@@ -227,6 +227,11 @@
 			set_popup_body("<p style=\"text-align: center\">No data to display<p>");
 		  }
 		  else {
+			  let team_points=game_points.groupby(["Team"]).col(["Points"]).sum()
+			  team_points.rename({ "Points_sum": "Points" }, { inplace: true });
+			  team_points.sortValues("Points", {ascending:false, inplace: true });
+			  let team_table_data=table_html(team_points,true);
+			  
 			  game_points=game_points.loc({columns:["Team","PlayerNomination","Points","PointsDetail"]});
 			  game_points.sortValues("Points", {ascending:false, inplace: true });
 			  let game_table_data=table_html(game_points,true);
@@ -256,6 +261,8 @@
 			  pop_up_data=pop_up_data+"<div class=\"grid-item\">"+runouts_card+"</div>";
 			  pop_up_data=pop_up_data+"<div class=\"grid-item\">"+stumpings_card+"</div>";
 			  pop_up_data=pop_up_data+"</div><br>";
+			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Points in this game by team</b></h3>";
+			  pop_up_data=pop_up_data+team_table_data;			  
 			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Points in this game</h3>";
 			  pop_up_data=pop_up_data+game_table_data;
 
