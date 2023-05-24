@@ -161,7 +161,7 @@
 	  	pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Batting Stats</b></h3>";
 	  	pop_up_data=pop_up_data+table_html(grouped_data);
 	  	
-		cond=game_scoresdata["BowlingOrder"].ne('DNB');
+		cond=data["BowlingOrder"].ne('DNB');
 	  	grouped_data=data.loc({rows:cond}).groupby(["Player"]).col(["Overs","Mdns","RunsScored","Wkts"]).sum();
 	        grouped_data.sortValues("Wkts_sum", {ascending:false, inplace: true });
 	  	grouped_data.rename({ "Overs_sum": "Overs" }, { inplace: true });
