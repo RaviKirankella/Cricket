@@ -54,6 +54,180 @@
 		.pointsinfo {max-width: 600px;}
 		}
 
+.confetti-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10; /* Set a higher z-index to bring it to the foreground */
+
+
+.fireworks-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10; /* Set a higher z-index to bring it to the foreground */
+}
+
+.fireworks-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+@keyframes firework {
+  0% { transform: translate(var(--x), var(--initialY)); width: var(--initialSize); opacity: 1; }
+  50% { width: 0.5vmin; opacity: 1; }
+  100% { width: var(--finalSize); opacity: 0; }
+}
+
+/* @keyframes fireworkPseudo {
+  0% { transform: translate(-50%, -50%); width: var(--initialSize); opacity: 1; }
+  50% { width: 0.5vmin; opacity: 1; }
+  100% { width: var(--finalSize); opacity: 0; }
+}
+ */
+.firework,
+.firework::before,
+.firework::after
+{
+  --initialSize: 0.5vmin;
+  --finalSize: 45vmin;
+  --particleSize: 0.2vmin;
+  --color1: yellow;
+  --color2: khaki;
+  --color3: white;
+  --color4: lime;
+  --color5: gold;
+  --color6: mediumseagreen;
+  --y: -30vmin;
+  --x: -50%;
+  --initialY: 60vmin;
+  content: "";
+  animation: firework 2s infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, var(--y));
+  width: var(--initialSize);
+  aspect-ratio: 1;
+  background: 
+    /*
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 0% 0%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 100% 0%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 100% 100%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 0% 100%,
+    */
+    
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 50% 0%,
+    radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 100% 50%,
+    radial-gradient(circle, var(--color3) var(--particleSize), #0000 0) 50% 100%,
+    radial-gradient(circle, var(--color4) var(--particleSize), #0000 0) 0% 50%,
+    
+    /* bottom right */
+    radial-gradient(circle, var(--color5) var(--particleSize), #0000 0) 80% 90%,
+    radial-gradient(circle, var(--color6) var(--particleSize), #0000 0) 95% 90%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 90% 70%,
+    radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 100% 60%,
+    radial-gradient(circle, var(--color3) var(--particleSize), #0000 0) 55% 80%,
+    radial-gradient(circle, var(--color4) var(--particleSize), #0000 0) 70% 77%,
+    
+    /* bottom left */
+    radial-gradient(circle, var(--color5) var(--particleSize), #0000 0) 22% 90%,
+    radial-gradient(circle, var(--color6) var(--particleSize), #0000 0) 45% 90%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 33% 70%,
+    radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 10% 60%,
+    radial-gradient(circle, var(--color3) var(--particleSize), #0000 0) 31% 80%,
+    radial-gradient(circle, var(--color4) var(--particleSize), #0000 0) 28% 77%,
+    radial-gradient(circle, var(--color5) var(--particleSize), #0000 0) 13% 72%,
+    
+    /* top left */
+    radial-gradient(circle, var(--color6) var(--particleSize), #0000 0) 80% 10%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 95% 14%,
+    radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 90% 23%,
+    radial-gradient(circle, var(--color3) var(--particleSize), #0000 0) 100% 43%,
+    radial-gradient(circle, var(--color4) var(--particleSize), #0000 0) 85% 27%,
+    radial-gradient(circle, var(--color5) var(--particleSize), #0000 0) 77% 37%,
+    radial-gradient(circle, var(--color6) var(--particleSize), #0000 0) 60% 7%,
+    
+    /* top right */
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 22% 14%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 45% 20%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 33% 34%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 10% 29%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 31% 37%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 28% 7%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 13% 42%
+    ;
+  background-size: var(--initialSize) var(--initialSize);
+  background-repeat: no-repeat;
+}
+
+.firework::before {
+  --x: -50%;
+  --y: -50%;
+  --initialY: -50%;
+/*   transform: translate(-20vmin, -2vmin) rotate(40deg) scale(1.3) rotateY(40deg); */
+  transform: translate(-50%, -50%) rotate(40deg) scale(1.3) rotateY(40deg);
+/*   animation: fireworkPseudo 2s infinite; */
+}
+
+.firework::after {
+  --x: -50%;
+  --y: -50%;
+  --initialY: -50%;
+/*   transform: translate(44vmin, -50%) rotate(170deg) scale(1.15) rotateY(-30deg); */
+  transform: translate(-50%, -50%) rotate(170deg) scale(1.15) rotateY(-30deg);
+/*   animation: fireworkPseudo 2s infinite; */
+}
+
+.firework:nth-child(2) {
+  --x: 30vmin;
+}
+
+.firework:nth-child(2),
+.firework:nth-child(2)::before,
+.firework:nth-child(2)::after {
+  --color1: pink;
+  --color2: violet;
+  --color3: fuchsia;
+  --color4: orchid;
+  --color5: plum;
+  --color6: lavender;  
+  --finalSize: 40vmin;
+  left: 30%;
+  top: 60%;
+  animation-delay: -0.25s;
+}
+
+.firework:nth-child(3) {
+  --x: -30vmin;
+  --y: -50vmin;
+}
+
+.firework:nth-child(3),
+.firework:nth-child(3)::before,
+.firework:nth-child(3)::after {
+  --color1: cyan;
+  --color2: lightcyan;
+  --color3: lightblue;
+  --color4: PaleTurquoise;
+  --color5: SkyBlue;
+  --color6: lavender;
+  --finalSize: 35vmin;
+  left: 70%;
+  top: 60%;
+  animation-delay: -0.4s;
+}
+
     </style>
 	
   <script src="https://ravikirankella.github.io/Cricket/FantasyLeague.js"></script>
@@ -133,6 +307,7 @@
 		  grouped_data.sortValues("Points_sum", {ascending:false, inplace: true });
 		  grouped_data.rename({ "Points_sum": "Points" }, { inplace: true });
 		  grouped_data.resetIndex({inplace: true });
+		  grouped_data=grouped_data.replace(winnerteamname,winnerteamname+"<a>&#127942;</a>",{ columns: ["Team"] });
 		  document.getElementById("leaderboard").innerHTML=table_html(grouped_data);
 		  document.getElementById("leaderboard").innerHTML+="<br><p id=\"lastgame\" style=\"text-align:center; font-size: 80%;\">Latest game <a class=\"hvr\" onclick=\"scorecard('"+scoresdata.at(scoresdata.shape[0]-1,"GameId")+"','"+scoresdata.at(scoresdata.shape[0]-1,"GameName")+"')\"><b>"+scoresdata.at(scoresdata.shape[0]-1,"GameId")+" - "+scoresdata.at(scoresdata.shape[0]-1,"GameName")+"</b><sup> click me</sup></a></p>"
 		  document.getElementById("leaderboard").innerHTML+="<br><h3 class=\"hvr\" onclick=\"show_season_stats()\">season stats<sup> new</sup></h3>"
@@ -149,7 +324,7 @@
 		data.asType("Sixes","int32",true);
 		data.asType("Overs","int32",true);
 		cond=data["Overs"].ne('')
-		data.loc({rows:cond}).print();
+		//data.loc({rows:cond}).print();
 		data.asType("Mdns","int32",true).fillNa(0,{inplace: true});
 		data.asType("RunsScored","int32",true).fillNa(0, {inplace: true});
 		data.asType("Wkts","int32",true).fillNa(0,{inplace: true});
@@ -386,7 +561,7 @@
 		  uncapped_batters=uncapped_batters.groupby(['Player']).col(['Points']).sum();
 		  uncapped_batters.sortValues("Points_sum", {ascending:false, inplace: true });
 		  uncapped_batters.resetIndex({inplace: true });
-		  uncapped_batters.print();
+		  //uncapped_batters.print();
 		  
 		  uncapped_bowlers=uncapped_df.loc({rows:cond,columns:["GameId","GameName","Player","Mdns","Wkts","Won?","PointsMultiplier"]});
 		  
@@ -394,7 +569,7 @@
 		  uncapped_bowlers=uncapped_bowlers.groupby(['Player']).col(['Points']).sum();
 		  uncapped_bowlers.sortValues("Points_sum", {ascending:false, inplace: true });
 		  uncapped_bowlers.resetIndex({inplace: true });
-		  uncapped_bowlers.print();
+		  //uncapped_bowlers.print();
 		  
 
 		  for (i=0;i<uncapped_batters.shape[0];i++) {
@@ -502,7 +677,7 @@
 				let team_points=fl_points.loc({rows: cond});
 				let points_total=team_points["Points"].sum();
 				//Add  winner's team name
-				if (teamname=="Stokes Foakes Woakes") {
+				if (teamname==winnerteamname) {
 					document.getElementById("leaderboardhdr").innerHTML="<h2>Points: "+points_total+"<a>&#127942;</a></h2>";
 				}
 				else {
@@ -691,6 +866,80 @@
 		}	  
 
 	  
+	function downloaddata(){
+		let data=fl_points;
+		let reg_chars=/<\/?[^>]+(>|$)|Click here to show detail/g;
+		let updated_function = data['PointsDetail'].str.replace(reg_chars,"");
+		data.addColumn("PointsDetailText", updated_function,{ inplace: true });
+		data.drop({ columns: ["PointsDetail"], inplace: true });
+		dfd.toExcel(data, { fileName: "FantasyLeaguePointSystem.xlsx"});
+	}
+
+function createConfetti() {
+    const container = document.querySelector('.confetti-container');
+
+    // Create confetti
+    const confetti = document.createElement('div');
+    confetti.classList.add('confetti');
+    confetti.style.left = Math.random() * container.clientWidth + 'px';
+    confetti.style.animationDuration = Math.random() * 2 + 3 + 's';
+    confetti.innerHTML = '🎉';
+
+    confetti.addEventListener('animationiteration', () => {
+        confetti.style.left = Math.random() * container.clientWidth + 'px';
+    });
+
+    // Create burst particles
+    const burstCount = 10; // Number of burst particles
+    for (let i = 0; i < burstCount; i++) {
+        const burst = document.createElement('div');
+        burst.classList.add('burst');
+        burst.style.left = confetti.style.left;
+        burst.style.animationDuration = Math.random() * 2 + 3 + 's'; // Adjust the animation duration as needed
+        burst.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+        // Randomize the starting top position to create a falling effect
+        burst.style.top = Math.random() * container.clientHeight + 'px';
+
+        burst.innerHTML = '🌟';
+
+        burst.addEventListener('animationend', () => {
+            burst.remove(); // Remove burst particles after animation
+        });
+
+        container.appendChild(burst);
+    }
+
+    container.appendChild(confetti);
+}
+
+setInterval(createConfetti, 1000);
+
+function createFirework() {
+    const container = document.querySelector('.fireworks-container');
+
+    const starburst = document.createElement('div');
+    starburst.classList.add('firework');
+
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight;
+
+    starburst.style.left = x + 'px';
+    starburst.style.top = y + 'px';
+
+starburst.innerHTML = '🌟';
+    container.appendChild(starburst);
+
+    setTimeout(() => {
+        starburst.remove();
+    }, 1000); // Adjust the duration of the starbursts
+}
+
+setInterval(createFirework, 100); // Adjust the interval for continuous explosions
+
+
+
+
 	  loadTeamsData();
 
   </script>
@@ -707,6 +956,7 @@
 <div class="players">
 	<!-- changes for scoreboard button: START -->
         <a class="playerbutton" style="text-decoration: none; background-color:blue; color: white; float:right" href="https://ravikirankella.github.io/Cricket/Scorecard.html" target="_blank">Add Scorecard</a>
+        <button class="playerbutton" style="text-decoration: none; background-color:white; color: black; float:right"; OnClick="downloaddata()">DownloadData</button>
 	<div style="clear:both;">
 	<a style="color: white; font-size:90%">Select team to view details!</a>
 	</div>
@@ -718,13 +968,14 @@
 		<button class="playerbutton" OnClick="addTeamTable(this)">PerfectCoverDrive</button>
 		<button class="playerbutton" OnClick="addTeamTable(this)">RonnieIraniXIII</button>
 		<button class="playerbutton" OnClick="addTeamTable(this)">Shitonthevilla</button>
-		<button class="playerbutton" OnClick="addTeamTable(this)">Stokes Foakes Woakes</button>
+		<a class="playerbutton"><button class="playerbutton" OnClick="addTeamTable(this)">Stokes Foakes Woakes</button>&#127942;</a>
 		<button class="playerbutton" OnClick="addTeamTable(this)">Thamesis</button>
 		<button class="playerbutton" OnClick="addTeamTable(this)">Whiter than White</button>
 		
 	<button class="playerbutton" OnClick="addTeamTable(this)">Clear Selection</button>
 	<button class="playerbutton" OnClick="addTeamTable(this)">Games</button>
 	</div>
+	<div class="confetti-container fireworks-container" style="float: left;width: 100%;height: 100px;"></div>
 	<div class="frame">
 	<p align="center" style="font-size:80%"> * - Price match nomination grabbed;  ** -  Price match nomination successfully retained <p>	
                 <div class="framesplit" id="pointsboard">
