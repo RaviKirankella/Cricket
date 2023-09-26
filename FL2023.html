@@ -65,6 +65,11 @@
 
  
   <script>
+	//Page Management information
+	var winnerteamname="Stokes Foakes Woakes";
+
+	//End of managements/masterdata
+	  
 	var teamsdata="";
 	var scores="";
 	var fl_points=new dfd.DataFrame();
@@ -497,7 +502,7 @@
 				let team_points=fl_points.loc({rows: cond});
 				let points_total=team_points["Points"].sum();
 				//Add  winner's team name
-				if (teamname=="winnerteamname") {
+				if (teamname==winnerteamname) {
 					document.getElementById("leaderboardhdr").innerHTML="<h2>Points: "+points_total+"<a>&#127942;</a></h2>";
 				}
 				else {
