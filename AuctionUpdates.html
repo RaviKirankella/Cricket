@@ -217,7 +217,7 @@
 	document.getElementById('setdata').style.display='block'
 	let cond=nominations_df["Set"].eq(buttonname);
 	let set_df=nominations_df.loc({rows:cond});
-	let tabledata=table_html(set_df.loc({columns:["Nomination","Category","PlayerType","Estimated Points","BasePrice"]}),true,"",0);
+	let tabledata=table_html(set_df.loc({columns:["Nomination","PlayerType","Estimated Points","BasePrice"]}),true,"",0);
 	document.getElementById("setinfo").innerHTML =tabledata;	
 	}
 
