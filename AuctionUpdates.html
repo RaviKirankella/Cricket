@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISISCC Fantasy League Auction Live (15th April 2024 6PM)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+	table { float:none; text-align: center; margin-top:20px;  font-size: 90%;width:100%; }
+	th td { padding:10px; margin: 5px; }
+        .header {
+            background-color: #f1f1f1;
+            padding: 20px;
+            text-align: center;
+        }
+        .header button {
+            margin: 0 5px;
+            text-decoration: none;
+            background-color: white;
+	   border-radius: 4px;
+            color: black;
+            padding: 8px 16px;
+        }
+        .header button.selected {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .toggle-container {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            background-color: #ccc;
+            transition: .4s;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .slider.round {
+            border-radius: 34px;
+        }
+        .slider.round:before {
+            border-radius: 50%;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            text-align: center;
+            font-size: 24px;
+        }
+	.grid-container {display: grid;
+			grid-template-columns: auto auto;}
+	.grid-item {padding: 1px;
+		}
+        .refresh-button {
+            position: absolute;
+            top: -4px;
+            right: 75px;
+            display: none;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+	    border-radius: 4px;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button id="Home" OnClick="showhome()" class="selected">Home</button>
+        <button id="Set1" OnClick="displaysets(this)">Set 1</button>
+        <button id="Set2" OnClick="displaysets(this)">Set 2</button>
+        <button id="Set3" OnClick="displaysets(this)">Set 3</button>
+        <button id="Set4" OnClick="displaysets(this)">Set 4</button>
+        <button id="Set5" OnClick="displaysets(this)">Set 5</button>
+        <button id="Set6" OnClick="displaysets(this)">Set 6</button>
+    </div>
+    <div class="toggle-container">
+        <button id="refreshButton" class="refresh-button">Refresh</button>
+        <label class="toggle-switch">
+            <input type="checkbox" id="toggle" checked>
+            <span class="slider round"></span>
+        </label>
+
+    </div>
+
+	<div id='home'>
+    		<div class="container">
+
+	        	<h1><div id="countdown">Loading...</div></h1>
+		</div>
+    	</div>
+	<div id="setdata" class="grid-container">
+		<div id="setinfo" class="grid-item">
+		</div>
+		<div id="setpurchases" class="grid-item">
+		<p>Pruchased</p>
+		</div>
+	</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.0/lib/bundle.min.js"></script> 
+    <script>
+        const tabs = document.querySelectorAll('.header button');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('selected'));
+                tab.classList.add('selected');
+            });
+        });
+
+
+	var nominations_df="";
+	var auction_df="";
+	var doc_ready=false;
+
+	function loadNominationsData() {
+			//console.log('loadTeamsData');
+
+			var xmlhttp = new XMLHttpRequest();
+			var spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
+			var spreadsheetrange="Nominations2024!A2:G";
+			var url = "https://sheets.googleapis.com/v4/spreadsheets/"+spreadsheetid+"/values/"+spreadsheetrange+"?key=AIzaSyAmi4pvsmS6iGokKlVXGxsFbKxpAnWjWEo";
+			xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+					var myArr = JSON.parse(this.responseText);
+					let nominations=myArr["values"];
+					nominations_df=new dfd.DataFrame(nominations,{columns:["Set","Nomination","Player","Category","PlayerType","Estimated Points","BasePrice"]});
+					getauctionupdates();
+					//AddTable(teamsdata);
+					}
+					
+			};
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send();
+		}
+
+	function getauctionupdates() {
+			console.log('getauctionupdates');
+
+			var xmlhttp = new XMLHttpRequest();
+			var spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
+			var spreadsheetrange="Auction2024!A1:Q";
+			var url = "https://sheets.googleapis.com/v4/spreadsheets/"+spreadsheetid+"/values/"+spreadsheetrange+"?key=AIzaSyAmi4pvsmS6iGokKlVXGxsFbKxpAnWjWEo";
+			xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+					var myArr = JSON.parse(this.responseText);
+					let auctiondata=myArr["values"];
+					let auctionhdr=auctiondata[0];			  
+		  			auction_df = new dfd.DataFrame(auctiondata.slice(1),{columns:auctionhdr});										 	console.log(auction_df);
+					}
+					
+			};
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send();
+		}
+
+        const toggle = document.getElementById('toggle');
+        const refreshBtn = document.getElementById('refreshButton');
+        const timerElement = document.getElementById('countdown');
+        let countdownInterval;
+
+	function showhome(){
+	document.getElementById('home').style.display='block'
+	document.getElementById('setdata').style.display='none'
+	}
+
+	function displaysets(buttonnode){
+	let buttonname=buttonnode.innerHTML;
+	console.log(buttonname);
+	document.getElementById('home').style.display='none'
+	document.getElementById('setdata').style.display='block'
+	let cond=nominations_df["Set"].eq(buttonname);
+	let set_df=nominations_df.loc({rows:cond});
+	let tabledata=table_html(set_df.loc({columns:["Nomination","Category","PlayerType","Estimated Points","BasePrice"]}),true,"",0);
+	document.getElementById("setinfo").innerHTML =tabledata;	
+	}
+
+        function updateTimer() {
+            const deadline = new Date("April 5, 2024 18:00:00");
+            const now = new Date();
+            const timeLeft = deadline - now;
+
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        function startCountdown() {
+            updateTimer();
+            countdownInterval = setInterval(updateTimer, 1000);
+        }
+
+        function stopCountdown() {
+            clearInterval(countdownInterval);
+        }
+
+        toggle.addEventListener('change', () => {
+            if (toggle.checked) {
+                startCountdown();
+                refreshBtn.style.display = 'none';
+            } else {
+                stopCountdown();
+                refreshBtn.style.display = 'inline';
+            }
+        });
+
+
+
+     // Table support funtions
+     function table_html(table,addsort=false,onclickfn="",idnode=-1){
+		  let table_data='<table><tr>';
+		  let table_hdr=table.columns;
+		  for (i=0;i<table_hdr.length;i++){
+			if (addsort){
+				console.log(table.column(table_hdr[i]).dtype);
+				if (table.column(table_hdr[i]).dtype=='string'){
+					table_data+='<th onclick="sortTable_asc('+i+',\''+table_hdr[i]+'\',this,\''+'text'+'\')">'+table_hdr[i]+'&#8693;</th>';
+				}
+				else {
+					table_data+='<th onclick="sortTable_asc('+i+',\''+table_hdr[i]+'\',this,\''+'int'+'\')">'+table_hdr[i]+'&#8693;</th>';
+				}
+			
+				}
+			else {
+				table_data+='<th>'+table_hdr[i]+'</th>';
+				}
+			}
+		  table_data+='</tr>';
+		  
+		  for (i=0;i<table.shape[0];i++){
+			if (onclickfn!=""){
+				table_data+='<tr class="hvr" onclick="'+onclickfn+'(this)">';
+			}
+
+			if (idnode!=-1){
+			table_data+='<tr id="'+table.iat(i,idnode)+'">';
+			}
+			else{
+			table_data+='<tr>';
+			}
+			for (j=0;j<table.shape[1];j++){
+			   table_data+='<td>'+table.iat(i,j)+'</td>';
+			}
+			table_data+='</tr>';
+		  }
+		  table_data+='</table>';
+		  return table_data;
+	  }	  	  
+
+	  function sortTable_asc(sortcolumn,columnname,node,type="text") {
+		  var table, rows, switching, i, x, y, shouldSwitch;
+		  //table = document.getElementById("table");
+		  table=node.parentNode.parentNode.parentNode;
+		  rows = table.rows;
+		  var headercol= rows[0].getElementsByTagName("TH")[sortcolumn];
+		  node.innerHTML=columnname+" &uarr;";
+		  node.onclick = function() {sortTable_desc(sortcolumn,columnname,node,type)};
+		  console.log(node);
+		  switching = true;
+		  /*Make a loop that will continue until
+		  no switching has been done:*/
+		  while (switching) {
+		    //start by saying: no switching is done:
+		    switching = false;
+		    rows = table.rows;
+		    /*Loop through all table rows (except the
+		    first, which contains table headers):*/
+		    for (i = 1; i < (rows.length - 1); i++) {
+		      //start by saying there should be no switching:
+		      shouldSwitch = false;
+		      /*Get the two elements you want to compare,
+		      one from current row and one from the next:*/
+		      x = rows[i].getElementsByTagName("TD")[sortcolumn];
+		      y = rows[i + 1].getElementsByTagName("TD")[sortcolumn];
+		      //check if the two rows should switch place:
+		      if (type=="int"){
+			      if (parseInt(x.innerHTML) > parseInt(y.innerHTML)) {
+				//if so, mark as a switch and break the loop:
+				shouldSwitch = true;
+				break;
+			      }
+		      }
+		      else {
+		      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+			//if so, mark as a switch and break the loop:
+			shouldSwitch = true;
+			break;
+		      }
+		      }
+		    }
+		    if (shouldSwitch) {
+		      /*If a switch has been marked, make the switch
+		      and mark that a switch has been done:*/
+		      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+		      switching = true;
+		    }
+		  }
+		}
+
+	  function sortTable_desc(sortcolumn,columnname,node,type="text") {
+		  var table, rows, switching, i, x, y, shouldSwitch;
+		  table=node.parentNode.parentNode.parentNode;
+		  rows = table.rows;
+		  var headercol= rows[0].getElementsByTagName("TH")[sortcolumn];
+		  node.innerHTML=columnname+" &darr;";
+		  node.onclick = function() {sortTable_asc(sortcolumn,columnname,node,type)};
+		  switching = true;
+		  /*Make a loop that will continue until
+		  no switching has been done:*/
+		  while (switching) {
+		    //start by saying: no switching is done:
+		    switching = false;
+		    rows = table.rows;
+		    /*Loop through all table rows (except the
+		    first, which contains table headers):*/
+		    for (i = 1; i < (rows.length - 1); i++) {
+		      //start by saying there should be no switching:
+		      shouldSwitch = false;
+		      /*Get the two elements you want to compare,
+		      one from current row and one from the next:*/
+		      x = rows[i].getElementsByTagName("TD")[sortcolumn];
+		      y = rows[i + 1].getElementsByTagName("TD")[sortcolumn];
+		      //check if the two rows should switch place:
+		      if (type=="int"){
+			      if (parseInt(x.innerHTML) < parseInt(y.innerHTML)) {
+				//if so, mark as a switch and break the loop:
+				shouldSwitch = true;
+				break;
+			      }
+		      }
+		      else {
+		      if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+			//if so, mark as a switch and break the loop:
+			shouldSwitch = true;
+			break;
+		      }
+		      }
+		    }
+		    if (shouldSwitch) {
+		      /*If a switch has been marked, make the switch
+		      and mark that a switch has been done:*/
+		      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+		      switching = true;
+		    }
+		  }
+		}	  
+
+
+        refreshBtn.addEventListener('click', updateTimer);
+	loadNominationsData();
+        startCountdown();
+    </script>
+</body>
+</html>
