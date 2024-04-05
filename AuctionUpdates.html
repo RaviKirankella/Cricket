@@ -160,7 +160,7 @@
 
 
 	var nominations_df="";
-	var auction_df="";
+	var auction_df=new dfd.DataFrame();
 	var doc_ready=false;
 
 	function loadNominationsData() {
@@ -177,6 +177,18 @@
 					nominations_df=new dfd.DataFrame(nominations,{columns:["Set","Nomination","Player","Category","PlayerType","Estimated Points","BasePrice"]});
 					getauctionupdates();
 					//AddTable(teamsdata);
+	    if (auction_df.size!=0) {
+		const now = new Date();
+		console.log(now);
+		let idx=Array.from(auction_df.index);
+		let tbldata=auction_df.iloc({rows: idx.reverse()}).copy();
+		document.getElementById("datatable").innerHTML=now+'<br>'+table_html(tbldata.loc({columns:["PlayerNomination","PricePaid","Team"]}),true,"",0);
+		countdownInterval = setInterval(getauctionupdates, 300000);
+
+		}
+	    else {
+		startCountdown();
+		}
 					}
 					
 			};
@@ -196,14 +208,16 @@
 					var myArr = JSON.parse(this.responseText);
 					let auctiondata=myArr["values"];
 					let auctionhdr=auctiondata[0];			  
-		  			auction_df = new dfd.DataFrame(auctiondata.slice(1),{columns:auctionhdr});										 	console.log(auction_df);
+		  			auction_df = new dfd.DataFrame(auctiondata.slice(1),{columns:auctionhdr});						
 					
-	    if (auction_df.size[0]!=0) {
+	    if (auction_df.size!=0) {
 		const now = new Date();
 		console.log(now);
+		stopCountdown();
 		let idx=Array.from(auction_df.index);
 		let tbldata=auction_df.iloc({rows: idx.reverse()}).copy();
 		document.getElementById("datatable").innerHTML=now+'<br>'+table_html(tbldata.loc({columns:["PlayerNomination","PricePaid","Team"]}),true,"",0);
+               countdownInterval = setInterval(getauctionupdates, 300000);
 
 		}
 	    else {
@@ -229,7 +243,7 @@
 
 	function displaysets(buttonnode){
 	let buttonname=buttonnode.innerHTML;
-	console.log(buttonname);
+	//console.log(buttonname);
 	document.getElementById('home').style.display='none'
 	document.getElementById('setdata').style.display='block'
 	let cond=nominations_df["Set"].eq(buttonname);
@@ -239,7 +253,7 @@
 	}
 
         function updateTimer() {
-	    if (auction_df.size[0]!=0) {
+	    if (auction_df.size!=0) {
 		stopCountdown();
 		getauctionupdates();
                countdownInterval = setInterval(getauctionupdates, 300000);
@@ -289,7 +303,7 @@
 		  let table_hdr=table.columns;
 		  for (i=0;i<table_hdr.length;i++){
 			if (addsort){
-				console.log(table.column(table_hdr[i]).dtype);
+				//console.log(table.column(table_hdr[i]).dtype);
 				if (table.column(table_hdr[i]).dtype=='string'){
 					table_data+='<th onclick="sortTable_asc('+i+',\''+table_hdr[i]+'\',this,\''+'text'+'\')">'+table_hdr[i]+'&#8693;</th>';
 				}
@@ -332,7 +346,7 @@
 		  var headercol= rows[0].getElementsByTagName("TH")[sortcolumn];
 		  node.innerHTML=columnname+" &uarr;";
 		  node.onclick = function() {sortTable_desc(sortcolumn,columnname,node,type)};
-		  console.log(node);
+		  //console.log(node);
 		  switching = true;
 		  /*Make a loop that will continue until
 		  no switching has been done:*/
