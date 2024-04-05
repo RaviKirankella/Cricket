@@ -177,18 +177,18 @@
 					nominations_df=new dfd.DataFrame(nominations,{columns:["Set","Nomination","Player","Category","PlayerType","Estimated Points","BasePrice"]});
 					getauctionupdates();
 					//AddTable(teamsdata);
-	    if (auction_df.size!=0) {
-		const now = new Date();
-		console.log(now);
-		let idx=Array.from(auction_df.index);
-		let tbldata=auction_df.iloc({rows: idx.reverse()}).copy();
-		document.getElementById("datatable").innerHTML=now+'<br>'+table_html(tbldata.loc({columns:["PlayerNomination","PricePaid","Team"]}),true,"",0);
+	    //if (auction_df.size!=0) {
+	//	const now = new Date();
+	//	console.log(now);
+	//	let idx=Array.from(auction_df.index);
+	//	let tbldata=auction_df.iloc({rows: idx.reverse()}).copy();
+	//	document.getElementById("datatable").innerHTML=now+'<br>'+table_html(tbldata.loc({columns:["PlayerNomination","PricePaid","Team"]}),true,"",0);
 		//countdownInterval = setInterval(getauctionupdates, 300000);
 
-		}
-	    else {
-		startCountdown();
-		}
+	//	}
+	  //  else {
+		//startCountdown();
+	//	}
 					}
 					
 			};
@@ -221,7 +221,7 @@
 
 		}
 	    else {
-		startCountdown();
+		//startCountdown();
 		}
 
 					}
