@@ -183,7 +183,7 @@
 		let idx=Array.from(auction_df.index);
 		let tbldata=auction_df.iloc({rows: idx.reverse()}).copy();
 		document.getElementById("datatable").innerHTML=now+'<br>'+table_html(tbldata.loc({columns:["PlayerNomination","PricePaid","Team"]}),true,"",0);
-		countdownInterval = setInterval(getauctionupdates, 300000);
+		//countdownInterval = setInterval(getauctionupdates, 300000);
 
 		}
 	    else {
@@ -217,7 +217,7 @@
 		let idx=Array.from(auction_df.index);
 		let tbldata=auction_df.iloc({rows: idx.reverse()}).copy();
 		document.getElementById("datatable").innerHTML=now+'<br>'+table_html(tbldata.loc({columns:["PlayerNomination","PricePaid","Team"]}),true,"",0);
-               countdownInterval = setInterval(getauctionupdates, 300000);
+               //countdownInterval = setInterval(getauctionupdates, 300000);
 
 		}
 	    else {
@@ -254,9 +254,9 @@
 
         function updateTimer() {
 	    if (auction_df.size!=0) {
-		stopCountdown();
-		getauctionupdates();
-               countdownInterval = setInterval(getauctionupdates, 300000);
+		//stopCountdown();
+		//getauctionupdates();
+               //countdownInterval = setInterval(getauctionupdates, 300000);
 
 		}
 
