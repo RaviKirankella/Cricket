@@ -551,7 +551,7 @@
 		
 	  // Uncapped player computations	
 	  function computeuncapped(scoresdata) {
-		  nominations = new dfd.DataFrame(teamsdata,{columns:["PlayerNomination","PricePaid","Team","EstimatedPoints","Capped?","Category","Player"]});
+		  nominations = new dfd.DataFrame(teamsdata,{columns:["PlayerNomination","PricePaid","Team","PlayerType","EstimatedPoints","Capped?","Category","Player"]});
 		  let uncapped_df=dfd.merge({left:scoresdata,right:nominations,on:["Player"],how:"left"});
 
 		  cond=uncapped_df["Capped?"].isNa()
