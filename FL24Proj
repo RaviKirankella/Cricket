@@ -1,0 +1,957 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+  <head>
+
+    <title>ISISCC Fantasy Cricket League</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <style>
+
+	body {	font-family: Verdana, Geneva, sans-serif; background-color: gray;}
+
+	table { float:none; text-align: center; margin-top:20px; width: 100%; font-size: 90%; }
+
+	th td { padding:10px; margin: 5px; }
+
+	h2{ text-align: center;	}	    
+
+
+
+	.centertext{ text-align:center;}
+
+	.whitetext{color: white;}
+
+	.frame { background-color:white; padding:2px; margin:5px; height: 100%;}
+
+	.framesplit {float:left; width:48%;padding:2px;}
+
+	.bottom {clear:both;}
+
+	.playerselectdiv { margin-bottom: 3%; margin-top:3%; padding: 5px; }
+
+	.ui-helper-hidden, .ui-helper-hidden-accessible {display: none;}	
+
+    .ui-menu-item {list-style-type: none; color: white; text-align:left;}
+
+	.infchart {width:50%; height:80%;}
+
+	.overview {text-align:center; margin:auto; }
+
+	.players {text-align:center;}
+
+	.chart {color: blue;}
+
+	.playerbutton {background-color:white; font-weight: bold; border-color: white; border:5px; margin: 5px;
+
+			      padding: 5px; border-radius:5%;}
+
+    .modal-dialog{overflow-y: initial !important}
+
+    .w3-container{height: 80vh; overflow-y: auto;}
+
+    .detail {display: none; min-width:40px;font-size: 80%;}
+
+	.grid-container {display: grid;
+
+			grid-template-columns: auto auto;}
+
+	.grid-item {padding: 1px;
+
+		}
+
+	.sortbutton {    color: black;
+
+			border: none;
+
+			outline: none;
+
+			background-color: inherit;
+
+			margin-left: none;
+
+			padding: 1px;
+
+			font-weight: bolder;
+
+	}
+
+	.hvr:hover {
+
+	color:blue;
+
+	text-decoration: underline;
+
+	text-decoration-color: blue;
+
+	}
+
+	
+
+    #faq { font-family: Verdana, Geneva, sans-serif; position:fixed; top:0; right:0; width: 100px; font-size: 18px; 
+
+	  padding: 10px; margin:10px; border: none; background: #fff; color: #000; cursor: pointer; float:right;}
+
+    #faq:hover {  background: #ddd;  color: black;}
+
+    @media only screen and (max-width: 600px) {
+
+        .framesplit {width: 100%;}
+
+		.pointsinfo {max-width: 600px;}
+
+		}
+
+
+
+.confetti-container {
+
+    position: absolute;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    pointer-events: none;
+
+    z-index: 10; /* Set a higher z-index to bring it to the foreground */
+
+
+
+
+
+.fireworks-container {
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 100%;
+
+    height: 100%;
+
+    pointer-events: none;
+
+    z-index: 10; /* Set a higher z-index to bring it to the foreground */
+
+}
+
+
+
+.fireworks-container {
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    pointer-events: none;
+
+}
+
+
+
+@keyframes firework {
+
+  0% { transform: translate(var(--x), var(--initialY)); width: var(--initialSize); opacity: 1; }
+
+  50% { width: 0.5vmin; opacity: 1; }
+
+  100% { width: var(--finalSize); opacity: 0; }
+
+}
+
+
+
+/* @keyframes fireworkPseudo {
+
+  0% { transform: translate(-50%, -50%); width: var(--initialSize); opacity: 1; }
+
+  50% { width: 0.5vmin; opacity: 1; }
+
+  100% { width: var(--finalSize); opacity: 0; }
+
+}
+
+ */
+
+.firework,
+
+.firework::before,
+
+.firework::after
+
+{
+
+  --initialSize: 0.5vmin;
+
+  --finalSize: 45vmin;
+
+  --particleSize: 0.2vmin;
+
+  --color1: yellow;
+
+  --color2: khaki;
+
+  --color3: white;
+
+  --color4: lime;
+
+  --color5: gold;
+
+  --color6: mediumseagreen;
+
+  --y: -30vmin;
+
+  --x: -50%;
+
+  --initialY: 60vmin;
+
+  content: "";
+
+  animation: firework 2s infinite;
+
+  position: absolute;
+
+  top: 50%;
+
+  left: 50%;
+
+  transform: translate(-50%, var(--y));
+
+  width: var(--initialSize);
+
+  aspect-ratio: 1;
+
+  background: 
+
+    /*
+
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 0% 0%,
+
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 100% 0%,
+
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 100% 100%,
+
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 0% 100%,
+
+    */
+
+    
+
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 50% 0%,
+
+    radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 100% 50%,
+
+    radial-gradient(circle, var(--color3) var(--particleSize), #0000 0) 50% 100%,
+
+    radial-gradient(circle, var(--color4) var(--particleSize), #0000 0) 0% 50%,
+
+    
+
+    /* bottom right */
+
+    radial-gradient(circle, var(--color5) var(--particleSize), #0000 0) 80% 90%,
+
+    radial-gradient(circle, var(--color6) var(--particleSize), #0000 0) 95% 90%,
+
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 90% 70%,
+
+    radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 100% 60%,
+
+    radial-gradient(circle, var(--color3) var(--particleSize), #0000 0) 55% 80%,
+
+    radial-gradient(circle, var(--color4) var(--particleSize), #0000 0) 70% 77%,
+
+    
+
+    /* bottom left */
+
+    radial-gradient(circle, var(--color5) var(--particleSize), #0000 0) 22% 90%,
+
+    radial-gradient(circle, var(--color6) var(--particleSize), #0000 0) 45% 90%,
+
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 33% 70%,
+
+    radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 10% 60%,
+
+    radial-gradient(circle, var(--color3) var(--particleSize), #0000 0) 31% 80%,
+
+    radial-gradient(circle, var(--color4) var(--particleSize), #0000 0) 28% 77%,
+
+    radial-gradient(circle, var(--color5) var(--particleSize), #0000 0) 13% 72%,
+
+    
+
+    /* top left */
+
+    radial-gradient(circle, var(--color6) var(--particleSize), #0000 0) 80% 10%,
+
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 95% 14%,
+
+    radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 90% 23%,
+
+    radial-gradient(circle, var(--color3) var(--particleSize), #0000 0) 100% 43%,
+
+    radial-gradient(circle, var(--color4) var(--particleSize), #0000 0) 85% 27%,
+
+    radial-gradient(circle, var(--color5) var(--particleSize), #0000 0) 77% 37%,
+
+    radial-gradient(circle, var(--color6) var(--particleSize), #0000 0) 60% 7%,
+
+    
+
+    /* top right */
+
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 22% 14%,
+
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 45% 20%,
+
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 33% 34%,
+
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 10% 29%,
+
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 31% 37%,
+
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 28% 7%,
+
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 13% 42%
+
+    ;
+
+  background-size: var(--initialSize) var(--initialSize);
+
+  background-repeat: no-repeat;
+
+}
+
+
+
+.firework::before {
+
+  --x: -50%;
+
+  --y: -50%;
+
+  --initialY: -50%;
+
+/*   transform: translate(-20vmin, -2vmin) rotate(40deg) scale(1.3) rotateY(40deg); */
+
+  transform: translate(-50%, -50%) rotate(40deg) scale(1.3) rotateY(40deg);
+
+/*   animation: fireworkPseudo 2s infinite; */
+
+}
+
+
+
+.firework::after {
+
+  --x: -50%;
+
+  --y: -50%;
+
+  --initialY: -50%;
+
+/*   transform: translate(44vmin, -50%) rotate(170deg) scale(1.15) rotateY(-30deg); */
+
+  transform: translate(-50%, -50%) rotate(170deg) scale(1.15) rotateY(-30deg);
+
+/*   animation: fireworkPseudo 2s infinite; */
+
+}
+
+
+
+.firework:nth-child(2) {
+
+  --x: 30vmin;
+
+}
+
+
+
+.firework:nth-child(2),
+
+.firework:nth-child(2)::before,
+
+.firework:nth-child(2)::after {
+
+  --color1: pink;
+
+  --color2: violet;
+
+  --color3: fuchsia;
+
+  --color4: orchid;
+
+  --color5: plum;
+
+  --color6: lavender;  
+
+  --finalSize: 40vmin;
+
+  left: 30%;
+
+  top: 60%;
+
+  animation-delay: -0.25s;
+
+}
+
+
+
+.firework:nth-child(3) {
+
+  --x: -30vmin;
+
+  --y: -50vmin;
+
+}
+
+
+
+.firework:nth-child(3),
+
+.firework:nth-child(3)::before,
+
+.firework:nth-child(3)::after {
+
+  --color1: cyan;
+
+  --color2: lightcyan;
+
+  --color3: lightblue;
+
+  --color4: PaleTurquoise;
+
+  --color5: SkyBlue;
+
+  --color6: lavender;
+
+  --finalSize: 35vmin;
+
+  left: 70%;
+
+  top: 60%;
+
+  animation-delay: -0.4s;
+
+}
+
+
+
+    </style>
+
+	
+
+  <script src="https://ravikirankella.github.io/Cricket/FantasyLeague.js"></script>
+
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <script src="https://apis.google.com/js/api.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.0/lib/bundle.min.js"></script> 
+
+
+
+ 
+
+  <script>
+
+	//Page Management information
+
+	var winnerteamname="Stokes Foakes Woakes";
+
+
+
+	//End of managements/masterdata
+
+	  
+
+	var teamsdata="";
+
+	var scores="";
+
+	var fl_points=new dfd.DataFrame();
+
+	var scoresdata=new dfd.DataFrame();							   
+
+	var fl_points_hdr=[];
+
+	var doc_ready=false;
+
+
+
+	function loadTeamsData() {
+
+			console.log('loadTeamsData');
+
+
+
+			var xmlhttp = new XMLHttpRequest();
+
+			var spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
+
+			var spreadsheetrange="Auction2024!A2:G";
+
+			var url = "https://sheets.googleapis.com/v4/spreadsheets/"+spreadsheetid+"/values/"+spreadsheetrange+"?key=AIzaSyAmi4pvsmS6iGokKlVXGxsFbKxpAnWjWEo";
+
+			xmlhttp.onreadystatechange = function() {
+
+					if (this.readyState == 4 && this.status == 200) {
+
+					var myArr = JSON.parse(this.responseText);
+
+					teamsdata=myArr["values"];
+
+					getscores();
+
+					AddTable(teamsdata);
+
+					}
+
+					
+
+			};
+
+			xmlhttp.open("GET", url, true);
+
+			xmlhttp.send();
+
+		}
+
+	function getscores() {
+
+			console.log('getscores');
+
+
+
+			var xmlhttp = new XMLHttpRequest();
+
+			var spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
+
+			var spreadsheetrange="Scores2023!A1:Q";
+
+			var url = "https://sheets.googleapis.com/v4/spreadsheets/"+spreadsheetid+"/values/"+spreadsheetrange+"?key=AIzaSyAmi4pvsmS6iGokKlVXGxsFbKxpAnWjWEo";
+
+			xmlhttp.onreadystatechange = function() {
+
+					if (this.readyState == 4 && this.status == 200) {
+
+					var myArr = JSON.parse(this.responseText);
+
+					scores=myArr["values"];
+
+					let scoreshdr=scores[0];			  
+
+		  			scoresdata = new dfd.DataFrame(scores.slice(1),{columns:scoreshdr});										 
+
+					computeuncapped(scoresdata);
+
+					fl_leaderboard();
+
+					}
+
+					
+
+			};
+
+			xmlhttp.open("GET", url, true);
+
+			xmlhttp.send();
+
+		}
+
+	
+
+	  function fl_leaderboard(){
+
+		  //let scoreshdr=scores[0];  	  
+
+		  //scoresdata = new dfd.DataFrame(scores.slice(1),{columns:scoreshdr});
+
+		  nominations = new dfd.DataFrame(teamsdata,{columns:["PlayerNomination","PricePaid","Team","EstimatedPoints","Capped?","Category","Player"]});	
+
+		  fl_points=dfd.merge({left:nominations,right:scoresdata,on:["Player"],how:"inner"});
+
+		  fl_points.resetIndex({inplace: true });
+
+		  fl_points_hdr=fl_points.columns;
+
+		  fl_points.addColumn("Points",fl_points.apply(calculate_fl_points),{ inplace: true });
+
+		  fl_points.addColumn("PointsDetail",fl_points.apply(calculate_fl_points_with_detail),{ inplace: true });
+
+		  document.getElementById("leaderboardhdr").innerHTML='<h2 class="chart" OnClick="AddChart(\'All\')"><u>Leader Board</h2>';
+
+		  //print_grouped_info(fl_points,document.getElementById("leaderboard"),"Team","Points");
+
+		  grouped_data=fl_points.groupby(["Team"]).col(["Points"]).sum();
+
+		  grouped_data.sortValues("Points_sum", {ascending:false, inplace: true });
+
+		  grouped_data.rename({ "Points_sum": "Points" }, { inplace: true });
+
+		  grouped_data.resetIndex({inplace: true });
+
+		  grouped_data=grouped_data.replace(winnerteamname,winnerteamname+"<a>&#127942;</a>",{ columns: ["Team"] });
+
+		  document.getElementById("leaderboard").innerHTML=table_html(grouped_data);
+
+		  document.getElementById("leaderboard").innerHTML+="<br><p id=\"lastgame\" style=\"text-align:center; font-size: 80%;\">Latest game <a class=\"hvr\" onclick=\"scorecard('"+scoresdata.at(scoresdata.shape[0]-1,"GameId")+"','"+scoresdata.at(scoresdata.shape[0]-1,"GameName")+"')\"><b>"+scoresdata.at(scoresdata.shape[0]-1,"GameId")+" - "+scoresdata.at(scoresdata.shape[0]-1,"GameName")+"</b><sup> click me</sup></a></p>"
+
+		  document.getElementById("leaderboard").innerHTML+="<br><h3 class=\"hvr\" onclick=\"show_season_stats()\">season stats<sup> new</sup></h3>"
+
+		  if (scoresdata.at(scoresdata.shape[0]-1,"Won?")==1){
+
+		  document.getElementById("lastgame").innerHTML+="&#129351;";
+
+		  }
+
+
+
+		  doc_ready=true;
+
+	  }
+
+	  
+
+	 function show_season_stats(){
+
+		let data=scoresdata.copy();
+
+		data.asType("Runs","int32",true);
+
+		data.asType("Sixes","int32",true);
+
+		data.asType("Overs","int32",true);
+
+		cond=data["Overs"].ne('')
+
+		//data.loc({rows:cond}).print();
+
+		data.asType("Mdns","int32",true).fillNa(0,{inplace: true});
+
+		data.asType("RunsScored","int32",true).fillNa(0, {inplace: true});
+
+		data.asType("Wkts","int32",true).fillNa(0,{inplace: true});
+
+
+
+		 
+
+		 
+
+	  	let grouped_data=data.groupby(["Player"]).col(["Sixes","Runs"]).sum();
+
+		let pop_up_data="";
+
+		
+
+		grouped_data.sortValues("Runs_sum", {ascending:false, inplace: true });
+
+	  	grouped_data.rename({ "Runs_sum": "Runs" }, { inplace: true });
+
+	  	grouped_data.rename({ "Sixes_sum": "Sixes" }, { inplace: true });
+
+		grouped_data.resetIndex({inplace: true });
+
+	  	pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Batting Stats</b></h3>";
+
+	  	pop_up_data=pop_up_data+table_html(grouped_data);
+
+	  	
+
+		cond=data["BowlingOrder"].ne('DNB');
+
+	  	grouped_data=data.loc({rows:cond}).groupby(["Player"]).col(["Overs","Mdns","RunsScored","Wkts"]).sum();
+
+	        grouped_data.sortValues("Wkts_sum", {ascending:false, inplace: true });
+
+	  	grouped_data.rename({ "Overs_sum": "Overs" }, { inplace: true });
+
+	  	grouped_data.rename({ "Mdns_sum": "Mdns" }, { inplace: true });
+
+	  	grouped_data.rename({ "RunsScored_sum": "RunsScored" }, { inplace: true });
+
+	  	grouped_data.rename({ "Wkts_sum": "Wkts" }, { inplace: true });
+
+		grouped_data.resetIndex({inplace: true });
+
+	  	pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Bowling Stats</b></h3>";
+
+	  	pop_up_data=pop_up_data+table_html(grouped_data);  
+
+	  	
+
+	 	set_popup_body(pop_up_data);
+
+		display_popup();
+
+	 }
+
+
+
+	 
+
+	 //Generic pop up support functions
+
+	 function display_popup(){
+
+		 document.getElementById('popup').style.display='block';
+
+	 }
+
+	 function set_popup_header(txt){
+
+		 document.getElementById('popuphdr').innerHTML=txt;
+
+	 }	 
+
+	 function set_popup_body(txt){
+
+		 document.getElementById('popupbody').innerHTML=txt;
+
+	 }
+
+	 
+
+	 //Functional popup functions
+
+	 function popup_showplayerinfo(node){
+
+		 let player=node.getElementsByTagName("TD")[0].innerHTML;
+
+		 let cond=fl_points["PlayerNomination"].eq(player);
+
+		 let playerinfo=fl_points.loc({rows:cond});
+
+		 
+
+		 set_popup_header(player);
+
+         if (playerinfo.shape[0]==0){
+
+			 set_popup_body("<p style=\"text-align: center\">No data to display<p>");
+
+		  }
+
+		  else {
+
+			  playerinfo=playerinfo.loc({columns:["GameId","GameName","Won?","Player","Points","PointsDetail"]});
+
+			  playerinfo.sortValues("GameId", {ascending:false, inplace: true });
+
+			  //print_table(playerinfo,document.getElementById('pointsinfo'));
+
+			  set_popup_body(table_html(playerinfo));
+
+		  }
+
+		  display_popup();		 
+
+	 }
+
+	 
+
+	  function popup_scorecard(node){
+
+		  let GameId=node.getElementsByTagName("TD")[0].innerHTML;
+
+		  let GameName=node.getElementsByTagName("TD")[1].innerHTML;
+
+		  scorecard(GameId,GameName);
+
+       }	  
+
+	  
+
+	  function scorecard(GameId,GameName){
+
+		  set_popup_header(GameId+"-"+GameName);
+
+		  
+
+		  let cond=fl_points["GameId"].eq(GameId);
+
+		  let game_points=fl_points.loc({rows:cond});
+
+		  let pop_up_data="";
+
+		  let scoreshdr=scores[0];
+
+		  let game_scoresdata = new dfd.DataFrame(scores.slice(1),{columns:scoreshdr});
+
+		  cond=game_scoresdata["GameId"].eq(GameId);
+
+		  game_scoresdata=game_scoresdata.loc({rows:cond});
+
+		  if (game_points.shape[0]==0){
+
+			set_popup_body("<p style=\"text-align: center\">No data to display<p>");
+
+		  }
+
+		  else {
+
+			  let team_points=game_points.groupby(["Team"]).col(["Points"]).sum()
+
+			  team_points.rename({ "Points_sum": "Points" }, { inplace: true });
+
+			  team_points.sortValues("Points", {ascending:false, inplace: true });
+
+			  let team_table_data=table_html(team_points,true);
+
+			  
+
+			  game_points=game_points.loc({columns:["Team","PlayerNomination","Points","PointsDetail"]});
+
+			  game_points.sortValues("Points", {ascending:false, inplace: true });
+
+			  let game_table_data=table_html(game_points,true);
+
+			  let batting_card=table_html(game_scoresdata.loc({columns:["Player","HowOut","Sixes","Runs"]}));
+
+			  cond=game_scoresdata["BowlingOrder"].ne('DNB');
+
+			  let bowling_card="";
+
+			  if (game_scoresdata.loc({rows:cond}).shape[0]==0){
+
+				bowling_card=table_html(game_scoresdata.loc({rows:cond}).loc({columns:["Player","Overs","Mdns","RunsScored","Wkts"]}));
+
+			  }
+
+			  else {
+
+				bowling_card=table_html(game_scoresdata.loc({rows:cond}).sortValues("BowlingOrder").loc({columns:["Player","Overs","Mdns","RunsScored","Wkts"]}));
+
+			  }
+
+			  cond=game_scoresdata["Catches"].ne('0');
+
+			  cond=game_scoresdata["Catches"].ne('0');
+
+			  let catches_card=table_html(game_scoresdata.loc({rows:cond,columns:["Player","Catches"]}));
+
+			  cond=game_scoresdata["Runouts"].ne('0');
+
+			  let runouts_card=table_html(game_scoresdata.loc({rows:cond,columns:["Player","Runouts"]}));
+
+			  cond=game_scoresdata["Stumpings"].ne('0');
+
+			  let stumpings_card=table_html(game_scoresdata.loc({rows:cond,columns:["Player","Stumpings"]}));				  
+
+			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Batting Card</b></h3>";
+
+			  pop_up_data=pop_up_data+batting_card;
+
+			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Bowling Card</b></h3>";
+
+			  pop_up_data=pop_up_data+bowling_card;
+
+			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Catches, Runouts & Stumpings</b></h3>";
+
+			  pop_up_data=pop_up_data+"<div class=\"grid-container\">";
+
+			  pop_up_data=pop_up_data+"<div class=\"grid-item\">"+catches_card+"</div>";
+
+			  pop_up_data=pop_up_data+"<div class=\"grid-item\">"+runouts_card+"</div>";
+
+			  pop_up_data=pop_up_data+"<div class=\"grid-item\">"+stumpings_card+"</div>";
+
+			  pop_up_data=pop_up_data+"</div><br>";
+
+			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Points in this game by team</b></h3>";
+
+			  pop_up_data=pop_up_data+team_table_data;			  
+
+			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Points in this game</h3>";
+
+			  pop_up_data=pop_up_data+game_table_data;
+
+
+
+			  set_popup_body(pop_up_data);
+
+		  }
+
+		  display_popup();	
+
+       }	 
+
+	 
+
+	  
+
+	  
+
+	  // Points calculation functions
+
+	  function calculate_fl_points_with_detail(row,with_notes=true){
+
+		  let pointsdetail=calculate_fl_points(row,with_notes);
+
+		  return pointsdetail;
+
+	  }
+
+	  
+
+	  function calculate_fl_points(row,with_notes=false){
+
+		  let points=0;
+
+		  let category=row[fl_points_hdr.indexOf('Category')];
+
+		  let isCapped=row[fl_points_hdr.indexOf('Capped?')];
+
+		  let player=row[fl_points_hdr.indexOf('Player')];
+
+		  let note="";
+
+		  
+
+		  if ((category=="Batter") || (category=="SuperBatter") || (category=="AllRounder") || (category=="SuperAllRounder")){
+
+			let runs=(parseInt(row[fl_points_hdr.indexOf('Runs')])|| 0);
+
+			points=points+(runs*1);
+
+			note+=runs.toString()+" Runs *1 = "+points.toString()+"<br>";
+
+			points=points+((parseInt(row[fl_points_hdr.indexOf('Sixes')])|| 0)*10);	
+
+			note+=row[fl_points_hdr.indexOf('Sixes')]+" Sixes *10 = "+points.toString()+"<br>";
+
+		  }
+
+		  
+
+		  if ((category=="Bowler") || (category=="SuperBowler") || (category=="AllRounder") || (category=="SuperAllRounder")){
+
+			points=points+((parseInt(row[fl_points_hdr.indexOf('Wkts')])|| 0)*20);
+
+			note+=(parseInt(row[fl_points_hdr.indexOf('Wkts')])|| 
