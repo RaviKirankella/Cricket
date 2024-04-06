@@ -245,6 +245,7 @@
 	//End of managements/masterdata
 	  
 	var teamsdata="";
+	var teamsdatahdr="";
 	var scores="";
 	var fl_points=new dfd.DataFrame();
 	var scoresdata=new dfd.DataFrame();							   
@@ -256,12 +257,13 @@
 
 			var xmlhttp = new XMLHttpRequest();
 			var spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
-			var spreadsheetrange="Auction2024!A2:H";
+			var spreadsheetrange="Auction2024!A1:H";
 			var url = "https://sheets.googleapis.com/v4/spreadsheets/"+spreadsheetid+"/values/"+spreadsheetrange+"?key=AIzaSyAmi4pvsmS6iGokKlVXGxsFbKxpAnWjWEo";
 			xmlhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
 					var myArr = JSON.parse(this.responseText);
-					teamsdata=myArr["values"];
+					teamsdatahdr=myArr["values"][0];
+					teamsdata=myArr["values"].slice(1);
 					getscores();
 					AddTable(teamsdata);
 					}
@@ -295,7 +297,7 @@
 	  function fl_leaderboard(){
 		  //let scoreshdr=scores[0];  	  
 		  //scoresdata = new dfd.DataFrame(scores.slice(1),{columns:scoreshdr});
-		  nominations = new dfd.DataFrame(teamsdata,{columns:["PlayerNomination","PricePaid","Team","PlayerType","EstimatedPoints","Capped?","Category","Player"]});	
+		  nominations = new dfd.DataFrame(teamsdata,{columns:teamsdatahdr});	
 		  fl_points=dfd.merge({left:nominations,right:scoresdata,on:["Player"],how:"inner"});
 		  fl_points.resetIndex({inplace: true });
 		  fl_points_hdr=fl_points.columns;
@@ -551,9 +553,12 @@
 		
 	  // Uncapped player computations	
 	  function computeuncapped(scoresdata) {
-		  nominations = new dfd.DataFrame(teamsdata,{columns:["PlayerNomination","PricePaid","Team","PlayerType","EstimatedPoints","Capped?","Category","Player"]});
-		  let uncapped_df=dfd.merge({left:scoresdata,right:nominations,on:["Player"],how:"left"});
+		  nominations = new dfd.DataFrame(teamsdata,{columns:teamsdatahdr});
+		  let nominationindex=teamsdatahdr.indexOf("PlayerNomination");
+		  let playerindex=teamsdatahdr.indexOf("Player");
 
+		  let uncapped_df=dfd.merge({left:scoresdata,right:nominations,on:["Player"],how:"left"});
+		  
 		  cond=uncapped_df["Capped?"].isNa()
 		  uncapped_batters=uncapped_df.loc({rows:cond,columns:["GameId","GameName","Player","Sixes","Runs","Won?","PointsMultiplier"]});
 		  
@@ -575,16 +580,16 @@
 		  for (i=0;i<uncapped_batters.shape[0];i++) {
 			
 			for(j = 0; j < teamsdata.length; j++) {
-				if (teamsdata[j][0]=="Uncapped (Batter) "+(i+1).toString()){
-				teamsdata[j][7]=uncapped_batters.at(i,"Player");
+				if (teamsdata[j][nominationindex]=="Uncapped (Batter) "+(i+1).toString()){
+				teamsdata[j][playerindex]=uncapped_batters.at(i,"Player");
 				}
 			}
 		  }
 		  for (i=0;i<uncapped_bowlers.shape[0];i++) {
 			
 			for(j = 0; j < teamsdata.length; j++) {
-				if (teamsdata[j][0]=="Uncapped (Bowler) "+(i+1).toString()){
-				teamsdata[j][7]=uncapped_bowlers.at(i,"Player");
+				if (teamsdata[j][nominationindex]=="Uncapped (Bowler) "+(i+1).toString()){
+				teamsdata[j][playerindex]=uncapped_bowlers.at(i,"Player");
 				}
 			}
 		  }
@@ -660,7 +665,7 @@
 	  
 	  
 	  	function AddTable(teamdata,teamname="All") {
-	    let team_df=new dfd.DataFrame(teamsdata,{columns:["PlayerNomination","PricePaid","Team","PlayerType","EstimatedPoints","Capped?","Category","Player"]});	
+	    let team_df=new dfd.DataFrame(teamsdata,{columns:teamsdatahdr});	
 		if (teamname!="All") {
 		    let cond=team_df["Team"].eq(teamname);
 		    team_df=team_df.loc({rows:cond});
@@ -950,7 +955,7 @@ starburst.innerHTML = '🌟';
    
   <body>
   
-    <h1 class="whitetext centertext">Fantasy League 2023</h1>
+    <h1 class="whitetext centertext">Fantasy League 2024 (Projections)</h1>
     <button id="faq" onclick="window.location.href='/Cricket/FantasyLeagueFAQ.html'">FAQs</button>
 
 <div class="players">
@@ -963,14 +968,16 @@ starburst.innerHTML = '🌟';
 	<!-- changes for scoreboard button: END -->
 	
 		<button class="playerbutton" OnClick="addTeamTable(this)">The Joe Hopers</button>
-		<button class="playerbutton" OnClick="addTeamTable(this)">Can I Nick It?</button>
-		<button class="playerbutton" OnClick="addTeamTable(this)">You gave it away</button>
 		<button class="playerbutton" OnClick="addTeamTable(this)">Golden Duckitt</button>
-		<button class="playerbutton" OnClick="addTeamTable(this)">Ronnie Drives Again</button>
-		<button class="playerbutton" OnClick="addTeamTable(this)">Shit on the villa 2</button>
 		<button class="playerbutton" OnClick="addTeamTable(this)">Stokes Foakes Woakes</button>
-		<button class="playerbutton" OnClick="addTeamTable(this)">Thamesis</button>
 		<button class="playerbutton" OnClick="addTeamTable(this)">Whiter's Teapots</button>
+		<button class="playerbutton" OnClick="addTeamTable(this)">Can I Nick It?</button>
+		<button class="playerbutton" OnClick="addTeamTable(this)">Thamesis</button>
+		<button class="playerbutton" OnClick="addTeamTable(this)">Shit on the villa 2</button>
+		<button class="playerbutton" OnClick="addTeamTable(this)">Ronnie Drives Again</button>
+		<button class="playerbutton" OnClick="addTeamTable(this)">You gave it away</button>
+
+
 		
 	<button class="playerbutton" OnClick="addTeamTable(this)">Clear Selection</button>
 	<button class="playerbutton" OnClick="addTeamTable(this)">Games</button>
