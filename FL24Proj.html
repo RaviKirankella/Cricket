@@ -660,7 +660,7 @@
 	  
 	  
 	  	function AddTable(teamdata,teamname="All") {
-	    let team_df=new dfd.DataFrame(teamsdata,{columns:["PlayerNomination","PricePaid","Team","EstimatedPoints","Capped?","Category","Player"]});	
+	    let team_df=new dfd.DataFrame(teamsdata,{columns:["PlayerNomination","PricePaid","Team","PlayerType","EstimatedPoints","Capped?","Category","Player"]});	
 		if (teamname!="All") {
 		    let cond=team_df["Team"].eq(teamname);
 		    team_df=team_df.loc({rows:cond});
