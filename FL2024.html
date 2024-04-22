@@ -321,7 +321,8 @@
 	  }
 	  
 	 function show_season_stats(){
-		let data=scoresdata.copy();
+		let cond=scoresdata["GameName"].ne("Auction");
+		let data=scoresdata.loc({rows:cond}).copy();
 		data.asType("Runs","int32",true);
 		data.asType("Sixes","int32",true);
 		data.asType("Overs","int32",true);
