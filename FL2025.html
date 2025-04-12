@@ -1,1 +1,1023 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+  <head>
+    <title>ISISCC Fantasy Cricket League</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+	body {	font-family: Verdana, Geneva, sans-serif; background-color: gray;}
+	table { float:none; text-align: center; margin-top:20px; width: 100%; font-size: 90%; }
+	th td { padding:10px; margin: 5px; }
+	h2{ text-align: center;	}	    
+
+	.centertext{ text-align:center;}
+	.whitetext{color: white;}
+	.frame { background-color:white; padding:2px; margin:5px; height: 100%;}
+	.framesplit {float:left; width:48%;padding:2px;}
+	.bottom {clear:both;}
+	.playerselectdiv { margin-bottom: 3%; margin-top:3%; padding: 5px; }
+	.ui-helper-hidden, .ui-helper-hidden-accessible {display: none;}	
+    .ui-menu-item {list-style-type: none; color: white; text-align:left;}
+	.infchart {width:50%; height:80%;}
+	.overview {text-align:center; margin:auto; }
+	.players {text-align:center;}
+	.chart {color: blue;}
+	.playerbutton {background-color:white; font-weight: bold; border-color: white; border:5px; margin: 5px;
+			      padding: 5px; border-radius:5%;}
+    .modal-dialog{overflow-y: initial !important}
+    .w3-container{height: 80vh; overflow-y: auto;}
+    .detail {display: none; min-width:40px;font-size: 80%;}
+	.grid-container {display: grid;
+			grid-template-columns: auto auto;}
+	.grid-item {padding: 1px;
+		}
+	.sortbutton {    color: black;
+			border: none;
+			outline: none;
+			background-color: inherit;
+			margin-left: none;
+			padding: 1px;
+			font-weight: bolder;
+	}
+	.hvr:hover {
+	color:blue;
+	text-decoration: underline;
+	text-decoration-color: blue;
+	}
+	
+    #faq { font-family: Verdana, Geneva, sans-serif; position:fixed; top:0; right:0; width: 100px; font-size: 18px; 
+	  padding: 10px; margin:10px; border: none; background: #fff; color: #000; cursor: pointer; float:right;}
+    #faq:hover {  background: #ddd;  color: black;}
+    @media only screen and (max-width: 600px) {
+        .framesplit {width: 100%;}
+		.pointsinfo {max-width: 600px;}
+		}
+
+.confetti-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10; /* Set a higher z-index to bring it to the foreground */
+
+
+.fireworks-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10; /* Set a higher z-index to bring it to the foreground */
+}
+
+.fireworks-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+@keyframes firework {
+  0% { transform: translate(var(--x), var(--initialY)); width: var(--initialSize); opacity: 1; }
+  50% { width: 0.5vmin; opacity: 1; }
+  100% { width: var(--finalSize); opacity: 0; }
+}
+
+/* @keyframes fireworkPseudo {
+  0% { transform: translate(-50%, -50%); width: var(--initialSize); opacity: 1; }
+  50% { width: 0.5vmin; opacity: 1; }
+  100% { width: var(--finalSize); opacity: 0; }
+}
+ */
+.firework,
+.firework::before,
+.firework::after
+{
+  --initialSize: 0.5vmin;
+  --finalSize: 45vmin;
+  --particleSize: 0.2vmin;
+  --color1: yellow;
+  --color2: khaki;
+  --color3: white;
+  --color4: lime;
+  --color5: gold;
+  --color6: mediumseagreen;
+  --y: -30vmin;
+  --x: -50%;
+  --initialY: 60vmin;
+  content: "";
+  animation: firework 2s infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, var(--y));
+  width: var(--initialSize);
+  aspect-ratio: 1;
+  background: 
+    /*
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 0% 0%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 100% 0%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 100% 100%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 0% 100%,
+    */
+    
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 50% 0%,
+    radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 100% 50%,
+    radial-gradient(circle, var(--color3) var(--particleSize), #0000 0) 50% 100%,
+    radial-gradient(circle, var(--color4) var(--particleSize), #0000 0) 0% 50%,
+    
+    /* bottom right */
+    radial-gradient(circle, var(--color5) var(--particleSize), #0000 0) 80% 90%,
+    radial-gradient(circle, var(--color6) var(--particleSize), #0000 0) 95% 90%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 90% 70%,
+    radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 100% 60%,
+    radial-gradient(circle, var(--color3) var(--particleSize), #0000 0) 55% 80%,
+    radial-gradient(circle, var(--color4) var(--particleSize), #0000 0) 70% 77%,
+    
+    /* bottom left */
+    radial-gradient(circle, var(--color5) var(--particleSize), #0000 0) 22% 90%,
+    radial-gradient(circle, var(--color6) var(--particleSize), #0000 0) 45% 90%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 33% 70%,
+    radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 10% 60%,
+    radial-gradient(circle, var(--color3) var(--particleSize), #0000 0) 31% 80%,
+    radial-gradient(circle, var(--color4) var(--particleSize), #0000 0) 28% 77%,
+    radial-gradient(circle, var(--color5) var(--particleSize), #0000 0) 13% 72%,
+    
+    /* top left */
+    radial-gradient(circle, var(--color6) var(--particleSize), #0000 0) 80% 10%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 95% 14%,
+    radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 90% 23%,
+    radial-gradient(circle, var(--color3) var(--particleSize), #0000 0) 100% 43%,
+    radial-gradient(circle, var(--color4) var(--particleSize), #0000 0) 85% 27%,
+    radial-gradient(circle, var(--color5) var(--particleSize), #0000 0) 77% 37%,
+    radial-gradient(circle, var(--color6) var(--particleSize), #0000 0) 60% 7%,
+    
+    /* top right */
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 22% 14%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 45% 20%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 33% 34%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 10% 29%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 31% 37%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 28% 7%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 13% 42%
+    ;
+  background-size: var(--initialSize) var(--initialSize);
+  background-repeat: no-repeat;
+}
+
+.firework::before {
+  --x: -50%;
+  --y: -50%;
+  --initialY: -50%;
+/*   transform: translate(-20vmin, -2vmin) rotate(40deg) scale(1.3) rotateY(40deg); */
+  transform: translate(-50%, -50%) rotate(40deg) scale(1.3) rotateY(40deg);
+/*   animation: fireworkPseudo 2s infinite; */
+}
+
+.firework::after {
+  --x: -50%;
+  --y: -50%;
+  --initialY: -50%;
+/*   transform: translate(44vmin, -50%) rotate(170deg) scale(1.15) rotateY(-30deg); */
+  transform: translate(-50%, -50%) rotate(170deg) scale(1.15) rotateY(-30deg);
+/*   animation: fireworkPseudo 2s infinite; */
+}
+
+.firework:nth-child(2) {
+  --x: 30vmin;
+}
+
+.firework:nth-child(2),
+.firework:nth-child(2)::before,
+.firework:nth-child(2)::after {
+  --color1: pink;
+  --color2: violet;
+  --color3: fuchsia;
+  --color4: orchid;
+  --color5: plum;
+  --color6: lavender;  
+  --finalSize: 40vmin;
+  left: 30%;
+  top: 60%;
+  animation-delay: -0.25s;
+}
+
+.firework:nth-child(3) {
+  --x: -30vmin;
+  --y: -50vmin;
+}
+
+.firework:nth-child(3),
+.firework:nth-child(3)::before,
+.firework:nth-child(3)::after {
+  --color1: cyan;
+  --color2: lightcyan;
+  --color3: lightblue;
+  --color4: PaleTurquoise;
+  --color5: SkyBlue;
+  --color6: lavender;
+  --finalSize: 35vmin;
+  left: 70%;
+  top: 60%;
+  animation-delay: -0.4s;
+}
+
+    </style>
+	
+  <script src="https://ravikirankella.github.io/Cricket/FantasyLeague.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="https://apis.google.com/js/api.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.0/lib/bundle.min.js"></script> 
+
+ 
+  <script>
+	//Page Management information
+  // ############# CHANGE ME ##############
+	var winnerteamname="X"; // cannot be blank
+
+	//End of managements/masterdata
+	  
+	var teamsdata="";
+	var teamsdatahdr="";
+	var scores="";
+	var fl_points=new dfd.DataFrame();
+	var scoresdata=new dfd.DataFrame();							   
+	var fl_points_hdr=[];
+	var doc_ready=false;
+
+	function loadTeamsData() {
+			console.log('loadTeamsData');
+
+			var xmlhttp = new XMLHttpRequest();
+			var spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
+
+      // ############# CHANGE ME ##############
+			var spreadsheetrange="Auction2025!A1:H";
+			var url = "https://sheets.googleapis.com/v4/spreadsheets/"+spreadsheetid+"/values/"+spreadsheetrange+"?key=AIzaSyAmi4pvsmS6iGokKlVXGxsFbKxpAnWjWEo";
+			xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+					var myArr = JSON.parse(this.responseText);
+					teamsdatahdr=myArr["values"][0];
+					teamsdata=myArr["values"].slice(1);
+					getscores();
+					AddTable(teamsdata);
+					}
+					
+			};
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send();
+		}
+	function getscores() {
+			console.log('getscores');
+
+			var xmlhttp = new XMLHttpRequest();
+			var spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
+
+      // ############# CHANGE ME ##############
+			var spreadsheetrange="Scores2025!A1:Q";
+			var url = "https://sheets.googleapis.com/v4/spreadsheets/"+spreadsheetid+"/values/"+spreadsheetrange+"?key=AIzaSyAmi4pvsmS6iGokKlVXGxsFbKxpAnWjWEo";
+			xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+					var myArr = JSON.parse(this.responseText);
+					scores=myArr["values"];
+					let scoreshdr=scores[0];			  
+		  			scoresdata = new dfd.DataFrame(scores.slice(1),{columns:scoreshdr});										 
+					computeuncapped(scoresdata);
+					fl_leaderboard();
+					}
+					
+			};
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send();
+		}
+	
+	  function fl_leaderboard(){
+		  //let scoreshdr=scores[0];  	  
+		  //scoresdata = new dfd.DataFrame(scores.slice(1),{columns:scoreshdr});
+		  nominations = new dfd.DataFrame(teamsdata,{columns:teamsdatahdr});	
+		  fl_points=dfd.merge({left:nominations,right:scoresdata,on:["Player"],how:"inner"});
+		  fl_points.resetIndex({inplace: true });
+		  fl_points_hdr=fl_points.columns;
+		  fl_points.addColumn("Points",fl_points.apply(calculate_fl_points),{ inplace: true });
+		  fl_points.addColumn("PointsDetail",fl_points.apply(calculate_fl_points_with_detail),{ inplace: true });
+		  document.getElementById("leaderboardhdr").innerHTML='<h2 class="chart" OnClick="AddChart(\'All\')"><u>Leader Board</h2>';
+		  //print_grouped_info(fl_points,document.getElementById("leaderboard"),"Team","Points");
+		  grouped_data=fl_points.groupby(["Team"]).col(["Points"]).sum();
+		  grouped_data.sortValues("Points_sum", {ascending:false, inplace: true });
+		  grouped_data.rename({ "Points_sum": "Points" }, { inplace: true });
+		  grouped_data.resetIndex({inplace: true });
+		  grouped_data=grouped_data.replace(winnerteamname,winnerteamname+"<a>&#127942;</a>",{ columns: ["Team"] });
+		  document.getElementById("leaderboard").innerHTML=table_html(grouped_data);
+		  document.getElementById("leaderboard").innerHTML+="<br><p id=\"lastgame\" style=\"text-align:center; font-size: 80%;\">Latest game <a class=\"hvr\" onclick=\"scorecard('"+scoresdata.at(scoresdata.shape[0]-1,"GameId")+"','"+scoresdata.at(scoresdata.shape[0]-1,"GameName")+"')\"><b>"+scoresdata.at(scoresdata.shape[0]-1,"GameId")+" - "+scoresdata.at(scoresdata.shape[0]-1,"GameName")+"</b><sup> click me</sup></a></p>"
+		  document.getElementById("leaderboard").innerHTML+="<br><h3 class=\"hvr\" onclick=\"show_season_stats()\">season stats<sup> new</sup></h3>"
+		  if (scoresdata.at(scoresdata.shape[0]-1,"Won?")==1){
+		  document.getElementById("lastgame").innerHTML+="&#129351;";
+		  }
+
+		  doc_ready=true;
+	  }
+	  
+	 function show_season_stats(){
+		let cond=scoresdata["GameName"].ne("Auction");
+		let data=scoresdata.loc({rows:cond}).copy();
+		data.asType("Runs","int32",true);
+		data.asType("Sixes","int32",true);
+		data.asType("Overs","int32",true);
+		cond=data["Overs"].ne('')
+		//data.loc({rows:cond}).print();
+		data.asType("Mdns","int32",true).fillNa(0,{inplace: true});
+		data.asType("RunsScored","int32",true).fillNa(0, {inplace: true});
+		data.asType("Wkts","int32",true).fillNa(0,{inplace: true});
+
+		 
+		 
+	  	let grouped_data=data.groupby(["Player"]).col(["Sixes","Runs"]).sum();
+		let pop_up_data="";
+		
+		grouped_data.sortValues("Runs_sum", {ascending:false, inplace: true });
+	  	grouped_data.rename({ "Runs_sum": "Runs" }, { inplace: true });
+	  	grouped_data.rename({ "Sixes_sum": "Sixes" }, { inplace: true });
+		grouped_data.resetIndex({inplace: true });
+	  	pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Batting Stats</b></h3>";
+	  	pop_up_data=pop_up_data+table_html(grouped_data);
+	  	
+		cond=data["BowlingOrder"].ne('DNB');
+	  	grouped_data=data.loc({rows:cond}).groupby(["Player"]).col(["Overs","Mdns","RunsScored","Wkts"]).sum();
+	        grouped_data.sortValues("Wkts_sum", {ascending:false, inplace: true });
+	  	grouped_data.rename({ "Overs_sum": "Overs" }, { inplace: true });
+	  	grouped_data.rename({ "Mdns_sum": "Mdns" }, { inplace: true });
+	  	grouped_data.rename({ "RunsScored_sum": "RunsScored" }, { inplace: true });
+	  	grouped_data.rename({ "Wkts_sum": "Wkts" }, { inplace: true });
+		grouped_data.resetIndex({inplace: true });
+	  	pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Bowling Stats</b></h3>";
+	  	pop_up_data=pop_up_data+table_html(grouped_data);  
+	  	
+	 	set_popup_body(pop_up_data);
+		display_popup();
+	 }
+
+	 
+	 //Generic pop up support functions
+	 function display_popup(){
+		 document.getElementById('popup').style.display='block';
+	 }
+	 function set_popup_header(txt){
+		 document.getElementById('popuphdr').innerHTML=txt;
+	 }	 
+	 function set_popup_body(txt){
+		 document.getElementById('popupbody').innerHTML=txt;
+	 }
+	 
+	 //Functional popup functions
+	 function popup_showplayerinfo(node){
+		 let player=node.getElementsByTagName("TD")[0].innerHTML;
+		 let cond=fl_points["PlayerNomination"].eq(player);
+		 let playerinfo=fl_points.loc({rows:cond});
+		 
+		 set_popup_header(player);
+         if (playerinfo.shape[0]==0){
+			 set_popup_body("<p style=\"text-align: center\">No data to display<p>");
+		  }
+		  else {
+			  playerinfo=playerinfo.loc({columns:["GameId","GameName","Won?","Player","Points","PointsDetail"]});
+			  playerinfo.sortValues("GameId", {ascending:false, inplace: true });
+			  //print_table(playerinfo,document.getElementById('pointsinfo'));
+			  set_popup_body(table_html(playerinfo));
+		  }
+		  display_popup();		 
+	 }
+	 
+	  function popup_scorecard(node){
+		  let GameId=node.getElementsByTagName("TD")[0].innerHTML;
+		  let GameName=node.getElementsByTagName("TD")[1].innerHTML;
+		  scorecard(GameId,GameName);
+       }	  
+	  
+	  function scorecard(GameId,GameName){
+		  set_popup_header(GameId+"-"+GameName);
+		  
+		  let cond=fl_points["GameId"].eq(GameId);
+		  let game_points=fl_points.loc({rows:cond});
+		  let pop_up_data="";
+		  let scoreshdr=scores[0];
+		  let game_scoresdata = new dfd.DataFrame(scores.slice(1),{columns:scoreshdr});
+		  cond=game_scoresdata["GameId"].eq(GameId);
+		  game_scoresdata=game_scoresdata.loc({rows:cond});
+		  if (game_points.shape[0]==0){
+			set_popup_body("<p style=\"text-align: center\">No data to display<p>");
+		  }
+		  else {
+			  let team_points=game_points.groupby(["Team"]).col(["Points"]).sum()
+			  team_points.rename({ "Points_sum": "Points" }, { inplace: true });
+			  team_points.sortValues("Points", {ascending:false, inplace: true });
+			  let team_table_data=table_html(team_points,true);
+			  
+			  game_points=game_points.loc({columns:["Team","PlayerNomination","Points","PointsDetail"]});
+			  game_points.sortValues("Points", {ascending:false, inplace: true });
+			  let game_table_data=table_html(game_points,true);
+			  let batting_card=table_html(game_scoresdata.loc({columns:["Player","HowOut","Sixes","Runs"]}));
+			  cond=game_scoresdata["BowlingOrder"].ne('DNB');
+			  let bowling_card="";
+			  if (game_scoresdata.loc({rows:cond}).shape[0]==0){
+				bowling_card=table_html(game_scoresdata.loc({rows:cond}).loc({columns:["Player","Overs","Mdns","RunsScored","Wkts"]}));
+			  }
+			  else {
+				bowling_card=table_html(game_scoresdata.loc({rows:cond}).sortValues("BowlingOrder").loc({columns:["Player","Overs","Mdns","RunsScored","Wkts"]}));
+			  }
+			  cond=game_scoresdata["Catches"].ne('0');
+			  cond=game_scoresdata["Catches"].ne('0');
+			  let catches_card=table_html(game_scoresdata.loc({rows:cond,columns:["Player","Catches"]}));
+			  cond=game_scoresdata["Runouts"].ne('0');
+			  let runouts_card=table_html(game_scoresdata.loc({rows:cond,columns:["Player","Runouts"]}));
+			  cond=game_scoresdata["Stumpings"].ne('0');
+			  let stumpings_card=table_html(game_scoresdata.loc({rows:cond,columns:["Player","Stumpings"]}));				  
+			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Batting Card</b></h3>";
+			  pop_up_data=pop_up_data+batting_card;
+			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Bowling Card</b></h3>";
+			  pop_up_data=pop_up_data+bowling_card;
+			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Catches, Runouts & Stumpings</b></h3>";
+			  pop_up_data=pop_up_data+"<div class=\"grid-container\">";
+			  pop_up_data=pop_up_data+"<div class=\"grid-item\">"+catches_card+"</div>";
+			  pop_up_data=pop_up_data+"<div class=\"grid-item\">"+runouts_card+"</div>";
+			  pop_up_data=pop_up_data+"<div class=\"grid-item\">"+stumpings_card+"</div>";
+			  pop_up_data=pop_up_data+"</div><br>";
+			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Points in this game by team</b></h3>";
+			  pop_up_data=pop_up_data+team_table_data;			  
+			  pop_up_data=pop_up_data+"<h3 class=\"centertext\"><b>Points in this game</h3>";
+			  pop_up_data=pop_up_data+game_table_data;
+
+			  set_popup_body(pop_up_data);
+		  }
+		  display_popup();	
+       }	 
+	 
+	  
+	  
+	  // Points calculation functions
+	  function calculate_fl_points_with_detail(row,with_notes=true){
+		  let pointsdetail=calculate_fl_points(row,with_notes);
+		  return pointsdetail;
+	  }
+	  
+	  function calculate_fl_points(row,with_notes=false){
+		  let points=0;
+		  let category=row[fl_points_hdr.indexOf('Category')];
+		  let isCapped=row[fl_points_hdr.indexOf('Capped?')];
+		  let player=row[fl_points_hdr.indexOf('Player')];
+		  let note="";
+		  
+		  if ((category=="Batter") || (category=="SuperBatter") || (category=="AllRounder") || (category=="SuperAllRounder")){
+			let runs=(parseInt(row[fl_points_hdr.indexOf('Runs')])|| 0);
+			points=points+(runs*1);
+			note+=runs.toString()+" Runs *1 = "+points.toString()+"<br>";
+			points=points+((parseInt(row[fl_points_hdr.indexOf('Sixes')])|| 0)*10);	
+			note+=row[fl_points_hdr.indexOf('Sixes')]+" Sixes *10 = "+points.toString()+"<br>";
+		  }
+		  
+		  if ((category=="Bowler") || (category=="SuperBowler") || (category=="AllRounder") || (category=="SuperAllRounder")){
+			points=points+((parseInt(row[fl_points_hdr.indexOf('Wkts')])|| 0)*20);
+			note+=(parseInt(row[fl_points_hdr.indexOf('Wkts')])|| 0).toString()+" Wickets * 20= "+points.toString()+"<br>";
+			points=points+((parseInt(row[fl_points_hdr.indexOf('Mdns')])|| 0)*10);
+			note+=(parseInt(row[fl_points_hdr.indexOf('Mdns')])|| 0).toString()+" Maidens * 10= "+points.toString()+"<br>";
+
+		  }	
+		  
+		  if ((category=="SuperBatter") || (category=="SuperBowler") || (category=="SuperAllRounder")){
+			points=points*2
+			note+="Super cat double up ="+points.toString()+"<br>";
+		  }
+		  if ((category=="Batter") || (category=="SuperBatter") || (category=="AllRounder") || (category=="SuperAllRounder")){
+			let howout=row[fl_points_hdr.indexOf('HowOut')];
+			if ((howout=="Not Out") || (howout=="LBW") || (howout=="Run Out")) {
+			points=points+5;
+			note+="Batting bonus +5 ="+points.toString()+"<br>";
+			}
+			else {
+			note+="Batting bonus +0 ="+points.toString()+"<br>";
+			}
+			}
+		  if ((category=="Bowler") || (category=="SuperBowler") || (category=="AllRounder") || (category=="SuperAllRounder")){
+			let overs=(parseInt(row[fl_points_hdr.indexOf('Overs')])|| 0);
+			let minovers=Math.round((parseInt(row[fl_points_hdr.indexOf('MaxPerBowler')])|| 0)/2,0);
+			if ((overs!=0) && (overs<minovers)){
+			points=points+5;
+			note+="Bowling bonus +5 ="+points.toString()+"<br>";
+			}
+			else {
+			note+="Bowling bonus +0 ="+points.toString()+"<br>";
+			}
+		  }	
+
+		  if (parseInt(isCapped)==1){	
+			points=points+10;
+			note+="Game played +10 ="+points.toString()+"<br>";
+			points=points+((parseInt(row[fl_points_hdr.indexOf('Catches')])|| 0)*10);
+			note+=(parseInt(row[fl_points_hdr.indexOf('Catches')])|| 0).toString()+" Catches * 10= "+points.toString()+"<br>";
+			points=points+((parseInt(row[fl_points_hdr.indexOf('Runouts')])|| 0)*10);
+			note+=(parseInt(row[fl_points_hdr.indexOf('Runouts')])|| 0).toString()+" Runouts * 10= "+points.toString()+"<br>";
+			points=points+((parseInt(row[fl_points_hdr.indexOf('Stumpings')])|| 0)*10);
+			note+=(parseInt(row[fl_points_hdr.indexOf('Stumpings')])|| 0).toString()+" Stumpings * 10= "+points.toString()+"<br>";			  
+		  }	  
+		  
+		  if (parseInt(row[fl_points_hdr.indexOf('Won?')])==1){
+			points=Math.round((points*1.25)-0.5,0);
+			note+="Winning game 25% bonus ="+points.toString()+"<br>";
+			}
+		  if ((parseInt(row[fl_points_hdr.indexOf('PointsMultiplier')])|| 1)!=1){
+		  points=points*(parseInt(row[fl_points_hdr.indexOf('PointsMultiplier')])|| 1);
+		  note+="Tour/nonStats bonus * "+(parseInt(row[fl_points_hdr.indexOf('PointsMultiplier')])|| 1).toString()+"="+points.toString()+"<br>";
+		  }
+		  
+		  if (with_notes){
+		  points='<p onclick=showhide(this)>Click here to show detail</p><p class="detail">'+note+'</p>';
+		  }
+		  
+		  return points;
+	  }
+	  function showhide(node){
+		   let text=node.innerHTML;
+		   if (text=="Click here to show detail"){
+		   node.innerHTML='Hide detail';
+		   
+		   let child=node.parentNode.lastChild;
+		   child.style.display = "block"
+		   }
+		   else {
+		   node.innerHTML='Click here to show detail';
+		   let child=node.parentNode.lastChild;
+		   child.style.display = "None"
+		   }
+	   }
+		
+	  // Uncapped player computations	
+	  function computeuncapped(scoresdata) {
+		  nominations = new dfd.DataFrame(teamsdata,{columns:teamsdatahdr});
+		  let nominationindex=teamsdatahdr.indexOf("PlayerNomination");
+		  let playerindex=teamsdatahdr.indexOf("Player");
+
+		  let uncapped_df=dfd.merge({left:scoresdata,right:nominations,on:["Player"],how:"left"});
+		  
+		  cond=uncapped_df["Capped?"].isNa()
+		  uncapped_batters=uncapped_df.loc({rows:cond,columns:["GameId","GameName","Player","Sixes","Runs","Won?","PointsMultiplier"]});
+		  
+		  uncapped_batters.addColumn("Points",uncapped_batters.apply(calculate_uncapped_batter_points),{ inplace: true });
+		  uncapped_batters=uncapped_batters.groupby(['Player']).col(['Points']).sum();
+		  uncapped_batters.sortValues("Points_sum", {ascending:false, inplace: true });
+		  uncapped_batters.resetIndex({inplace: true });
+		  //uncapped_batters.print();
+		  
+		  uncapped_bowlers=uncapped_df.loc({rows:cond,columns:["GameId","GameName","Player","Mdns","Wkts","Won?","PointsMultiplier"]});
+		  
+		  uncapped_bowlers.addColumn("Points",uncapped_bowlers.apply(calculate_uncapped_bowler_points),{ inplace: true });
+		  uncapped_bowlers=uncapped_bowlers.groupby(['Player']).col(['Points']).sum();
+		  uncapped_bowlers.sortValues("Points_sum", {ascending:false, inplace: true });
+		  uncapped_bowlers.resetIndex({inplace: true });
+		  //uncapped_bowlers.print();
+		  
+
+		  for (i=0;i<uncapped_batters.shape[0];i++) {
+			
+			for(j = 0; j < teamsdata.length; j++) {
+				if (teamsdata[j][nominationindex]=="Uncapped (Batter) "+(i+1).toString()){
+				teamsdata[j][playerindex]=uncapped_batters.at(i,"Player");
+				}
+			}
+		  }
+		  for (i=0;i<uncapped_bowlers.shape[0];i++) {
+			
+			for(j = 0; j < teamsdata.length; j++) {
+				if (teamsdata[j][nominationindex]=="Uncapped (Bowler) "+(i+1).toString()){
+				teamsdata[j][playerindex]=uncapped_bowlers.at(i,"Player");
+				}
+			}
+		  }
+		  
+
+	  }
+	  
+	  function calculate_uncapped_batter_points(row) {
+		cols=["GameId","GameName","Player","Sixes","Runs","Won?","PointsMultiplier"];
+		let points=(((parseInt(row[cols.indexOf('Sixes')])|| 0)*5)+(parseInt(row[cols.indexOf('Runs')])|| 0));
+		if (parseInt(row[cols.indexOf('Won?')])==1){
+		points=Math.round((points*1.25)-0.5,0);
+		}
+		points=points*parseInt(row[cols.indexOf('PointsMultiplier')]);
+		return points;
+	}
+	  function calculate_uncapped_bowler_points(row) {
+		cols=["GameId","GameName","Player","Mdns","Wkts","Won?","PointsMultiplier"];
+		let points=(((parseInt(row[cols.indexOf('Mdns')])|| 0)*5)+(parseInt(row[cols.indexOf('Wkts')]) || 0)*20);
+				if (parseInt(row[cols.indexOf('Won?')])==1){
+		points=Math.round((points*1.25)-0.5,0);
+		}
+		points=points*parseInt(row[cols.indexOf('PointsMultiplier')]);
+		return points;
+	}	  
+	  
+
+	  // Suport functions
+	  	function addTeamTable(teamnode) {
+			var teamname=teamnode.innerHTML;
+			var btns = document.getElementsByClassName("playerbutton");
+			for (i = 0; i < btns.length; i++) {
+				btns[i].style.backgroundColor = "white";
+                                btns[i].style.color = "black";
+
+					}
+			teamnode.style.backgroundColor = "blue";
+                        teamnode.style.color = "white";	
+			if (teamname=="Clear Selection"){
+				teamname="All";
+				teamnode.style.backgroundColor = "white";
+                                teamnode.style.color = "black";
+			}
+                        
+			if (teamname=='Games'){
+			addgameinfo();
+			}
+			else {
+			AddTable(teamsdata,teamname);
+			}
+		}
+		
+	  function addgameinfo(){
+	  if (doc_ready) {
+	    document.getElementById("leaderboardhdr").innerHTML='<h2>Games so far..</h2>';
+		let games=fl_points.groupby(['GameId','GameName','Won?']).col(['Points']).sum();
+		games.rename({ "Points_sum": "Points" }, { inplace: true });
+		games.sortValues("GameId", {ascending:false, inplace: true });
+		document.getElementById("leaderboard").innerHTML="";
+		document.getElementById("leaderboard").innerHTML=table_html(games,true,"popup_scorecard");
+		
+		let grouped_data=fl_points.groupby(["PlayerNomination","PricePaid","Team"]).col(["Points"]).sum();
+		grouped_data.sortValues("Points_sum", {ascending:false, inplace: true });
+		grouped_data.addColumn("Points / £1000",grouped_data.column("Points_sum").div(grouped_data.column("PricePaid")).mul(1000).round(2).fillNa(0),{inplace: true });
+		grouped_data.rename({ "Points_sum": "Points" }, { inplace: true });
+		grouped_data.resetIndex({inplace: true });
+		
+		document.getElementById("teaminfo").innerHTML=table_html(grouped_data.loc({"columns":["PlayerNomination","Points","Points / £1000","PricePaid","Team"]}),true,"popup_showplayerinfo");
+		}
+	  }
+
+
+	  
+	  
+	  	function AddTable(teamdata,teamname="All") {
+	    let team_df=new dfd.DataFrame(teamsdata,{columns:teamsdatahdr});	
+		if (teamname!="All") {
+		    let cond=team_df["Team"].eq(teamname);
+		    team_df=team_df.loc({rows:cond});
+		}
+		let tabledata=table_html(team_df.loc({columns:["PlayerNomination","PricePaid","Team"]}),true,"popup_showplayerinfo");
+		document.getElementById("teaminfo").innerHTML =tabledata;		
+		
+		if (doc_ready) {
+			if (teamname=="All") {
+				fl_leaderboard();
+			}
+			else {
+				let cond=fl_points["Team"].eq(teamname);
+				let team_points=fl_points.loc({rows: cond});
+				let points_total=team_points["Points"].sum();
+				//Add  winner's team name
+				if (teamname==winnerteamname) {
+					document.getElementById("leaderboardhdr").innerHTML="<h2>Points: "+points_total+"<a>&#127942;</a></h2>";
+				}
+				else {
+					document.getElementById("leaderboardhdr").innerHTML="<h2>Points: "+points_total+"</h2>";
+				}
+				let grouped_data=team_points.groupby(["PlayerNomination","PricePaid"]).col(["Points"]).sum();
+				grouped_data.sortValues("Points_sum", {ascending:false, inplace: true });
+				grouped_data.addColumn("Points / £1000",grouped_data.column("Points_sum").div(grouped_data.column("PricePaid")).mul(1000).round(2).fillNa(0),{inplace: true });
+				grouped_data.rename({ "Points_sum": "Points" }, { inplace: true });
+				grouped_data.resetIndex({inplace: true });
+				document.getElementById("leaderboard").innerHTML=table_html(grouped_data,true,"popup_showplayerinfo");			
+			
+			}
+		}
+
+
+		}
+		
+	  function AddChart(teamname){
+	  //let var_teams=fl_points.column('Team').unique();
+	  let var_teams=fl_points.groupby(["Team"]).col(["Points"]).sum().sortValues("Points_sum", {ascending:false}).column('Team').unique();
+	  //let chartdata=new dfd.DataFrame();
+	  let chartdata=scoresdata.groupby(["GameId"]).col(["GameId"]).count();
+	  chartdata.resetIndex({inplace: true });
+	  chartdata.drop({ columns: ["GameId_count"], inplace: true });
+	  console.log(chartdata);
+	  for(i = 0; i < var_teams.count(); i++){
+		  let cond=fl_points["Team"].eq(var_teams.iat(i));
+		  let team_sum=fl_points.loc({rows:cond}).groupby(['GameId']).col(['Points']).sum();
+		  team_sum.rename({ "Points_sum": var_teams.iat(i) }, { inplace: true });
+		  chartdata=dfd.merge({left:chartdata,right:team_sum,on:["GameId"],how:"left"}).fillNa(0);
+	  }
+	  chartdata=chartdata.cumSum({ axis: 0 });
+	  document.getElementById('popuphdr').innerHTML="Leader Chart";
+	  document.getElementById('popupbody').innerHTML="";
+	  chartdata.drop({ columns: ["GameId"], inplace: true });
+	  let swidth=screen.width;
+	  console.log(swidth);
+	  let layout = {legend:{orientation:"h", xanchor:"auto"},
+					grid:{yside:"right plot",ygap:0}, 
+					dragmode:"pan",};
+	  if (swidth<600){
+		layout = {legend:{orientation:"h", xanchor:"auto"},
+				  margin:{l:10, r:10},
+					dragmode:"pan",
+					width:swidth-20,};
+					}
+	 
+	  chartdata.plot("popupbody").line({layout});
+	  document.getElementById('popup').style.display='block'
+	  }
+	  
+     // Table support funtions
+     function table_html(table,addsort=false,onclickfn=""){
+		  let table_data='<table><tr>';
+		  let table_hdr=table.columns;
+		  for (i=0;i<table_hdr.length;i++){
+			if (addsort){
+				console.log(table.column(table_hdr[i]).dtype);
+				if (table.column(table_hdr[i]).dtype=='string'){
+					table_data+='<th onclick="sortTable_asc('+i+',\''+table_hdr[i]+'\',this,\''+'text'+'\')">'+table_hdr[i]+'&#8693;</th>';
+				}
+				else {
+					table_data+='<th onclick="sortTable_asc('+i+',\''+table_hdr[i]+'\',this,\''+'int'+'\')">'+table_hdr[i]+'&#8693;</th>';
+				}
+			
+				}
+			else {
+				table_data+='<th>'+table_hdr[i]+'</th>';
+				}
+			}
+		  table_data+='</tr>';
+		  
+		  for (i=0;i<table.shape[0];i++){
+			if (onclickfn!=""){
+				table_data+='<tr class="hvr" onclick="'+onclickfn+'(this)">';
+			}
+			else{
+			table_data+='<tr>';
+			}
+			for (j=0;j<table.shape[1];j++){
+			   table_data+='<td>'+table.iat(i,j)+'</td>';
+			}
+			table_data+='</tr>';
+		  }
+		  table_data+='</table>';
+		  return table_data;
+	  }	  	  
+
+	  function sortTable_asc(sortcolumn,columnname,node,type="text") {
+		  var table, rows, switching, i, x, y, shouldSwitch;
+		  //table = document.getElementById("table");
+		  table=node.parentNode.parentNode.parentNode;
+		  rows = table.rows;
+		  var headercol= rows[0].getElementsByTagName("TH")[sortcolumn];
+		  node.innerHTML=columnname+" &uarr;";
+		  node.onclick = function() {sortTable_desc(sortcolumn,columnname,node,type)};
+		  console.log(node);
+		  switching = true;
+		  /*Make a loop that will continue until
+		  no switching has been done:*/
+		  while (switching) {
+		    //start by saying: no switching is done:
+		    switching = false;
+		    rows = table.rows;
+		    /*Loop through all table rows (except the
+		    first, which contains table headers):*/
+		    for (i = 1; i < (rows.length - 1); i++) {
+		      //start by saying there should be no switching:
+		      shouldSwitch = false;
+		      /*Get the two elements you want to compare,
+		      one from current row and one from the next:*/
+		      x = rows[i].getElementsByTagName("TD")[sortcolumn];
+		      y = rows[i + 1].getElementsByTagName("TD")[sortcolumn];
+		      //check if the two rows should switch place:
+		      if (type=="int"){
+			      if (parseInt(x.innerHTML) > parseInt(y.innerHTML)) {
+				//if so, mark as a switch and break the loop:
+				shouldSwitch = true;
+				break;
+			      }
+		      }
+		      else {
+		      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+			//if so, mark as a switch and break the loop:
+			shouldSwitch = true;
+			break;
+		      }
+		      }
+		    }
+		    if (shouldSwitch) {
+		      /*If a switch has been marked, make the switch
+		      and mark that a switch has been done:*/
+		      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+		      switching = true;
+		    }
+		  }
+		}
+
+	  function sortTable_desc(sortcolumn,columnname,node,type="text") {
+		  var table, rows, switching, i, x, y, shouldSwitch;
+		  table=node.parentNode.parentNode.parentNode;
+		  rows = table.rows;
+		  var headercol= rows[0].getElementsByTagName("TH")[sortcolumn];
+		  node.innerHTML=columnname+" &darr;";
+		  node.onclick = function() {sortTable_asc(sortcolumn,columnname,node,type)};
+		  switching = true;
+		  /*Make a loop that will continue until
+		  no switching has been done:*/
+		  while (switching) {
+		    //start by saying: no switching is done:
+		    switching = false;
+		    rows = table.rows;
+		    /*Loop through all table rows (except the
+		    first, which contains table headers):*/
+		    for (i = 1; i < (rows.length - 1); i++) {
+		      //start by saying there should be no switching:
+		      shouldSwitch = false;
+		      /*Get the two elements you want to compare,
+		      one from current row and one from the next:*/
+		      x = rows[i].getElementsByTagName("TD")[sortcolumn];
+		      y = rows[i + 1].getElementsByTagName("TD")[sortcolumn];
+		      //check if the two rows should switch place:
+		      if (type=="int"){
+			      if (parseInt(x.innerHTML) < parseInt(y.innerHTML)) {
+				//if so, mark as a switch and break the loop:
+				shouldSwitch = true;
+				break;
+			      }
+		      }
+		      else {
+		      if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+			//if so, mark as a switch and break the loop:
+			shouldSwitch = true;
+			break;
+		      }
+		      }
+		    }
+		    if (shouldSwitch) {
+		      /*If a switch has been marked, make the switch
+		      and mark that a switch has been done:*/
+		      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+		      switching = true;
+		    }
+		  }
+		}	  
+
+	  
+	function downloaddata(){
+		let data=fl_points;
+		let reg_chars=/<\/?[^>]+(>|$)|Click here to show detail/g;
+		let updated_function = data['PointsDetail'].str.replace(reg_chars,"");
+		data.addColumn("PointsDetailText", updated_function,{ inplace: true });
+		data.drop({ columns: ["PointsDetail"], inplace: true });
+		dfd.toExcel(data, { fileName: "FantasyLeaguePointSystem.xlsx"});
+	}
+
+function createConfetti() {
+    const container = document.querySelector('.confetti-container');
+
+    // Create confetti
+    const confetti = document.createElement('div');
+    confetti.classList.add('confetti');
+    confetti.style.left = Math.random() * container.clientWidth + 'px';
+    confetti.style.animationDuration = Math.random() * 2 + 3 + 's';
+    confetti.innerHTML = '🎉';
+
+    confetti.addEventListener('animationiteration', () => {
+        confetti.style.left = Math.random() * container.clientWidth + 'px';
+    });
+
+    // Create burst particles
+    const burstCount = 10; // Number of burst particles
+    for (let i = 0; i < burstCount; i++) {
+        const burst = document.createElement('div');
+        burst.classList.add('burst');
+        burst.style.left = confetti.style.left;
+        burst.style.animationDuration = Math.random() * 2 + 3 + 's'; // Adjust the animation duration as needed
+        burst.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+        // Randomize the starting top position to create a falling effect
+        burst.style.top = Math.random() * container.clientHeight + 'px';
+
+        burst.innerHTML = '🌟';
+
+        burst.addEventListener('animationend', () => {
+            burst.remove(); // Remove burst particles after animation
+        });
+
+        container.appendChild(burst);
+    }
+
+    container.appendChild(confetti);
+}
+
+//setInterval(createConfetti, 1000);
+
+function createFirework() {
+    const container = document.querySelector('.fireworks-container');
+
+    const starburst = document.createElement('div');
+    starburst.classList.add('firework');
+
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight;
+
+    starburst.style.left = x + 'px';
+    starburst.style.top = y + 'px';
+
+starburst.innerHTML = '🌟';
+    container.appendChild(starburst);
+
+    setTimeout(() => {
+        starburst.remove();
+    }, 1000); // Adjust the duration of the starbursts
+}
+
+setInterval(createFirework, 100); // Adjust the interval for continuous explosions
+
+
+
+
+	  loadTeamsData();
+
+  </script>
+ 
+</head>
+
+
+   
+  <body>
+  
+    <h1 class="whitetext centertext">Fantasy League 2024</h1>
+    <button id="faq" onclick="window.location.href='/Cricket/FantasyLeagueFAQ.html'">FAQs</button>
+
+<div class="players">
+	<!-- changes for scoreboard button: START -->
+        <a class="playerbutton" style="text-decoration: none; background-color:blue; color: white; float:right" href="https://ravikirankella.github.io/Cricket/Scorecard.html" target="_blank">Add Scorecard</a>
+        <button class="playerbutton" style="text-decoration: none; background-color:white; color: black; float:right"; OnClick="downloaddata()">DownloadData</button>
+	<div style="clear:both;">
+	<a style="color: white; font-size:90%">Select team to view details!</a>
+	</div>
+	<!-- changes for scoreboard button: END -->
+	
+		<button class="playerbutton" OnClick="addTeamTable(this)">The Joe Hopers</button>
+		<button class="playerbutton" OnClick="addTeamTable(this)">Golden Duckitt</button>
+		<button class="playerbutton" OnClick="addTeamTable(this)">Stokes Foakes Woakes</button>
+		<button class="playerbutton" OnClick="addTeamTable(this)">Whiter's Teapots</button>
+		<button class="playerbutton" OnClick="addTeamTable(this)">Can I Nick It</button>
+		<button class="playerbutton" OnClick="addTeamTable(this)">Thamesis</button>
+		<button class="playerbutton" OnClick="addTeamTable(this)">Shit on the villa 2</button>
+		<button class="playerbutton" OnClick="addTeamTable(this)">Ronnie Drives Again</button>
+		<button class="playerbutton" OnClick="addTeamTable(this)">You gave it away</button>
+
+
+		
+	<button class="playerbutton" OnClick="addTeamTable(this)">Clear Selection</button>
+	<button class="playerbutton" OnClick="addTeamTable(this)">Games</button>
+	</div>
+	<div class="confetti-container fireworks-container" style="float: left;width: 100%;height: 100px;"></div>
+	<div class="frame">
+	<p align="center" style="font-size:80%"> * - Price match nomination grabbed;  ** -  Price match nomination successfully retained <p>	
+                <div class="framesplit" id="pointsboard">
+		<div id="leaderboardhdr"></div>
+		<div id="leaderboard"></div>
+		</div>
+		<div class="framesplit" id="teaminfo">
+			<table id="table"></table>
+		</div>
+		
+		<div class="bottom"></div>
+
+	</div>
+	
+
+	<div id="popup" class="w3-modal">
+		<div class="w3-modal-content w3-animate-top w3-card-4">
+			<header class="w3-containerh w3-teal"> 
+				<span onclick="document.getElementById('popup').style.display='none'"  class="w3-button w3-display-topright">&times;</span>
+				<h2 id="popuphdr">Player points detail</h2>
+			</header>
+			<div class="w3-container">
+				<div id="popupbody"></div>
+			</div>
+
+		</div>
+	
+	</div>	
+		
+  </body>
+ 
+ </html> 
