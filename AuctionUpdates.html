@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ISISCC Fantasy League Auction Live (5th April 2024 6PM)</title>
+    <title>ISISCC Fantasy League Auction Live (12th April 2025 7PM)</title>
 <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <style>
         body {
@@ -120,9 +120,10 @@
         <button id="Set1" OnClick="displaysets(this)">Set 1</button>
         <button id="Set2" OnClick="displaysets(this)">Set 2</button>
         <button id="Set3" OnClick="displaysets(this)">Set 3</button>
-        <button id="Set4" OnClick="displaysets(this)">Set 4</button>
-        <button id="Set5" OnClick="displaysets(this)">Set 5</button>
-        <button id="Set6" OnClick="displaysets(this)">Set 6</button>
+        <button id="Set4" OnClick="displaysets(this)">Set 4</button>	    
+        <button id="Sold" OnClick="displaysets(this)">Sold</button>
+        <button id="Unsold" OnClick="displaysets(this)">Unsold</button>
+
     </div>
     <div class="toggle-container">
         <button id="refreshButton" class="refresh-button">Refresh</button>
@@ -168,7 +169,7 @@
 
 			var xmlhttp = new XMLHttpRequest();
 			var spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
-			var spreadsheetrange="Nominations2024!A2:G";
+			var spreadsheetrange="Nominations2025!A2:G";
 			var url = "https://sheets.googleapis.com/v4/spreadsheets/"+spreadsheetid+"/values/"+spreadsheetrange+"?key=AIzaSyAmi4pvsmS6iGokKlVXGxsFbKxpAnWjWEo";
 			xmlhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
@@ -201,7 +202,7 @@
 
 			var xmlhttp = new XMLHttpRequest();
 			var spreadsheetid="1N_7zBkeG0nXopwAdK2UOtR_RLuS0cfksrwni86OJMhk";
-			var spreadsheetrange="Auction2024!A1:Q";
+			var spreadsheetrange="Auction2025!A1:Q";
 			var url = "https://sheets.googleapis.com/v4/spreadsheets/"+spreadsheetid+"/values/"+spreadsheetrange+"?key=AIzaSyAmi4pvsmS6iGokKlVXGxsFbKxpAnWjWEo";
 			xmlhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
