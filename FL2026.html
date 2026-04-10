@@ -300,12 +300,14 @@
 		}
 	
 	  function fl_leaderboard(){
-		  //let scoreshdr=scores[0];  	  
+		  //let scoreshdr=scores[0];  	 
 		  //scoresdata = new dfd.DataFrame(scores.slice(1),{columns:scoreshdr});
+		  console.log('fl_leaderboard');
 		  nominations = new dfd.DataFrame(teamsdata,{columns:teamsdatahdr});	
 		  fl_points=dfd.merge({left:nominations,right:scoresdata,on:["Player"],how:"inner"});
 		  fl_points.resetIndex({inplace: true });
 		  fl_points_hdr=fl_points.columns;
+		  console.log(fl_points_hdr);
 		  fl_points.addColumn("Points",fl_points.apply(calculate_fl_points),{ inplace: true });
 		  fl_points.addColumn("PointsDetail",fl_points.apply(calculate_fl_points_with_detail),{ inplace: true });
 		  document.getElementById("leaderboardhdr").innerHTML='<h2 class="chart" OnClick="AddChart(\'All\')"><u>Leader Board</h2>';
