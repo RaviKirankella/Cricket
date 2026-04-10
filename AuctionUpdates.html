@@ -249,6 +249,9 @@
 	document.getElementById('setdata').style.display='block'
 	let cond=nominations_df["Set"].eq(buttonname);
 	let set_df=nominations_df.loc({rows:cond});
+
+	console.log(set_df);
+console.log(auction_df);
 	let merged_df = dfd.merge({
 			  left: set_df,
 			  right: auction_df,
