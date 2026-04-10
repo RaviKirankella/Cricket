@@ -249,7 +249,18 @@
 	document.getElementById('setdata').style.display='block'
 	let cond=nominations_df["Set"].eq(buttonname);
 	let set_df=nominations_df.loc({rows:cond});
-	let tabledata=table_html(set_df.loc({columns:["Nomination","Category","PlayerType","Estimated Points","BasePrice"]}),true,"",0);
+	let merged_df = dfd.merge({
+			  left: set_df,
+			  right: auction_df,
+			  leftOn: "Nomination",
+			  rightOn: "PlayerNomination",
+			  how: "left"
+			});
+	merged_df = merged_df.fillNa({
+  columns: ["PricePaid", "Team"],
+  values: ["TBD", "TBD"]
+});
+	let tabledata=table_html(merged_df.loc({columns:["Nomination","Category","PlayerType","Estimated Points","BasePrice","PricePaid", "Team"]}),true,"",0);
 	document.getElementById("setinfo").innerHTML =tabledata;	
 	}
 
