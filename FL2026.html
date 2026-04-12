@@ -302,7 +302,7 @@
 	  function fl_leaderboard(){
 		  //let scoreshdr=scores[0];  	 
 		  //scoresdata = new dfd.DataFrame(scores.slice(1),{columns:scoreshdr});
-		  console.log('fl_leaderboard');
+		  console.log('fl_leaderboard start');
 		  nominations = new dfd.DataFrame(teamsdata,{columns:teamsdatahdr});	
 		  fl_points=dfd.merge({left:nominations,right:scoresdata,on:["Player"],how:"inner"});
 		  fl_points.resetIndex({inplace: true });
@@ -325,9 +325,11 @@
 		  }
 
 		  doc_ready=true;
+		  console.log('fl_leaderboard end');
 	  }
 	  
 	 function show_season_stats(){
+		console.log('show_season_stats start');
 		let cond=scoresdata["GameName"].ne("Auction");
 		let data=scoresdata.loc({rows:cond}).copy();
 		data.asType("Runs","int32",true);
@@ -364,6 +366,7 @@
 	  	
 	 	set_popup_body(pop_up_data);
 		display_popup();
+		console.log('show_season_stats start');
 	 }
 
 	 
@@ -470,6 +473,7 @@
 	  }
 	  
 	  function calculate_fl_points(row,with_notes=false){
+		  console.log('calculate_fl_points start');
 		  let points=0;
 		  let category=row[fl_points_hdr.indexOf('Category')];
 		  let isCapped=row[fl_points_hdr.indexOf('Capped?')];
@@ -541,7 +545,7 @@
 		  if (with_notes){
 		  points='<p onclick=showhide(this)>Click here to show detail</p><p class="detail">'+note+'</p>';
 		  }
-		  
+		  console.log('calculate_fl_points end');
 		  return points;
 	  }
 	  function showhide(node){
@@ -561,6 +565,7 @@
 		
 	  // Uncapped player computations	
 	  function computeuncapped(scoresdata) {
+		  console.log('computeuncapped start');
 		  nominations = new dfd.DataFrame(teamsdata,{columns:teamsdatahdr});
 		  let nominationindex=teamsdatahdr.indexOf("PlayerNomination");
 		  let playerindex=teamsdatahdr.indexOf("Player");
@@ -602,7 +607,7 @@
 			}
 		  }
 		  
-
+	  console.log('computeuncapped end');
 	  }
 	  
 	  function calculate_uncapped_batter_points(row) {
@@ -627,6 +632,7 @@
 
 	  // Suport functions
 	  	function addTeamTable(teamnode) {
+			console.log('addTeamTable start');
 			var teamname=teamnode.innerHTML;
 			var btns = document.getElementsByClassName("playerbutton");
 			for (i = 0; i < btns.length; i++) {
@@ -648,10 +654,12 @@
 			else {
 			AddTable(teamsdata,teamname);
 			}
+		 console.log('addTeamTable end');
 		}
 		
 	  function addgameinfo(){
 	  if (doc_ready) {
+		console.log('addgameinfo start');
 	    document.getElementById("leaderboardhdr").innerHTML='<h2>Games so far..</h2>';
 		let games=fl_points.groupby(['GameId','GameName','Won?']).col(['Points']).sum();
 		games.rename({ "Points_sum": "Points" }, { inplace: true });
@@ -666,13 +674,15 @@
 		grouped_data.resetIndex({inplace: true });
 		
 		document.getElementById("teaminfo").innerHTML=table_html(grouped_data.loc({"columns":["PlayerNomination","Points","Points / £1000","PricePaid","Team"]}),true,"popup_showplayerinfo");
-		}
+		console.log('addgameinfo end');
+	  	}
 	  }
 
 
 	  
 	  
 	  	function AddTable(teamdata,teamname="All") {
+		console.log('AddTable start');
 	    let team_df=new dfd.DataFrame(teamsdata,{columns:teamsdatahdr});	
 		if (teamname!="All") {
 		    let cond=team_df["Team"].eq(teamname);
@@ -706,7 +716,7 @@
 			}
 		}
 
-
+		console.log('AddTable end');
 		}
 		
 	  function AddChart(teamname){
@@ -745,6 +755,7 @@
 	  
      // Table support funtions
      function table_html(table,addsort=false,onclickfn=""){
+		 console.log('table_html start');
 		  let table_data='<table><tr>';
 		  let table_hdr=table.columns;
 		  for (i=0;i<table_hdr.length;i++){
@@ -778,9 +789,11 @@
 		  }
 		  table_data+='</table>';
 		  return table_data;
+		 console.log('table_html end');
 	  }	  	  
 
 	  function sortTable_asc(sortcolumn,columnname,node,type="text") {
+		  console.log('sortTable_asc start');
 		  var table, rows, switching, i, x, y, shouldSwitch;
 		  //table = document.getElementById("table");
 		  table=node.parentNode.parentNode.parentNode;
@@ -828,9 +841,11 @@
 		      switching = true;
 		    }
 		  }
+		  console.log('sortTable_asc end');
 		}
 
 	  function sortTable_desc(sortcolumn,columnname,node,type="text") {
+		  console.log('sortTable_desc start');
 		  var table, rows, switching, i, x, y, shouldSwitch;
 		  table=node.parentNode.parentNode.parentNode;
 		  rows = table.rows;
@@ -876,6 +891,7 @@
 		      switching = true;
 		    }
 		  }
+		  console.log('sortTable_desc end');
 		}	  
 
 	  
