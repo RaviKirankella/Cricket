@@ -785,7 +785,7 @@
 		  let table_hdr=table.columns;
 		  for (i=0;i<table_hdr.length;i++){
 			if (addsort){
-				console.log(table.column(table_hdr[i]).dtype);
+				//console.log(table.column(table_hdr[i]).dtype);
 				if (table.column(table_hdr[i]).dtype=='string'){
 					table_data+='<th onclick="sortTable_asc('+i+',\''+table_hdr[i]+'\',this,\''+'text'+'\')">'+table_hdr[i]+'&#8693;</th>';
 				}
