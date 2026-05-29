@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <title>ISISCC Fantasy Cricket League Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    :root {
+      --bg: #525252;
+      --panel: #ffffff;
+      --ink: #1f2937;
+      --muted: #6b7280;
+      --line: #d1d5db;
+      --brand: #1d4ed8;
+      --brand-soft: #dbeafe;
+      --good: #047857;
+      --warn: #b45309;
+    }
+
+    body {
+      margin: 0;
+      font-family: Verdana, Geneva, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    h1, h2, h3 {
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    h1 {
+      color: #ffffff;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 90%;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 8px 6px;
+      text-align: center;
+      vertical-align: top;
+      overflow-wrap: anywhere;
+    }
+
+    th {
+      background: #f3f4f6;
+      cursor: pointer;
+      font-weight: 700;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    tr.hvr:hover {
+      color: var(--brand);
+      text-decoration: underline;
+      text-decoration-color: var(--brand);
+      cursor: pointer;
+    }
+
+    .centertext { text-align: center; }
+    .muted { color: var(--muted); }
+    .frame {
+      background: var(--panel);
+      margin: 6px;
+      padding: 8px;
+      min-height: 70vh;
+    }
+
+    .framesplit {
+      float: left;
+      width: 48%;
+      padding: 4px;
+    }
+
+    .bottom { clear: both; }
+
+    .players {
+      text-align: center;
+      padding: 0 8px 6px;
+    }
+
+    .playerbutton {
+      background: #ffffff;
+      color: #111827;
+      font-weight: bold;
+      border: 1px solid var(--line);
+      margin: 5px;
+      padding: 7px 10px;
+      border-radius: 4px;
+      min-height: 34px;
+    }
+
+    .playerbutton.active,
+    .playerbutton.primary {
+      background: var(--brand);
+      color: #ffffff;
+      border-color: var(--brand);
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 0 8px 4px;
+    }
+
+    .toolbar a,
+    .toolbar button {
+      text-decoration: none;
+      font-size: 90%;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(90px, 1fr));
+      gap: 8px;
+      margin: 8px 0 12px;
+    }
+
+    .summary-item {
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 8px;
+      text-align: center;
+      background: #f9fafb;
+    }
+
+    .summary-label {
+      color: var(--muted);
+      font-size: 75%;
+      text-transform: uppercase;
+    }
+
+    .summary-value {
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .notice {
+      margin: 12px auto;
+      padding: 10px;
+      max-width: 720px;
+      border-radius: 4px;
+      background: var(--brand-soft);
+      color: #1e3a8a;
+      text-align: center;
+    }
+
+    .warning {
+      background: #fef3c7;
+      color: var(--warn);
+    }
+
+    .error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .detail-toggle {
+      display: block;
+      text-align: left;
+      max-width: 320px;
+      margin: auto;
+    }
+
+    .detail-toggle summary {
+      cursor: pointer;
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .detail-lines {
+      margin-top: 6px;
+      color: #374151;
+      font-size: 90%;
+      line-height: 1.45;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .w3-container {
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    @media only screen and (max-width: 760px) {
+      .framesplit { width: 100%; }
+      .summary-grid { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
+      .grid-container { grid-template-columns: 1fr; }
+    }
+
+    /* Modern dashboard refresh */
+    :root {
+      --bg: #f5f7fb;
+      --bg-accent: #e8f3ee;
+      --panel-soft: #f8fafc;
+      --ink: #172033;
+      --muted: #64748b;
+      --line: #dbe3ef;
+      --brand: #0f766e;
+      --brand-strong: #115e59;
+      --brand-soft: #d9f3ee;
+      --blue: #2563eb;
+      --gold: #d97706;
+      --bad: #b91c1c;
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.10);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg, var(--bg-accent) 0, var(--bg) 310px);
+      min-height: 100vh;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      font-size: clamp(1.55rem, 2.8vw, 2.2rem);
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    .title-block h1 {
+      text-align: left;
+    }
+
+    .app-shell {
+      width: min(1500px, 100%);
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .app-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #0f766e 0%, #164e63 55%, #1f2937 100%);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-header::after {
+      content: "";
+      position: absolute;
+      right: 24px;
+      bottom: 0;
+      width: 170px;
+      height: 4px;
+      background: #f59e0b;
+      border-radius: 999px 999px 0 0;
+    }
+
+    .title-block,
+    .toolbar {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: #bfdbfe;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .subhead {
+      margin: 7px 0 0;
+      color: #dbeafe;
+      max-width: 680px;
+      line-height: 1.5;
+      font-size: 0.9rem;
+    }
+
+    .toolbar {
+      align-items: center;
+      margin: 0;
+    }
+
+    .toolbar a,
+    .toolbar button {
+      font-size: 0.9rem;
+    }
+
+    .toolbar .playerbutton {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .toolbar .playerbutton:disabled,
+    .toolbar .playerbutton.disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+      background: rgba(255, 255, 255, 0.52);
+      color: #cbd5e1;
+      border-color: rgba(203, 213, 225, 0.7);
+      box-shadow: none;
+      transform: none;
+    }
+
+    .toolbar .prediction-cta {
+      position: relative;
+      isolation: isolate;
+      background: linear-gradient(135deg, #fbbf24 0%, #f97316 58%, #dc2626 100%);
+      color: #111827;
+      border-color: rgba(251, 191, 36, 0.95);
+      box-shadow: 0 12px 28px rgba(249, 115, 22, 0.34);
+      padding-inline: 14px;
+    }
+
+    .toolbar .prediction-cta::before {
+      content: "New";
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 30px;
+      height: 18px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: rgba(17, 24, 39, 0.88);
+      color: #ffffff;
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .toolbar .prediction-cta:hover {
+      border-color: #fef3c7;
+      box-shadow: 0 16px 32px rgba(249, 115, 22, 0.42);
+      transform: translateY(-2px);
+    }
+
+    .players {
+      margin-top: 10px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid rgba(219, 227, 239, 0.9);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    .team-hint {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .playerbutton {
+      border-radius: 999px;
+      min-height: 38px;
+      padding: 8px 12px;
+      font-weight: 800;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+      transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+    }
+
+    .playerbutton:hover {
+      border-color: var(--brand);
+      transform: translateY(-1px);
+    }
+
+    .playerbutton.active,
+    .playerbutton.primary {
+      background: var(--brand);
+      border-color: var(--brand);
+      box-shadow: 0 8px 18px rgba(15, 118, 110, 0.22);
+    }
+
+    .frame {
+      background: transparent;
+      margin: 10px 0 0;
+      padding: 0;
+    }
+
+    .framesplit {
+      float: none;
+      width: auto;
+      padding: 0;
+      min-width: 0;
+    }
+
+    .rules-note {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    .season-kpis {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .kpi-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+    }
+
+    .kpi-label {
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .kpi-value {
+      margin-top: 7px;
+      color: var(--ink);
+      font-size: 1.22rem;
+      font-weight: 800;
+      line-height: 1.15;
+    }
+
+    .kpi-meta {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .board-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(360px, 0.82fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    #leaderboardhdr {
+      padding: 16px 16px 0;
+    }
+
+    #leaderboard,
+    #teaminfo {
+      padding: 12px 16px 16px;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title h2 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      text-align: left;
+    }
+
+    .ghost-action,
+    .season-stat-button {
+      border: 1px solid var(--line);
+      background: #ffffff;
+      color: var(--brand-strong);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .score-pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 7px 11px;
+      background: var(--brand-soft);
+      color: var(--brand-strong);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    table {
+      min-width: 640px;
+      margin-top: 0;
+      font-size: 0.88rem;
+    }
+
+    #leaderboard table {
+      min-width: 720px;
+    }
+
+    #teaminfo table {
+      min-width: 460px;
+    }
+
+    th, td {
+      padding: 11px 10px;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #edf3f7;
+      color: #334155;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #fbfdff;
+    }
+
+    tr.hvr:hover {
+      background: #eaf8f4;
+      color: var(--brand-strong);
+      text-decoration: none;
+    }
+
+    .table-shell {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .scorecard-wrap {
+      display: grid;
+      gap: 14px;
+    }
+
+    .scorecard-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .scorecard-section {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .scorecard-section.fielding-card {
+      grid-column: 1 / -1;
+    }
+
+    .scorecard-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      background: #17324d;
+      color: #ffffff;
+      font-weight: 900;
+    }
+
+    .scorecard-title span:first-child {
+      font-size: 0.98rem;
+    }
+
+    .scorecard-meta {
+      color: #cfe7f8;
+      font-size: 0.78rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .scorecard-shell {
+      border: 0;
+      border-radius: 0;
+    }
+
+    .scorecard-table {
+      min-width: 0;
+      margin: 0;
+    }
+
+    .scorecard-table th {
+      position: static;
+      background: #f4f7fb;
+    }
+
+    .scorecard-table th:first-child,
+    .scorecard-table td:first-child {
+      text-align: left;
+    }
+
+    .batting-card .scorecard-table td:first-child,
+    .bowling-card .scorecard-table td:first-child {
+      font-weight: 800;
+    }
+
+    .batting-card .scorecard-table td:last-child,
+    .bowling-card .scorecard-table td:last-child {
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--ink);
+    }
+
+    .fielding-card .scorecard-table td:not(:first-child) {
+      font-weight: 800;
+    }
+
+    .num {
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+    }
+
+    .num.positive { color: var(--good); }
+    .num.negative { color: var(--bad); }
+
+    .summary-grid {
+      margin: 0 0 12px;
+    }
+
+    .summary-item {
+      border-radius: var(--radius);
+      padding: 10px;
+      background: var(--panel-soft);
+    }
+
+    .summary-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .summary-value {
+      font-weight: 800;
+    }
+
+    .subsection {
+      margin-top: 14px;
+    }
+
+    .subsection h3 {
+      text-align: left;
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .notice {
+      margin: 12px 0;
+      padding: 11px 14px;
+      max-width: none;
+      border-radius: var(--radius);
+      color: var(--brand-strong);
+      border: 1px solid #99e6d8;
+      text-align: left;
+      font-weight: 700;
+    }
+
+    .warning {
+      border-color: #fde68a;
+    }
+
+    .error {
+      border-color: #fecaca;
+    }
+
+    .latest-game {
+      margin: 14px 0 0;
+      padding: 12px;
+      border: 1px solid #c7d2fe;
+      border-radius: var(--radius);
+      background: #eef2ff;
+      color: #3730a3;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .latest-game a {
+      color: #1d4ed8;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .panel-actions {
+      display: flex;
+      justify-content: center;
+      margin-top: 14px;
+    }
+
+    .w3-modal-content {
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .w3-teal {
+      background: var(--brand-strong) !important;
+    }
+
+    @media only screen and (max-width: 980px) {
+      .app-header {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+      .toolbar { justify-content: flex-start; }
+      .season-kpis { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
+      .board-layout { grid-template-columns: 1fr; }
+    }
+
+    @media only screen and (max-width: 760px) {
+      .app-shell { padding: 10px; }
+      .app-header { padding: 16px; }
+      h1 { font-size: 1.65rem; }
+      #leaderboard,
+      #teaminfo {
+        padding: 10px;
+      }
+      .table-shell {
+        overflow-x: visible;
+      }
+      table,
+      #leaderboard table,
+      #teaminfo table,
+      .scorecard-table {
+        width: 100%;
+        min-width: 0;
+        table-layout: auto;
+        font-size: 0.72rem;
+      }
+      th, td {
+        padding: 6px 4px;
+        line-height: 1.2;
+        overflow-wrap: anywhere;
+        word-break: normal;
+      }
+      th {
+        font-size: 0.62rem;
+      }
+      .scorecard-title {
+        padding: 8px 10px;
+        align-items: flex-start;
+      }
+      .scorecard-meta {
+        white-space: normal;
+        text-align: right;
+      }
+      .w3-modal {
+        padding-top: 18px;
+      }
+      .w3-modal-content {
+        width: calc(100vw - 14px);
+        margin: 0 auto;
+      }
+      #popup .w3-container {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+      .season-kpis { grid-template-columns: 1fr; }
+      .scorecard-grid { grid-template-columns: 1fr; }
+      .playerbutton { width: calc(50% - 10px); }
+      .players { padding: 8px; }
+      .team-hint { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="title-block">
+        <h1 id="pageTitle">Fantasy League</h1>
+        <p class="subhead">Team totals, fantasy predictions, scorecards, and season leaders.</p>
+      </div>
+
+      <div class="toolbar">
+        <button class="playerbutton disabled" type="button" disabled title="Buying fantasy players is closed for this season.">Buy Fantasy Players</button>
+        <a class="playerbutton prediction-cta" href="https://ravikirankella.github.io/Cricket/MakePrediction.html" target="_blank" rel="noopener" onclick="return openPublicPage(event, this.href);">Make Prediction</a>
+        <a class="playerbutton" href="https://ravikirankella.github.io/Cricket/Scorecard.html" target="_blank" rel="noopener" onclick="return openPublicPage(event, this.href);">Add Scorecard</a>
+        <button class="playerbutton" onclick="downloaddata()">Download Data</button>
+        <a class="playerbutton" href="https://ravikirankella.github.io/Cricket/FantasyLeagueFAQ.html" target="_blank" rel="noopener">FAQs</a>
+      </div>
+    </header>
+
+    <div class="players">
+      <div class="team-hint">Teams</div>
+      <div id="teamButtons"></div>
+    </div>
+
+    <main class="frame">
+      <div id="seasonKpis" class="season-kpis"></div>
+      <div id="status" class="notice">Loading Fantasy League...</div>
+
+      <div class="board-layout">
+        <section class="framesplit panel" id="pointsboard">
+          <div id="leaderboardhdr"></div>
+          <div id="leaderboard"></div>
+        </section>
+
+        <section class="framesplit panel" id="teaminfo">
+          <table id="table"></table>
+        </section>
+      </div>
+
+      <div class="bottom"></div>
+    </main>
+  </div>
+
+  <div id="popup" class="w3-modal">
+    <div class="w3-modal-content w3-animate-top w3-card-4">
+      <header class="w3-container w3-teal">
+        <span onclick="document.getElementById('popup').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+        <h2 id="popuphdr">Player points detail</h2>
+      </header>
+      <div class="w3-container">
+        <div id="popupbody"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE_URL = 'https://isiscc-fantasy-api.ravikiran59.workers.dev';
+
+    const state = {
+      snapshot: null,
+      selectedTeam: 'All'
+    };
+
+    const columns = {
+      leaderboard: [
+        { key: 'Team', label: 'Team', type: 'text' },
+        { key: 'TotalPoints', label: 'Points', type: 'number' }
+      ],
+      team: [
+        { key: 'PlayerNomination', label: 'Player Nomination', type: 'text' },
+        { key: 'PricePaid', label: 'Price Paid', type: 'number' },
+        { key: 'Team', label: 'Team', type: 'text' }
+      ],
+      playerTotals: [
+        { key: 'PlayerNomination', label: 'Player Nomination', type: 'text' },
+        { key: 'Player', label: 'Player', type: 'text' },
+        { key: 'Points', label: 'Points', type: 'number' },
+        { key: 'PointsPer1000', label: 'Points / 1000', type: 'number' },
+        { key: 'PricePaid', label: 'Price Paid', type: 'number' }
+      ],
+      predictionResults: [
+        { key: 'Game', label: 'Game', type: 'text' },
+        { key: 'Prediction', label: 'Prediction', type: 'text' },
+        { key: 'Stake', label: 'Stake', type: 'number' },
+        { key: 'Reward', label: 'Reward', type: 'number' },
+        { key: 'Points', label: 'Points', type: 'number' }
+      ],
+      openPredictions: [
+        { key: 'Prediction', label: 'Prediction', type: 'text' },
+        { key: 'Stake', label: 'Stake', type: 'number' },
+        { key: 'Reward', label: 'Reward', type: 'number' }
+      ],
+      gamePredictionResults: [
+        { key: 'Game', label: 'Game', type: 'text' },
+        { key: 'Team', label: 'Team', type: 'text' },
+        { key: 'Prediction', label: 'Prediction', type: 'text' },
+        { key: 'Stake', label: 'Stake', type: 'number' },
+        { key: 'Reward', label: 'Reward', type: 'number' },
+        { key: 'Points', label: 'Points', type: 'number' }
+      ],
+      gameFantasyResults: [
+        { key: 'PlayerNomination', label: 'PlayerNomination', type: 'text' },
+        { key: 'Points', label: 'Points', type: 'number' },
+        { key: 'PointsPer1000', label: 'Points / \u00a31000', type: 'number' },
+        { key: 'PricePaid', label: 'PricePaid', type: 'number' },
+        { key: 'Team', label: 'Team', type: 'text' }
+      ],
+      playerPoints: [
+        { key: 'GameId', label: 'GameId', type: 'number' },
+        { key: 'GameName', label: 'GameName', type: 'text' },
+        { key: 'Won?', label: 'Won?', type: 'number' },
+        { key: 'Player', label: 'Player', type: 'text' },
+        { key: 'Points', label: 'Points', type: 'number' },
+        { key: 'PointsDetail', label: 'Points Detail', type: 'html' }
+      ],
+      games: [
+        { key: 'GameId', label: 'GameId', type: 'number' },
+        { key: 'GameName', label: 'GameName', type: 'text' },
+        { key: 'Won?', label: 'Won?', type: 'number' },
+        { key: 'Points', label: 'Points', type: 'number' }
+      ],
+      batting: [
+        { key: 'Player', label: 'Player', type: 'text' },
+        { key: 'HowOut', label: 'How Out', type: 'text' },
+        { key: 'Sixes', label: 'Sixes', type: 'number' },
+        { key: 'Runs', label: 'Runs', type: 'number' }
+      ],
+      bowling: [
+        { key: 'Player', label: 'Player', type: 'text' },
+        { key: 'Overs', label: 'Overs', type: 'number' },
+        { key: 'Mdns', label: 'Mdns', type: 'number' },
+        { key: 'RunsScored', label: 'Runs', type: 'number' },
+        { key: 'Wkts', label: 'Wkts', type: 'number' }
+      ],
+      fielding: [
+        { key: 'Player', label: 'Player', type: 'text' },
+        { key: 'Catches', label: 'Catches', type: 'number' },
+        { key: 'Runouts', label: 'Runouts', type: 'number' },
+        { key: 'Stumpings', label: 'Stumpings', type: 'number' }
+      ],
+      seasonBatting: [
+        { key: 'Player', label: 'Player', type: 'text' },
+        { key: 'Runs', label: 'Runs', type: 'number' },
+        { key: 'Sixes', label: 'Sixes', type: 'number' }
+      ],
+      seasonBowling: [
+        { key: 'Player', label: 'Player', type: 'text' },
+        { key: 'Overs', label: 'Overs', type: 'number' },
+        { key: 'Mdns', label: 'Mdns', type: 'number' },
+        { key: 'RunsScored', label: 'Runs', type: 'number' },
+        { key: 'Wkts', label: 'Wkts', type: 'number' }
+      ]
+    };
+
+    document.addEventListener('DOMContentLoaded', loadTeamsData);
+
+    async function loadTeamsData() {
+      setStatus('Loading Fantasy League...', 'notice');
+      try {
+        const response = await fetch(API_BASE_URL + '/api/fl/snapshot', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({})
+        });
+        const envelope = await response.json().catch(() => null);
+        if (!response.ok || !envelope || envelope.ok === false) {
+          const message = envelope && envelope.error && envelope.error.message
+            ? envelope.error.message
+            : 'Cloudflare API returned HTTP ' + response.status;
+          throw new Error(message);
+        }
+        applySnapshot(envelope.data || envelope);
+      } catch (error) {
+        showLoadError(error);
+      }
+    }
+
+    function applySnapshot(snapshot) {
+      const safeSnapshot = snapshot || {};
+      state.snapshot = safeSnapshot;
+      state.selectedTeam = 'All';
+      document.getElementById('pageTitle').textContent = 'Fantasy League ' + (safeSnapshot.seasonYear || '');
+      renderSnapshotHighlights();
+      renderTeamButtons();
+      renderHome();
+      renderTeamPanel('All');
+
+      if (safeSnapshot.checks && safeSnapshot.checks.ok === false) {
+        setStatus('Fantasy League loaded, but the backend comparison check found a mismatch. Use compareFLTotals() in Apps Script to inspect it.', 'warning');
+      } else {
+        setStatus('Updated ' + escapeHtml(safeSnapshot.generatedAt || ''), 'notice');
+      }
+    }
+
+    function showLoadError(error) {
+      const message = error && error.message ? error.message : String(error || 'Unknown load error');
+      document.getElementById('seasonKpis').innerHTML = '';
+      setStatus('Could not load Fantasy League: ' + escapeHtml(message), 'error');
+    }
+
+    function setStatus(message, kind) {
+      const node = document.getElementById('status');
+      node.className = 'notice' + (kind && kind !== 'notice' ? ' ' + kind : '');
+      node.innerHTML = message;
+    }
+
+    function renderTeamButtons() {
+      const teams = unique((state.snapshot.teams || []).map(row => row.Team).filter(Boolean));
+      const buttons = teams.map(team => (
+        '<button class="playerbutton" data-team="' + attr(team) + '" onclick="addTeamTable(this)">' + escapeHtml(team) + '</button>'
+      ));
+      buttons.push('<button class="playerbutton" data-team="All" onclick="addTeamTable(this)">All</button>');
+      buttons.push('<button class="playerbutton" data-team="Games" onclick="addTeamTable(this)">Games</button>');
+      document.getElementById('teamButtons').innerHTML = buttons.join('');
+      highlightTeamButton('All');
+    }
+
+    function renderHome() {
+      const snapshot = state.snapshot || {};
+      setOverviewCardsVisible(true);
+      document.getElementById('leaderboardhdr').innerHTML =
+        '<div class="section-title"><h2>Leader Board</h2><button class="ghost-action" onclick="AddChart()">View Chart</button></div>';
+      document.getElementById('leaderboard').innerHTML = renderTable(snapshot.leaderboard || [], columns.leaderboard, { sortable: true });
+
+      if (snapshot.latestGame && snapshot.latestGame.GameId) {
+        const latest = snapshot.latestGame;
+        document.getElementById('leaderboard').innerHTML +=
+          '<div id="lastgame" class="latest-game">Latest game ' +
+          '<a onclick="scorecard(\'' + attr(latest.GameId) + '\',\'' + attr(latest.GameName || '') + '\')">' +
+          escapeHtml(latest.GameId) + ' - ' + escapeHtml(latest.GameName || '') +
+          '</a></div>';
+      }
+
+      document.getElementById('leaderboard').innerHTML +=
+        '<div class="panel-actions"><button class="season-stat-button" onclick="show_season_stats()">Season stats</button></div>';
+    }
+
+    function renderSnapshotHighlights() {
+      const snapshot = state.snapshot || {};
+      const leaderboard = (snapshot.leaderboard || []).slice()
+        .sort((a, b) => numberValue(b.TotalPoints) - numberValue(a.TotalPoints));
+      const leader = leaderboard[0] || {};
+      const latest = snapshot.latestGame || {};
+      const teams = unique((snapshot.teams || []).map(row => row.Team).filter(Boolean));
+      const games = snapshot.games || [];
+      const items = [
+        ['Leader', leader.Team || '-', leader.TotalPoints ? formatNumber(leader.TotalPoints) + ' pts' : ''],
+        ['Latest Game', latest.GameId ? String(latest.GameId) : '-', latest.GameName || ''],
+        ['Teams', teams.length, 'active squads'],
+        ['Games', games.length, 'scorecards loaded']
+      ];
+      document.getElementById('seasonKpis').innerHTML = items.map(item =>
+        '<div class="kpi-card"><div class="kpi-label">' + escapeHtml(item[0]) +
+        '</div><div class="kpi-value">' + escapeHtml(item[1]) +
+        '</div><div class="kpi-meta">' + escapeHtml(item[2] || '') + '</div></div>'
+      ).join('');
+    }
+
+    function addTeamTable(teamnode) {
+      const teamName = teamnode && teamnode.dataset ? teamnode.dataset.team : 'All';
+      highlightTeamButton(teamName);
+
+      if (teamName === 'Games') {
+        addgameinfo();
+      } else {
+        AddTable(null, teamName === 'All' ? 'All' : teamName);
+      }
+    }
+
+    function highlightTeamButton(teamName) {
+      document.querySelectorAll('.playerbutton[data-team]').forEach(button => {
+        button.classList.toggle('active', button.dataset.team === teamName);
+      });
+    }
+
+    function AddTable(_teamdata, teamname) {
+      const selected = teamname || 'All';
+      state.selectedTeam = selected;
+
+      if (selected === 'All') {
+        renderHome();
+      } else {
+        setOverviewCardsVisible(false);
+        const balance = (state.snapshot.balances || []).find(row => row.Team === selected);
+        document.getElementById('leaderboardhdr').innerHTML =
+          '<div class="section-title"><h2>' + escapeHtml(selected) +
+          '</h2><span class="score-pill">Points: ' + formatNumber(balance ? balance.TotalPoints : 0) + '</span></div>';
+        const rows = playerTotalsWithPredictions(selected);
+        const predictionResults = settledPredictionRowsForTeam(selected);
+        document.getElementById('leaderboard').innerHTML =
+          renderSubsection('Fantasy Results', renderTable(rows, columns.playerTotals, {
+            sortable: true,
+            rowClick: 'popup_showplayerinfo',
+            rowAttrs: playerRowAttrs
+          })) +
+          renderSubsection('Prediction results', renderTable(predictionResults, columns.predictionResults, { sortable: true }));
+      }
+
+      renderTeamPanel(selected);
+    }
+
+    function renderTeamPanel(teamname) {
+      if (teamname === 'All') {
+        document.getElementById('teaminfo').innerHTML = renderTable(state.snapshot.teams || [], columns.team, {
+          sortable: true,
+          rowClick: 'popup_showplayerinfo',
+          rowAttrs: playerRowAttrs
+        });
+        return;
+      }
+
+      const balance = (state.snapshot.balances || []).find(row => row.Team === teamname);
+      const teamRows = (state.snapshot.teams || []).filter(row => row.Team === teamname);
+      const summary = balance ? renderBalanceSummary(balance) : '';
+      const openPredictions = openPredictionRowsForTeam(teamname);
+      document.getElementById('teaminfo').innerHTML =
+        summary +
+        renderSubsection('Open stakes', renderTable(openPredictions, columns.openPredictions, { sortable: true })) +
+        renderSubsection('Fantasy Purchases', renderTable(teamRows, columns.team, {
+          sortable: true,
+          rowClick: 'popup_showplayerinfo',
+          rowAttrs: playerRowAttrs
+        }));
+    }
+
+    function renderBalanceSummary(balance) {
+      const items = [
+        ['Fantasy Points', balance.FantasyPoints ?? balance.CricketPoints],
+        ['Prediction Points', balance.PredictionPoints ?? balance.SettledBettingNet],
+        ['Total', balance.TotalPoints],
+        ['Open Stake', balance.OpenPredictionStake ?? balance.OpenStake],
+        ['Available', balance.AvailablePoints]
+      ];
+      return '<div class="summary-grid">' + items.map(item =>
+        '<div class="summary-item"><div class="summary-label">' + escapeHtml(item[0]) +
+        '</div><div class="summary-value">' + signedNumberHtml(item[1], item[0]) + '</div></div>'
+      ).join('') + '</div>';
+    }
+
+    function addgameinfo() {
+      setOverviewCardsVisible(false);
+      document.getElementById('leaderboardhdr').innerHTML = '<div class="section-title"><h2>Games so far</h2></div>';
+      document.getElementById('leaderboard').innerHTML = renderTable(gamesWithPredictions(), columns.games, {
+        sortable: true,
+        rowClick: 'popup_scorecard',
+        rowAttrs: gameRowAttrs
+      });
+      document.getElementById('teaminfo').innerHTML = renderSubsection(
+        'Fantasy Results',
+        renderTable(gameFantasyResultsRows(), columns.gameFantasyResults, { sortable: true })
+      );
+    }
+
+    function playerTotalsWithPredictions(teamname) {
+      const predictionByPlayer = {};
+      settledRawPredictions()
+        .filter(row => row.Team === teamname)
+        .forEach(row => {
+          const key = playerKey(row.Player);
+          if (!key) return;
+          predictionByPlayer[key] = (predictionByPlayer[key] || 0) + predictionPointValue(row.NetPoints);
+        });
+
+      return (state.snapshot.playerTotals || [])
+        .filter(row => row.Team === teamname)
+        .map(row => {
+          const predictionPoints = predictionByPlayer[playerKey(row.Player)] || 0;
+          const points = numberValue(row.Points) + predictionPoints;
+          const pricePaid = numberValue(row.PricePaid);
+          return Object.assign({}, row, {
+            FantasyPoints: numberValue(row.Points),
+            PredictionPoints: predictionPoints,
+            Points: Math.round(points * 100) / 100,
+            PointsPer1000: pricePaid ? Math.round((points / pricePaid) * 100000) / 100 : 0
+          });
+        })
+        .sort((a, b) => numberValue(b.Points) - numberValue(a.Points));
+    }
+
+    function gamesWithPredictions() {
+      const byGame = {};
+      (state.snapshot.games || []).forEach(row => {
+        const gameId = String(row.GameId || '').trim();
+        if (!gameId) return;
+        byGame[gameId] = Object.assign({}, row, { Points: numberValue(row.Points) });
+      });
+
+      settledRawPredictions().forEach(row => {
+        const gameId = String(row.GameId || '').trim();
+        if (!gameId) return;
+        if (!byGame[gameId]) {
+          byGame[gameId] = { GameId: row.GameId, GameName: '', 'Won?': '', Points: 0 };
+        }
+        byGame[gameId].Points += predictionPointValue(row.NetPoints);
+      });
+
+      return Object.keys(byGame).map(key => {
+        byGame[key].Points = Math.round(byGame[key].Points * 100) / 100;
+        return byGame[key];
+      }).sort((a, b) => numberValue(b.GameId) - numberValue(a.GameId));
+    }
+
+    function gameFantasyResultsRows() {
+      return (state.snapshot.playerTotals || [])
+        .map(row => {
+          const points = numberValue(row.Points);
+          const pricePaid = numberValue(row.PricePaid);
+          return {
+            PlayerNomination: row.PlayerNomination,
+            Points: points,
+            PointsPer1000: pricePaid ? Math.round((points / pricePaid) * 100000) / 100 : 0,
+            PricePaid: pricePaid,
+            Team: row.Team
+          };
+        })
+        .sort((a, b) => numberValue(b.Points) - numberValue(a.Points));
+    }
+
+    function openPredictionRowsForTeam(teamname) {
+      return rawPredictions()
+        .filter(row => row.Team === teamname && predictionStatus(row) === 'OPEN')
+        .map(row => ({
+          Prediction: predictionLabel(row),
+          Stake: numberValue(row.Stake),
+          Reward: predictionReward(row)
+        }));
+    }
+
+    function settledPredictionRowsForTeam(teamname) {
+      return settledRawPredictions()
+        .filter(row => row.Team === teamname)
+        .map(predictionResultRow);
+    }
+
+    function settledPredictionRowsForGame(gameId) {
+      const key = String(gameId || '').trim();
+      return settledRawPredictions()
+        .filter(row => String(row.GameId || '').trim() === key)
+        .map(predictionResultRow);
+    }
+
+    function settledPredictionRows() {
+      return settledRawPredictions().map(predictionResultRow);
+    }
+
+    function settledRawPredictions() {
+      return rawPredictions().filter(row => {
+        const status = predictionStatus(row);
+        return status === 'SETTLED' || status === 'WON' || status === 'LOST' || status === 'VOID';
+      });
+    }
+
+    function rawPredictions() {
+      return (state.snapshot.predictions || state.snapshot.ledger || []).filter(row => row && row.Team);
+    }
+
+    function predictionResultRow(row) {
+      return {
+        Game: predictionGameLabel(row),
+        Team: row.Team,
+        Prediction: predictionLabel(row) + ' (' + predictionStatus(row).toLowerCase() + ')',
+        Stake: numberValue(row.Stake),
+        Reward: predictionReward(row),
+        Points: predictionPointValue(row.NetPoints)
+      };
+    }
+
+    function predictionReward(row) {
+      const status = predictionStatus(row);
+      if (status === 'OPEN') return predictionPointValue(row.PotentialProfit);
+      return Math.max(predictionPointValue(row.NetPoints), 0);
+    }
+
+    function predictionStatus(row) {
+      return String(row.Status || '').trim().toUpperCase();
+    }
+
+    function predictionGameLabel(row) {
+      const gameId = String(row.GameId || '').trim();
+      if (!gameId) return '-';
+      const game = (state.snapshot.games || []).find(item => String(item.GameId || '').trim() === gameId);
+      const name = game && game.GameName ? ' - ' + game.GameName : '';
+      return gameId + name;
+    }
+
+    function predictionLabel(row) {
+      const player = String(row.Player || '').trim() || 'Player';
+      const code = String(row.MarketCode || '').trim().toUpperCase();
+      const line = numberValue(row.Line);
+      const labels = {
+        RUNS20: 'to score 20+',
+        RUNS30: 'to score 30+',
+        RUNS50: 'to score 50+',
+        RUNS100: 'to score 100+',
+        SIX: 'to hit a six',
+        MAIDEN: 'to bowl a maiden',
+        WKTS3: 'to take 3+ wickets',
+        WKTS5: 'to take 5+ wickets'
+      };
+      return player + ' ' + (labels[code] || (code ? code + (line ? ' ' + line : '') : 'prediction'));
+    }
+
+    function renderSubsection(title, content) {
+      return '<div class="subsection"><h3>' + escapeHtml(title) + '</h3>' + content + '</div>';
+    }
+
+    function renderScorecardSection(title, rows, cols, className, meta) {
+      return '<section class="scorecard-section ' + attr(className || '') + '">' +
+        '<div class="scorecard-title"><span>' + escapeHtml(title) + '</span><span class="scorecard-meta">' +
+        escapeHtml(meta || '') + '</span></div>' +
+        renderTable(rows, cols, { tableClass: 'scorecard-table', shellClass: 'scorecard-shell' }) +
+        '</section>';
+    }
+
+    function popup_showplayerinfo(node) {
+      const playerNomination = node && node.dataset ? node.dataset.playerNomination : '';
+      const rows = (state.snapshot.pointsRows || [])
+        .filter(row => row.PlayerNomination === playerNomination)
+        .sort((a, b) => numberValue(b.GameId) - numberValue(a.GameId));
+
+      set_popup_header(escapeHtml(playerNomination || 'Player points detail'));
+      if (!rows.length) {
+        set_popup_body('<p class="centertext">No data to display</p>');
+      } else {
+        const displayRows = rows.map(row => Object.assign({}, row, {
+          PointsDetail: '<details class="detail-toggle"><summary>Show detail</summary><div class="detail-lines">' + (row.PointsDetail || '') + '</div></details>'
+        }));
+        set_popup_body(renderTable(displayRows, columns.playerPoints, { sortable: true }));
+      }
+      display_popup();
+    }
+
+    function popup_scorecard(node) {
+      const gameId = node && node.dataset ? node.dataset.gameId : '';
+      const gameName = node && node.dataset ? node.dataset.gameName : '';
+      scorecard(gameId, gameName);
+    }
+
+    function scorecard(gameId, gameName) {
+      set_popup_header(escapeHtml(gameId) + ' - ' + escapeHtml(gameName || ''));
+
+      const scoreRows = (state.snapshot.scores || []).filter(row => String(row.GameId) === String(gameId));
+      const pointRows = (state.snapshot.pointsRows || []).filter(row => String(row.GameId) === String(gameId));
+      if (!scoreRows.length && !pointRows.length) {
+        set_popup_body('<p class="centertext">No data to display</p>');
+        display_popup();
+        return;
+      }
+
+      const battingRows = scoreRows.map(row => pick(row, ['Player', 'HowOut', 'Sixes', 'Runs']));
+      const bowlingRows = scoreRows
+        .filter(row => String(row.BowlingOrder || '').trim() !== 'DNB')
+        .sort((a, b) => numberValue(a.BowlingOrder) - numberValue(b.BowlingOrder))
+        .map(row => pick(row, ['Player', 'Overs', 'Mdns', 'RunsScored', 'Wkts']));
+      const fieldingRows = scoreRows
+        .filter(row => numberValue(row.Catches) || numberValue(row.Runouts) || numberValue(row.Stumpings))
+        .map(row => pick(row, ['Player', 'Catches', 'Runouts', 'Stumpings']));
+      const teamPoints = gameTeamFantasyPoints(pointRows);
+      const gamePredictions = settledPredictionRowsForGame(gameId);
+      const battingRuns = battingRows.reduce((total, row) => total + numberValue(row.Runs), 0);
+      const bowlingWickets = bowlingRows.reduce((total, row) => total + numberValue(row.Wkts), 0);
+      const bowlingRuns = bowlingRows.reduce((total, row) => total + numberValue(row.RunsScored), 0);
+      const fieldingEvents = fieldingRows.reduce((total, row) =>
+        total + numberValue(row.Catches) + numberValue(row.Runouts) + numberValue(row.Stumpings), 0);
+      const gamePoints = pointRows
+        .map(row => ({
+          Team: row.Team,
+          PlayerNomination: row.PlayerNomination,
+          Points: row.Points,
+          PointsDetail: '<details class="detail-toggle"><summary>Show detail</summary><div class="detail-lines">' + (row.PointsDetail || '') + '</div></details>'
+        }))
+        .sort((a, b) => numberValue(b.Points) - numberValue(a.Points));
+
+      set_popup_body(
+        '<div class="scorecard-wrap"><div class="scorecard-grid">' +
+        renderScorecardSection('Batting Card', battingRows, columns.batting, 'batting-card', formatNumber(battingRuns) + ' runs') +
+        renderScorecardSection('Bowling Card', bowlingRows, columns.bowling, 'bowling-card', formatNumber(bowlingWickets) + ' wkts, ' + formatNumber(bowlingRuns) + ' runs') +
+        renderScorecardSection('Catches, Runouts & Stumpings', fieldingRows, columns.fielding, 'fielding-card', formatNumber(fieldingEvents) + ' events') +
+        '</div></div>' +
+        '<h3 class="centertext">Fantasy points in this game by team</h3>' +
+        renderTable(teamPoints, [{ key: 'Team', label: 'Team', type: 'text' }, { key: 'Points', label: 'Points', type: 'number' }], { sortable: true }) +
+        '<h3 class="centertext">Prediction points in this game</h3>' +
+        renderTable(gamePredictions, columns.gamePredictionResults, { sortable: true }) +
+        '<h3 class="centertext">Fantasy points in this game</h3>' +
+        renderTable(gamePoints, [
+          { key: 'Team', label: 'Team', type: 'text' },
+          { key: 'PlayerNomination', label: 'Player Nomination', type: 'text' },
+          { key: 'Points', label: 'Points', type: 'number' },
+          { key: 'PointsDetail', label: 'Points Detail', type: 'html' }
+        ], { sortable: true })
+      );
+      display_popup();
+    }
+
+    function gameTeamFantasyPoints(pointRows) {
+      return groupSum(pointRows, 'Team', 'Points').map(row => ({
+        Team: row.key,
+        Points: row.total
+      })).sort((a, b) => numberValue(b.Points) - numberValue(a.Points));
+    }
+
+    function show_season_stats() {
+      const stats = state.snapshot.seasonStats || {};
+      set_popup_header('Season stats');
+      set_popup_body(
+        '<h3 class="centertext">Batting Stats</h3>' +
+        renderTable(stats.batting || [], columns.seasonBatting, { sortable: true }) +
+        '<h3 class="centertext">Bowling Stats</h3>' +
+        renderTable(stats.bowling || [], columns.seasonBowling, { sortable: true })
+      );
+      display_popup();
+    }
+
+    function AddChart() {
+      const chart = state.snapshot.chart || { teams: [], rows: [] };
+      set_popup_header('Leader Chart');
+      set_popup_body('<div id="leaderChart" style="height: 420px; width: 100%;"></div>');
+      display_popup();
+
+      if (!window.google || !google.charts) {
+        document.getElementById('leaderChart').innerHTML = '<p class="centertext">Chart library is still loading. Try again in a moment.</p>';
+        return;
+      }
+
+      google.charts.load('current', { packages: ['corechart'] });
+      google.charts.setOnLoadCallback(function() {
+        const data = new google.visualization.DataTable();
+        data.addColumn('string', 'Game');
+        chart.teams.forEach(team => data.addColumn('number', team));
+        chart.rows.forEach(row => {
+          data.addRow([String(row.GameId)].concat(chart.teams.map(team => numberValue(row[team]))));
+        });
+
+        const options = {
+          legend: { position: 'bottom' },
+          chartArea: { left: 48, top: 20, right: 16, bottom: 80 },
+          height: 420,
+          pointSize: 3
+        };
+        const visual = new google.visualization.LineChart(document.getElementById('leaderChart'));
+        visual.draw(data, options);
+      });
+    }
+
+    function openPredictionApp() {
+      openPublicUrl('https://ravikirankella.github.io/Cricket/MakePrediction.html');
+    }
+
+    function openPublicPage(event, url) {
+      if (event && typeof event.preventDefault === 'function') {
+        event.preventDefault();
+      }
+      openPublicUrl(url);
+      return false;
+    }
+
+    function openPublicUrl(url) {
+      const opened = window.open(url, '_blank');
+      if (opened) {
+        try {
+          opened.opener = null;
+        } catch (error) {
+          // Some browsers prevent opener access; the tab has already opened.
+        }
+        return;
+      }
+      try {
+        window.top.location.href = url;
+      } catch (error) {
+        window.location.href = url;
+      }
+    }
+
+    function downloaddata() {
+      const rows = state.snapshot.pointsRows || [];
+      if (!rows.length) return;
+      const headers = state.snapshot.headers && state.snapshot.headers.points ? state.snapshot.headers.points : Object.keys(rows[0]);
+      const csv = [headers.join(',')].concat(rows.map(row =>
+        headers.map(header => csvCell(header === 'PointsDetail' ? row.PointsDetailText : row[header])).join(',')
+      )).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'FantasyLeaguePointSystem' + (state.snapshot.seasonYear || '') + '.csv';
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function renderTable(rows, cols, options) {
+      const opts = options || {};
+      const safeRows = rows || [];
+      if (!safeRows.length) {
+        return '<p class="centertext muted">No data to display</p>';
+      }
+
+      const shellClass = opts.shellClass ? ' ' + attr(opts.shellClass) : '';
+      const tableClass = opts.tableClass ? ' class="' + attr(opts.tableClass) + '"' : '';
+      let html = '<div class="table-shell' + shellClass + '"><table' + tableClass + '><thead><tr>';
+      cols.forEach((col, index) => {
+        const sortAttrs = opts.sortable ? ' onclick="sortTable(this,' + index + ',\'' + attr(col.type || 'text') + '\')"' : '';
+        html += '<th' + sortAttrs + '>' + escapeHtml(col.label || col.key) + '</th>';
+      });
+      html += '</tr></thead><tbody>';
+
+      safeRows.forEach(row => {
+        const rowAttrs = opts.rowAttrs ? opts.rowAttrs(row) : '';
+        const clickAttr = opts.rowClick ? ' onclick="' + opts.rowClick + '(this)"' : '';
+        const rowClass = opts.rowClick ? ' class="hvr"' : '';
+        html += '<tr' + rowClass + clickAttr + rowAttrs + '>';
+        cols.forEach(col => {
+          html += '<td>' + renderCell(row, col) + '</td>';
+        });
+        html += '</tr>';
+      });
+      html += '</tbody></table></div>';
+      return html;
+    }
+
+    function renderCell(row, col) {
+      const value = row[col.key];
+      if (col.type === 'html') return value || '';
+      if (col.type === 'number') return signedNumberHtml(value, col.key);
+      return escapeHtml(value);
+    }
+
+    function signedNumberHtml(value, key) {
+      const number = numberValue(value);
+      const signed = key === 'SettledBettingNet' || key === 'Prediction Points' ||
+        (key === 'Points' && number < 0);
+      const className = signed && number < 0 ? 'num negative' : signed && number > 0 ? 'num positive' : 'num';
+      return '<span class="' + className + '">' + formatNumber(value) + '</span>';
+    }
+
+    function setOverviewCardsVisible(visible) {
+      const node = document.getElementById('seasonKpis');
+      if (node) node.style.display = visible ? 'grid' : 'none';
+    }
+
+    function sortTable(th, columnIndex, type) {
+      const table = th.closest('table');
+      const tbody = table.querySelector('tbody');
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      const dir = th.dataset.sortDir === 'asc' ? 'desc' : 'asc';
+      table.querySelectorAll('th').forEach(node => node.dataset.sortDir = '');
+      th.dataset.sortDir = dir;
+
+      rows.sort((a, b) => {
+        const av = a.children[columnIndex] ? a.children[columnIndex].innerText.trim() : '';
+        const bv = b.children[columnIndex] ? b.children[columnIndex].innerText.trim() : '';
+        const cmp = type === 'number' ? numberValue(av) - numberValue(bv) : av.localeCompare(bv);
+        return dir === 'asc' ? cmp : -cmp;
+      });
+      rows.forEach(row => tbody.appendChild(row));
+    }
+
+    function playerRowAttrs(row) {
+      return ' data-player-nomination="' + attr(row.PlayerNomination || '') + '"';
+    }
+
+    function gameRowAttrs(row) {
+      return ' data-game-id="' + attr(row.GameId || '') + '" data-game-name="' + attr(row.GameName || '') + '"';
+    }
+
+    function display_popup() {
+      document.getElementById('popup').style.display = 'block';
+    }
+
+    function set_popup_header(text) {
+      document.getElementById('popuphdr').innerHTML = text;
+    }
+
+    function set_popup_body(text) {
+      document.getElementById('popupbody').innerHTML = text;
+    }
+
+    function groupSum(rows, keyField, valueField) {
+      const byKey = {};
+      (rows || []).forEach(row => {
+        const key = row[keyField] || '';
+        if (!key) return;
+        byKey[key] = (byKey[key] || 0) + numberValue(row[valueField]);
+      });
+      return Object.keys(byKey).map(key => ({ key: key, total: Math.round(byKey[key] * 100) / 100 }));
+    }
+
+    function pick(row, keys) {
+      const out = {};
+      keys.forEach(key => out[key] = row[key]);
+      return out;
+    }
+
+    function unique(values) {
+      const seen = {};
+      const out = [];
+      values.forEach(value => {
+        const key = String(value || '').trim();
+        if (key && !seen[key]) {
+          seen[key] = true;
+          out.push(key);
+        }
+      });
+      return out;
+    }
+
+    function playerKey(value) {
+      return String(value || '').trim().toLowerCase();
+    }
+
+    function numberValue(value) {
+      const n = Number(String(value || '0').replace(/,/g, ''));
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function predictionPointValue(value) {
+      return Math.floor(numberValue(value));
+    }
+
+    function formatNumber(value) {
+      const n = numberValue(value);
+      return Number.isInteger(n) ? String(n) : n.toFixed(2);
+    }
+
+    function escapeHtml(value) {
+      return String(value === null || value === undefined ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function attr(value) {
+      return escapeHtml(value).replace(/`/g, '&#96;');
+    }
+
+    function csvCell(value) {
+      const text = String(value === null || value === undefined ? '' : value).replace(/\r?\n/g, ' ');
+      return '"' + text.replace(/"/g, '""') + '"';
+    }
+  </script>
+</body>
+</html>
