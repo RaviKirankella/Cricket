@@ -6,8 +6,7 @@
   <title>ISISCC Fantasy League</title>
   <meta name="description" content="ISISCC Fantasy League leaderboard and team points.">
   <style>
-    html,
-    body {
+    html, body {
       height: 100%;
       margin: 0;
     }
@@ -50,13 +49,33 @@
       font-size: 1.05rem;
       margin-bottom: 8px;
     }
+
+    .direct-help {
+      position: fixed;
+      right: 12px;
+      bottom: 12px;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 7px 10px;
+      border: 1px solid rgba(15, 118, 110, 0.45);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.92);
+      color: #0f766e;
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+    }
   </style>
 </head>
 <body>
   <iframe
-    id="flFrame"
+    id="appFrame"
     title="ISISCC Fantasy League"
-    src="https://script.google.com/macros/s/AKfycbw0FMq7t-UtrI8SLlN3Na-DbHecvEMQenZU6T4nWdrQBuYr5YbAM2IKE6lIRDciFf_Vkg/exec?page=fl"
+    src="https://script.google.com/macros/s/AKfycbw0FMq7t-UtrI8SLlN3Na-DbHecvEMQenZU6T4nWdrQBuYr5YbAM2IKE6lIRDciFf_Vkg/exec?page=fl&authuser=0"
     loading="eager"
     allowfullscreen>
   </iframe>
@@ -68,9 +87,11 @@
     </div>
   </div>
 
+  <a class="direct-help" href="https://script.google.com/macros/s/AKfycbw0FMq7t-UtrI8SLlN3Na-DbHecvEMQenZU6T4nWdrQBuYr5YbAM2IKE6lIRDciFf_Vkg/exec?page=fl&authuser=0" target="_top">Open direct</a>
+
   <script>
     const loader = document.getElementById('loader');
-    document.getElementById('flFrame').addEventListener('load', () => {
+    document.getElementById('appFrame').addEventListener('load', () => {
       loader.classList.add('hidden');
     });
   </script>
