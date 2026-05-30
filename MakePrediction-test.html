@@ -600,9 +600,11 @@
 
     @media (max-width: 920px) {
       .app-header,
-      .prediction-workbench,
-      .balance-grid {
+      .prediction-workbench {
         grid-template-columns: 1fr;
+      }
+      .balance-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
       .wager-panel {
         position: static;
@@ -619,21 +621,64 @@
 
     @media (max-width: 560px) {
       .app-shell {
-        padding: 10px;
+        padding: 8px;
       }
       h1 {
-        font-size: 1.32rem;
+        font-size: 1.22rem;
       }
       .panel,
       .app-header {
-        padding: 14px;
+        padding: 12px;
+      }
+      .app-header {
+        gap: 10px;
+      }
+      .subhead {
+        margin-top: 4px;
+        font-size: 0.78rem;
+        line-height: 1.25;
+      }
+      .toolbar {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+        width: 100%;
       }
       .button,
       button {
         width: 100%;
+        min-height: 32px;
+        padding: 7px 8px;
+        font-size: 0.75rem;
+        line-height: 1.1;
       }
       .market-button {
         width: auto;
+      }
+      .balance-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+        margin-top: 8px;
+      }
+      .metric {
+        min-height: 64px;
+        padding: 9px;
+      }
+      .metric-label {
+        font-size: 0.62rem;
+      }
+      .metric-value {
+        margin-top: 4px;
+        font-size: 1rem;
+      }
+      .mode-banner {
+        margin-top: 8px;
+        padding: 9px 10px;
+        font-size: 0.75rem;
+      }
+      .prediction-workbench {
+        gap: 10px;
+        margin-top: 10px;
       }
     }
   </style>
