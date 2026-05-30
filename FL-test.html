@@ -935,7 +935,8 @@
         { key: 'Prediction', label: 'Prediction', type: 'text' },
         { key: 'Stake', label: 'Stake', type: 'number' },
         { key: 'Reward', label: 'Reward', type: 'number' },
-        { key: 'Points', label: 'Points', type: 'number' }
+        { key: 'Points', label: 'Points', type: 'number' },
+        { key: 'PredictionDetail', label: 'Detail', type: 'html' }
       ],
       openPredictions: [
         { key: 'Prediction', label: 'Prediction', type: 'text' },
@@ -948,7 +949,8 @@
         { key: 'Prediction', label: 'Prediction', type: 'text' },
         { key: 'Stake', label: 'Stake', type: 'number' },
         { key: 'Reward', label: 'Reward', type: 'number' },
-        { key: 'Points', label: 'Points', type: 'number' }
+        { key: 'Points', label: 'Points', type: 'number' },
+        { key: 'PredictionDetail', label: 'Detail', type: 'html' }
       ],
       gameFantasyResults: [
         { key: 'PlayerNomination', label: 'PlayerNomination', type: 'text' },
@@ -1313,8 +1315,27 @@
         Prediction: predictionLabel(row) + ' (' + predictionStatus(row).toLowerCase() + ')',
         Stake: numberValue(row.Stake),
         Reward: predictionReward(row),
-        Points: predictionPointValue(row.NetPoints)
+        Points: predictionPointValue(row.NetPoints),
+        PredictionDetail: predictionDetailHtml(row)
       };
+    }
+
+    function predictionDetailHtml(row) {
+      const detail = predictionDetailText(row);
+      return '<details class="detail-toggle"><summary>Show detail</summary><div class="detail-lines">' +
+        escapeHtml(detail) + '</div></details>';
+    }
+
+    function predictionDetailText(row) {
+      const status = predictionStatus(row);
+      const notes = String(row.Notes || '').trim();
+      if (notes) return notes;
+      const stake = numberValue(row.Stake);
+      const reward = predictionReward(row);
+      if (status === 'VOID') return 'Prediction cancelled. Stake refunded.';
+      if (predictionPointValue(row.NetPoints) > 0) return 'Prediction won. Stake ' + stake + ', reward ' + reward + ' points.';
+      if (predictionPointValue(row.NetPoints) < 0) return 'Prediction lost. Stake ' + stake + ' points was deducted.';
+      return 'Prediction settled with no points change.';
     }
 
     function predictionReward(row) {
@@ -1340,14 +1361,14 @@
       const code = String(row.MarketCode || '').trim().toUpperCase();
       const line = numberValue(row.Line);
       const labels = {
-        RUNS20: 'to score 20+',
-        RUNS30: 'to score 30+',
-        RUNS50: 'to score 50+',
-        RUNS100: 'to score 100+',
+        RUNS20: 'to score 20 or more runs',
+        RUNS30: 'to score 30 or more runs',
+        RUNS50: 'to score 50 or more runs',
+        RUNS100: 'to score 100 or more runs',
         SIX: 'to hit a six',
         MAIDEN: 'to bowl a maiden',
-        WKTS3: 'to take 3+ wickets',
-        WKTS5: 'to take 5+ wickets'
+        WKTS3: 'to take 3 or more wickets',
+        WKTS5: 'to take 5 or more wickets'
       };
       return player + ' ' + (labels[code] || (code ? code + (line ? ' ' + line : '') : 'prediction'));
     }
