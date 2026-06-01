@@ -5,7 +5,184 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spin Wheel</title>
 <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-<script src="CloudflareAppsScriptAdapter.js"></script>
+<script>
+(function () {
+  const API_BASE_URL = 'https://isiscc-fantasy-api.ravikiran59.workers.dev';
+
+  const routes = {
+    getRegistrationState: '/api/registration/state',
+    requestPasswordReset: '/api/password/reset',
+    addUser: '/api/users/add',
+    loginUser: '/api/auth/login',
+    getUsers: '/api/users/list',
+    getPlayers: '/api/players/list',
+    getAuctionList: '/api/auction/list',
+    getAuctionRow: '/api/auction/row',
+    updateAuctionBid: '/api/auction/update-bid',
+    addAcutionRow: '/api/auction-tool/add-row',
+    loginScoreboard: '/api/scoreboard/login',
+    checkgameidexistsDetailed: '/api/scorecard/check',
+    addRows: '/api/admin/scorecard/save',
+    upsertrows: '/api/admin/scorecard/save',
+    loginAdmin: '/api/admin/login',
+    getAdminSnapshot: '/api/admin/snapshot',
+    adminPreviewSeasonSheets: '/api/admin/season-sheets/preview',
+    adminEnsureSeasonSheets: '/api/admin/season-sheets/apply',
+    adminPreviewFutureFixtures: '/api/admin/fixtures/preview',
+    adminApplyFutureFixtures: '/api/admin/fixtures/apply',
+    adminPreviewScorecardPlayers: '/api/admin/players/preview',
+    adminApplyScorecardPlayers: '/api/admin/players/apply',
+    adminPreviewRegistrationState: '/api/admin/registration/preview',
+    adminApplyRegistrationState: '/api/admin/registration/apply',
+    adminListNewScorecards: '/api/admin/scorecards',
+    adminGetPredictionControls: '/api/admin/prediction-controls',
+    adminUpdatePredictionControls: '/api/admin/prediction-controls/update',
+    adminPreviewBettingOddsAdjustments: '/api/admin/odds-adjustments/preview',
+    adminApplyBettingOddsAdjustments: '/api/admin/odds-adjustments/apply',
+    adminPreviewScorecardImport: '/api/admin/scorecard/preview',
+    adminSaveScorecardRows: '/api/admin/scorecard/save'
+  };
+
+  async function postApi(route, payload) {
+    const response = await fetch(API_BASE_URL + route, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(payload || {})
+    });
+    const envelope = await response.json().catch(() => null);
+    if (!response.ok || !envelope || envelope.ok === false) {
+      const message = envelope && envelope.error && envelope.error.message
+        ? envelope.error.message
+        : 'Cloudflare API returned HTTP ' + response.status;
+      throw new Error(message);
+    }
+    return envelope.data;
+  }
+
+  function buildPayload(method, args) {
+    if (method === 'requestPasswordReset') return { email: args[0] };
+    if (method === 'addUser') return { username: args[0], password: args[1], email: args[2] };
+    if (method === 'loginUser') return { username: args[0], team: args[0], password: args[1] };
+    if (method === 'getAuctionList') return addFantasyCredentials({ sheetName: args[0] });
+    if (method === 'getAuctionRow') return addFantasyCredentials({ sheetName: args[0], nomination: args[1] });
+    if (method === 'updateAuctionBid') {
+      return addFantasyCredentials({
+        sheetName: args[0],
+        nomination: args[1],
+        newBid: args[2],
+        bidHolder: args[3],
+        username: args[3],
+        team: args[3]
+      });
+    }
+    if (method === 'addAcutionRow') return { sheetName: args[0], row: args[1], data: args[1] };
+    if (method === 'loginScoreboard') return args[0] || {};
+    if (method === 'checkgameidexistsDetailed') {
+      return addScoreboardCredentials({ sheetName: args[0], gameId: args[1] });
+    }
+    if (method === 'addRows' || method === 'upsertrows') {
+      return addScoreboardCredentials({ sheetName: args[0], rows: args[1], data: args[1] });
+    }
+    if (method === 'loginAdmin') return args[0] || {};
+    if (method.indexOf('admin') === 0 || method === 'getAdminSnapshot') return args[0] || {};
+    return {};
+  }
+
+  function unwrap(method, data, payload) {
+    if (method === 'requestPasswordReset') return data && data.message ? data.message : data;
+    if (method === 'addUser') return data && data.message ? data.message : data;
+    if (method === 'loginUser') {
+      if (data && data.ok) {
+        window.__fantasyCredentials = {
+          team: payload.team || payload.username,
+          username: payload.username || payload.team,
+          password: payload.password
+        };
+      }
+      return !!(data && data.ok);
+    }
+    if (method === 'getUsers') return data && data.users ? data.users : [];
+    if (method === 'getPlayers') return data && data.players ? data.players : [];
+    if (method === 'getAuctionList') return data && data.rows ? data.rows : [];
+    if (method === 'getAuctionRow') return data ? data.row : null;
+    if (method === 'updateAuctionBid') return data && (data.result || data.message) ? (data.result || data.message) : data;
+    if (method === 'addAcutionRow') return data && (data.result || data.message) ? (data.result || data.message) : data;
+    if (method === 'loginScoreboard') {
+      if (data && data.ok) {
+        window.__scoreboardCredentials = {
+          name: payload.name || payload.username,
+          key: payload.key || payload.password
+        };
+      }
+      return data;
+    }
+    if (method === 'addRows' || method === 'upsertrows') return data && data.message ? data.message : data;
+    return data;
+  }
+
+  function addFantasyCredentials(payload) {
+    const creds = window.__fantasyCredentials || {};
+    return Object.assign({}, payload, {
+      username: payload.username || creds.username || creds.team,
+      team: payload.team || creds.team || creds.username,
+      password: payload.password || creds.password
+    });
+  }
+
+  function addScoreboardCredentials(payload) {
+    return Object.assign({}, window.__scoreboardCredentials || {}, payload);
+  }
+
+  function makeRunner(successHandler, failureHandler) {
+    const runner = {
+      withSuccessHandler(fn) {
+        return makeRunner(fn, failureHandler);
+      },
+      withFailureHandler(fn) {
+        return makeRunner(successHandler, fn);
+      }
+    };
+
+    return new Proxy(runner, {
+      get(target, property) {
+        if (property in target) return target[property];
+        const method = String(property);
+        return function () {
+          const args = Array.prototype.slice.call(arguments);
+          const route = routes[method];
+          if (!route) {
+            const err = new Error('Unsupported Apps Script call through Cloudflare: ' + method);
+            if (failureHandler) {
+              failureHandler(err);
+              return undefined;
+            }
+            throw err;
+          }
+          const payload = buildPayload(method, args);
+          postApi(route, payload)
+            .then(data => {
+              if (successHandler) successHandler(unwrap(method, data, payload));
+            })
+            .catch(error => {
+              if (failureHandler) {
+                failureHandler(error);
+              } else {
+                setTimeout(() => { throw error; }, 0);
+              }
+            });
+          return undefined;
+        };
+      }
+    });
+  }
+
+  window.flApiPost = postApi;
+  window.google = window.google || {};
+  window.google.script = window.google.script || {};
+  window.google.script.run = makeRunner(null, null);
+})();
+
+</script>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
