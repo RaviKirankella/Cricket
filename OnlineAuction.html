@@ -1,56 +1,1429 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ISISCC Buy Fantasy Players</title>
-  <meta name="description" content="Buy ISISCC Fantasy Cricket players for the season auction.">
+      <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <script src="CloudflareAppsScriptAdapter.js"></script>
+
   <style>
-    html, body { height: 100%; margin: 0; }
-    body { overflow: hidden; background: #f5f7fb; }
-    iframe { width: 100%; height: 100%; border: 0; display: block; background: #ffffff; }
-    .loader {
-      position: fixed;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      background: linear-gradient(180deg, #e8f3ee 0, #f5f7fb 320px);
-      color: #64748b;
+    
+    body { font-family: Verdana, Geneva, sans-serif; text-align: center; }
+    .waiting {
+        cursor: wait !important;
+    }
+
+    .end-time {
+        white-space: nowrap; /* Prevents wrapping */
+        display: inline-block; /* Keeps it in one line */
+    }
+
+    #auctioncontainer { display: none;}
+    #updateslink { display: none;}
+    
+    .lrcontainer { width: 300px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+    #logincontainer label {
+    display: inline-flex;
+    align-items: center;
+}
+    input { width: 90%; padding: 8px; margin: 5px 0; }
+    input[readonly] {
+    background-color: #e0e0e0 !important;
+    color: #666 !important;
+    cursor: not-allowed;
+    border: 1px solid #ccc;
+}
+
+    .button { width: 80%; padding: 8px; background: blue; color: white; border: none; cursor: pointer;
+            border-radius: 20px; /* Rounded edges */
+            transition: background 0.3s ease, transform 0.2s ease;
+            ont-size: 14px;
+            font-weight: bold;}
+    .button:hover { background: darkblue; }
+       .textlink {display: inline-block;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+	      border: none;
+        outline: none;
+        border-radius: 20px; /* Rounded edges */
+        transition: background 0.3s ease, transform 0.2s ease;}
+    
+    .refreshbutton{
+        padding: 7px 5px 7px 5px;
+        margin: 5px;
+        background: #007bff; /* Nice blue color */
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 20px; /* Rounded edges */
+        font-size: 14px;
+        font-weight: bold;
+        transition: background 0.3s ease, transform 0.2s ease;
+      }
+    .bidnow {
+        padding: 5px 16px;
+        background: #007bff; /* Nice blue color */
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 20px; /* Rounded edges */
+        font-size: 14px;
+        font-weight: bold;
+        transition: background 0.3s ease, transform 0.2s ease;
+      }
+    .bidnow:hover { background: darkblue; }
+    .upcoming{
+        padding: 5px 16px;
+        background: light grey; /* Nice blue color */
+        color: dark grey;
+        border: none;
+        cursor: pointer;
+        border-radius: 20px; /* Rounded edges */
+        font-size: 14px;
+        font-weight: bold;
+        transition: background 0.3s ease, transform 0.2s ease;
+      }
+      .unsold {
+        padding: 5px 16px;
+        background: light grey; /* Nice blue color */
+        color: black;
+        border: none;
+        cursor: pointer;
+        border-radius: 20px; /* Rounded edges */
+        font-size: 14px;
+        font-weight: bold;
+        transition: background 0.3s ease, transform 0.2s ease;
+      }
+      .sold {
+        padding: 5px 16px;
+        background: #FFD700; /* Gold color */
+        color: black;
+        border: none;
+        cursor: pointer;
+        border-radius: 20px; /* Rounded edges */
+        font-size: 14px;
+        font-weight: bold;
+        transition: background 0.3s ease, transform 0.2s ease;
+      }
+    .whitebutton {
+        padding: 5px 16px;
+        background: white; /* Nice blue color */
+        color: black;
+        border: none;
+        cursor: pointer;
+        border-radius: 20px; /* Rounded edges */
+        font-size: 14px;
+        font-weight: bold;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for raised effect */
+        transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+      }
+
+      .subtext {font-size: 8px;padding: 0px; border: none;}
+.bid-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adds space between elements */
+    padding: 10px;
+    margin: 10px;
+    background-color: #fff;
+    border: none;
+}
+
+button:disabled:not(.sold) {
+    background-color: #ccc; /* Gray background */
+    color: #666; /* Darker text */
+    cursor: not-allowed; /* Show not-allowed cursor */
+    opacity: 0.6; /* Reduce opacity */
+}
+
+.bid-container a {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px;
+}
+
+.bid-container button {
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.increment-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.submit-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+}
+
+.close-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+
+.bid-container button:hover {
+    opacity: 0.8;
+}
+      .auction-item {
+  background: white; /* Clean white background */
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid #ddd; /* Light grey border */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for raised effect */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+}
+    
+ 
+    #usersList { margin-top: 20px; }
+    #registercontainer {display: None}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#searchBox {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+}
+
+#searchBox:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.search-container button {
+    padding: 10px 15px;
+    margin-left: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+#auctioncontainertext {
+    font-size: 18px;
+    color: #555;
+    text-align: center;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-style: italic;
+}
+
+    :root {
+      --bg: #f5f7fb;
+      --bg-accent: #e8f3ee;
+      --ink: #172033;
+      --muted: #64748b;
+      --line: #dbe3ef;
+      --brand: #0f766e;
+      --brand-strong: #115e59;
+      --navy: #17324d;
+      --gold: #d97706;
+      --radius: 8px;
+      --shadow: 0 14px 34px rgba(15, 23, 42, 0.14);
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, var(--bg-accent) 0, var(--bg) 310px);
+      color: var(--ink);
       font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
       text-align: center;
-      transition: opacity 180ms ease, visibility 180ms ease;
     }
-    .loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    .loader strong { display: block; color: #172033; font-size: 1.05rem; margin-bottom: 8px; }
-    .direct-help {
-      position: fixed;
-      right: 12px;
-      bottom: 12px;
-      z-index: 3;
+
+    .app-shell {
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .app-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--brand) 0%, #164e63 55%, #1f2937 100%);
+      box-shadow: var(--shadow);
+      color: #ffffff;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-header::after {
+      content: "";
+      position: absolute;
+      right: 24px;
+      bottom: 0;
+      width: 170px;
+      height: 4px;
+      background: #f59e0b;
+      border-radius: 999px 999px 0 0;
+    }
+
+    .title-block,
+    .header-actions {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: block;
+      margin-bottom: 6px;
+      color: #bfdbfe;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    #pageTitle {
+      margin: 0;
+      color: #ffffff;
+      font-size: clamp(1.45rem, 2.8vw, 2rem);
+      line-height: 1;
+      font-weight: 800;
+      text-align: left;
+    }
+
+    .subhead {
+      margin: 7px 0 0;
+      color: #dbeafe;
+      line-height: 1.45;
+      font-size: 0.9rem;
+    }
+
+    .header-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .header-action,
+    #updateslink a {
       display: inline-flex;
       align-items: center;
-      min-height: 34px;
-      padding: 7px 10px;
-      border: 1px solid rgba(15, 118, 110, 0.45);
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.92);
-      color: #0f766e;
-      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-      font-size: 0.78rem;
-      font-weight: 800;
+      border: 1px solid rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.14);
+      color: #ffffff;
       text-decoration: none;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+      font-size: 0.9rem;
+      font-weight: 800;
+      transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+      box-shadow: none;
     }
+
+    .header-action:hover,
+    #updateslink a:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.22);
+      border-color: rgba(255,255,255,0.7);
+    }
+
+    .header-action.primary {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #201304;
+    }
+
+    #updateslink {
+      margin: 10px 0 0;
+      padding: 0;
+      text-align: right;
+    }
+
+    #updateslink a {
+      background: #ffffff;
+      color: var(--brand-strong);
+      border: 1px solid var(--line);
+      box-shadow: 0 8px 18px rgba(15, 118, 110, 0.12);
+    }
+
+    .lrcontainer {
+      width: min(360px, 100%);
+      margin: 16px auto;
+      padding: 22px;
+      border: 1px solid rgba(219, 227, 239, 0.9);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    .button,
+    .refreshbutton,
+    .bidnow {
+      background: var(--brand);
+    }
+
+    .button:hover,
+    .refreshbutton:hover,
+    .bidnow:hover {
+      background: var(--brand-strong);
+    }
+
+    @media (max-width: 760px) {
+      .app-shell {
+        padding: 10px;
+      }
+
+      .app-header {
+        grid-template-columns: 1fr;
+        padding: 16px;
+      }
+
+      .header-actions {
+        justify-content: flex-start;
+      }
+
+      #updateslink {
+        text-align: left;
+      }
+    }
+
+    /* Buy Fantasy Players refresh */
+    html {
+      min-height: 100%;
+      background: var(--bg);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .app-shell {
+      width: min(1320px, 100%);
+    }
+
+    .lrcontainer {
+      width: min(430px, 100%);
+      margin: 22px auto;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    #logincontainer,
+    #registercontainer,
+    #forgotcontainer {
+      padding: 24px;
+      border: 1px solid rgba(219, 227, 239, 0.95);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 16px 38px rgba(15, 23, 42, 0.10);
+      text-align: left;
+    }
+
+    #logincontainer h2,
+    #registercontainer h2,
+    #forgotcontainer h2 {
+      margin: 0 0 16px;
+      color: var(--ink);
+      font-size: 1.35rem;
+      line-height: 1.1;
+      text-align: left;
+    }
+
+    #logincontainer input:not([type="checkbox"]),
+    #registercontainer input,
+    #forgotcontainer input,
+    #searchBox {
+      width: 100%;
+      min-height: 42px;
+      margin: 7px 0;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--ink);
+      font: inherit;
+      outline: none;
+      transition: border-color 140ms ease, box-shadow 140ms ease;
+    }
+
+    #logincontainer input:focus,
+    #registercontainer input:focus,
+    #forgotcontainer input:focus,
+    #searchBox:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.14);
+    }
+
+    #rememberMe {
+      width: auto;
+      margin: 0 8px 0 0;
+      accent-color: var(--brand);
+    }
+
+    #logincontainer label {
+      display: inline-flex;
+      align-items: center;
+      margin: 8px 0 12px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    #loginMessage,
+    #registerMessage,
+    #forgotMessage {
+      min-height: 18px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-weight: 700;
+      line-height: 1.4;
+      text-align: left;
+    }
+
+    #logincontainer p,
+    #registercontainer p,
+    #forgotcontainer p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .form-note {
+      margin: 12px 0 0;
+    }
+
+    .button.secondary {
+      margin-top: 6px;
+      background: #e5e7eb;
+      color: #64748b;
+      border-color: #cbd5e1;
+      box-shadow: none;
+    }
+
+    .button,
+    .refreshbutton,
+    .bidnow,
+    .whitebutton,
+    .textlink,
+    .submit-button,
+    .close-button,
+    .increment-button {
+      min-height: 38px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-family: inherit;
+      font-weight: 800;
+      letter-spacing: 0;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+      transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease, border-color 120ms ease;
+    }
+
+    .button {
+      width: 100%;
+      min-height: 42px;
+      padding: 10px 14px;
+      background: var(--brand);
+      color: #ffffff;
+    }
+
+    .button:hover,
+    .refreshbutton:hover,
+    .bidnow:hover,
+    .whitebutton:hover,
+    .textlink:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+    }
+
+    .textlink {
+      width: auto;
+      padding: 7px 10px;
+      background: #ffffff;
+      color: var(--brand-strong);
+      border-color: var(--line);
+      box-shadow: none;
+      cursor: pointer;
+    }
+
+    button:disabled:not(.sold) {
+      background: #e5e7eb;
+      color: #64748b;
+      border-color: #cbd5e1;
+      box-shadow: none;
+      transform: none;
+    }
+
+    #updateslink {
+      margin: 12px 0;
+    }
+
+    #auctioncontainer {
+      margin-top: 14px;
+      text-align: left;
+    }
+
+    #auctioncontainertext {
+      margin: 18px 0 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--muted);
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.07);
+      font-size: 0.95rem;
+    }
+
+    .search-container {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 8px;
+      align-items: center;
+      margin: 0 0 12px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    .search-container button,
+    .whitebutton {
+      padding: 8px 12px;
+      margin-left: 0;
+      background: #ffffff;
+      color: var(--brand-strong);
+      border-color: var(--line);
+    }
+
+    #searchBox {
+      margin: 0;
+    }
+
+    #auctioncontainer h3 {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 0 0 12px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--ink);
+      font-size: 0.95rem;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+    }
+
+    .refreshbutton {
+      padding: 8px 12px;
+      background: var(--brand);
+      color: #ffffff;
+    }
+
+    .auction-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 10px;
+      align-items: center;
+      margin: 10px 0;
+      padding: 14px;
+      border: 1px solid rgba(219, 227, 239, 0.95);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.07);
+      transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+    }
+
+    .auction-item:hover {
+      transform: translateY(-1px);
+      border-color: rgba(15, 118, 110, 0.35);
+      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.10);
+    }
+
+    .auction-item > span:first-child {
+      min-width: 0;
+      color: var(--ink);
+      font-size: 1rem;
+      font-weight: 900;
+      line-height: 1.3;
+      overflow-wrap: anywhere;
+    }
+
+    .end-time {
+      justify-self: end;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: #f1f5f9;
+      color: var(--muted) !important;
+      font-size: 0.76rem !important;
+      font-weight: 800;
+    }
+
+    .bidnow,
+    .sold,
+    .unsold,
+    .upcoming {
+      min-width: 132px;
+      padding: 8px 13px;
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    .bidnow {
+      background: var(--brand);
+      color: #ffffff;
+    }
+
+    .sold {
+      background: #fbbf24;
+      color: #1f2937;
+      border-color: #f59e0b;
+    }
+
+    .unsold,
+    .upcoming {
+      background: #f1f5f9;
+      color: #334155;
+      border-color: #cbd5e1;
+    }
+
+    .subtext {
+      display: inline-block;
+      margin-top: 2px;
+      color: inherit;
+      font-size: 0.68rem;
+      line-height: 1.2;
+      text-decoration: none;
+    }
+
+    .bid-container {
+      grid-column: 1 / -1;
+      margin: 4px 0 0;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg);
+      text-align: left;
+    }
+
+    .bid-container a {
+      display: block;
+      margin: 0 0 10px;
+      color: var(--ink);
+    }
+
+    .bid-container button {
+      margin: 4px 6px 4px 0;
+      border-radius: 999px;
+    }
+
+    @media (max-width: 760px) {
+      .lrcontainer {
+        margin: 14px auto;
+      }
+
+      #logincontainer,
+      #registercontainer,
+      #forgotcontainer {
+        padding: 18px;
+      }
+
+      .search-container {
+        position: static;
+        grid-template-columns: 1fr;
+      }
+
+      .search-container button,
+      .whitebutton,
+      .refreshbutton {
+        width: 100%;
+        margin-left: 0;
+      }
+
+      #auctioncontainer h3 {
+        justify-content: flex-start;
+      }
+
+      .auction-item {
+        grid-template-columns: 1fr;
+        text-align: left;
+      }
+
+      .auction-item > button,
+      .auction-item > .whitebutton,
+      .end-time {
+        justify-self: stretch;
+        width: 100%;
+      }
+
+      .bidnow,
+      .sold,
+      .unsold,
+      .upcoming {
+        min-width: 0;
+      }
+    }
+
+
   </style>
 </head>
 <body>
-  <iframe id="appFrame" title="ISISCC Buy Fantasy Players" src="https://script.google.com/macros/s/AKfycbw0FMq7t-UtrI8SLlN3Na-DbHecvEMQenZU6T4nWdrQBuYr5YbAM2IKE6lIRDciFf_Vkg/exec?page=register&authuser=0" loading="eager" allowfullscreen></iframe>
-  <div class="loader" id="loader"><div><strong>Loading Buy Fantasy Players...</strong><span>Please wait while the auction page loads.</span></div></div>
-  <a class="direct-help" href="https://script.google.com/macros/s/AKfycbw0FMq7t-UtrI8SLlN3Na-DbHecvEMQenZU6T4nWdrQBuYr5YbAM2IKE6lIRDciFf_Vkg/exec?page=register&authuser=0" target="_top">Open direct</a>
+
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="title-block">
+        <span class="eyebrow">ISISCC Fantasy Cricket</span>
+        <h1 id="pageTitle">Buy Fantasy Players</h1>
+        <p class="subhead">Pre-season player purchase and auction view.</p>
+      </div>
+      <nav class="header-actions" aria-label="Buy Fantasy Players links">
+        <a class="header-action primary" href="https://ravikirankella.github.io/Cricket/FL.html" target="_top">Fantasy League</a>
+      </nav>
+    </header>
+
+  <div id="updateslink">
+  <a href="https://ravikirankella.github.io/Cricket/OnlineAuctionUpdates.html"
+     target="_blank"
+     rel="noopener noreferrer">
+     Auction Updates & Summaries
+  </a>
+</div>
+
+  <div class="lrcontainer" id="lrcontainer">
+    <div id="logincontainer">
+    <h2>Login</h2>
+    <input type="text" id="loginUsername" placeholder="Team name (case sensitive)" autocomplete="username">
+    <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
+        <!-- Remember Me Checkbox -->
+    <label>
+        <input type="checkbox" id="rememberMe"> Remember Me
+    </label>
+    <button class="button" onclick="loginUser()">Login</button>
+    <p id="loginMessage"></p>
+
+    <!-- CHANGEME to Register, class button and display to block or Registration Closed, class textlink and display to None -->
+    
+    <p class="form-note" id="registrationStatus">Registration is currently closed.</p>
+    <!-- comment the button instead of display block -->
+    <!--<button class="button" onclick="showRegister()">register!</button>-->
+    <button class="button secondary" id="registrationButton" onclick="showRegister()" disabled>Registration Closed</button>
+    
+    <p class="form-note">Forgot Password? <button class="textlink" onclick="showForgot()">Change Password</button></p>
+    </div>
+
+    <div id="registercontainer">
+    <h2>Register</h2>
+    <input type="text" id="registerUsername" placeholder="New team name" autocomplete="username">
+    <input type="password" id="registerPassword" placeholder="New Password" autocomplete="new-password">
+    <input type="email" id="registerEmail" placeholder="Email address" autocomplete="email">
+    <button class="button" onclick="addUser()">Register</button>
+    <p id="registerMessage"></p>
+    <p>Click here to <button class="textlink" onclick="showLogin()">login!</button></p>
+    </div>
+
+    <div id="forgotcontainer" style="display:none;">
+      <h2>Reset Password</h2>
+      <input type="email" id="forgotEmail" placeholder="Your registered email" autocomplete="email">
+      <button class="button" id="resetbutton" onclick="requestPasswordReset()">Send Reset Link</button>
+      <p id="forgotMessage"></p>
+      
+    </div>
+ </div>
+ 
+
+
+  <div id="auctioncontainer">
+  <p id="auctioncontainertext">Please wait while player nominations are loaded...</p>
+  </div>
+  </div>
+
   <script>
-    const loader = document.getElementById('loader');
-    document.getElementById('appFrame').addEventListener('load', () => loader.classList.add('hidden'));
+var username="";
+var password="";
+var data=[];
+var SERVER_SEASON_YEAR = '<?= seasonYear ?>';
+var seasonYear = /^\d{4}$/.test(SERVER_SEASON_YEAR) ? Number(SERVER_SEASON_YEAR) : londonYear();
+var auctionsheetname="Auction"+seasonYear+"List";
+document.getElementById("pageTitle").innerText = "Buy Fantasy Players " + seasonYear;
+loadRegistrationState();
+
+function londonYear() {
+  try {
+    return Number(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', year: 'numeric' }).format(new Date()));
+  } catch (err) {
+    return new Date().getFullYear();
+  }
+}
+
+function showRegister() {
+if (document.getElementById('registrationButton').disabled) return;
+document.getElementById('logincontainer').style.display = 'none';
+document.getElementById('registercontainer').style.display = 'block';
+}
+
+function showLogin() {
+document.getElementById('registercontainer').style.display = 'none';
+document.getElementById('logincontainer').style.display = 'block';
+}
+
+function showForgot() {
+  document.getElementById("logincontainer").style.display = "none";
+  document.getElementById("registercontainer").style.display = "none";
+  document.getElementById("forgotcontainer").style.display = "block";
+}
+
+function loadRegistrationState() {
+  if (typeof google === 'undefined' || !google.script || !google.script.run) return;
+  google.script.run
+    .withSuccessHandler(applyRegistrationState)
+    .withFailureHandler(function() {
+      applyRegistrationState({ open: false, message: 'Registration is currently closed.' });
+    })
+    .getRegistrationState();
+}
+
+function applyRegistrationState(state) {
+  var status = state || {};
+  var isOpen = status.open === true || String(status.status || '').toUpperCase() === 'OPEN';
+  var statusNode = document.getElementById('registrationStatus');
+  var button = document.getElementById('registrationButton');
+  statusNode.innerText = isOpen ? 'Registration is open.' : 'Registration is currently closed.';
+  button.disabled = !isOpen;
+  button.innerText = isOpen ? 'Register' : 'Registration Closed';
+  button.classList.toggle('secondary', !isOpen);
+}
+
+    function requestPasswordReset() {
+      const email = document.getElementById("forgotEmail").value;
+
+      google.script.run.withSuccessHandler(function (msg) {
+        document.getElementById("forgotEmail").readOnly = true;
+        document.getElementById("resetbutton").style.display = "none";
+        document.getElementById("forgotMessage").innerText = msg;
+      }).requestPasswordReset(email);
+    }
+
+
+    function addUser() {
+      var username = document.getElementById("registerUsername").value;
+      var password = document.getElementById("registerPassword").value;
+      var email = document.getElementById("registerEmail").value;
+
+      document.getElementById("registerUsername").readOnly=true;
+      document.getElementById("registerPassword").readOnly=true;
+      document.getElementById("registerEmail").readOnly=true;      
+
+      google.script.run
+        .withSuccessHandler(function(response) {
+          document.getElementById("registerMessage").innerText = response;
+          loadUsers();
+        })
+        .addUser(username, password,email);
+    }
+
+    function loginUser() {
+      username = document.getElementById("loginUsername").value;
+      password = document.getElementById("loginPassword").value;
+
+      document.getElementById("loginUsername").readOnly = true;
+      document.getElementById("loginPassword").readOnly = true;
+
+      google.script.run
+        .withSuccessHandler(loginAction)
+        .loginUser(username, password);
+    }
+
+function loginAction(response) {
+    console.log(response);
+    if (response=== true) { // Use parentheses () and curly braces {}
+        document.getElementById('lrcontainer').style.display = 'none';
+        document.getElementById('updateslink').style.display = 'block';
+        document.getElementById('auctioncontainer').style.display = 'block';
+        console.log("activated acution container")
+
+      // Store credentials in cookies if 'Remember Me' is checked
+        var rememberMe = document.getElementById("rememberMe").checked;
+        var username = document.getElementById("loginUsername").value;
+        var password = document.getElementById("loginPassword").value;
+
+        if (rememberMe) {
+            setCookie("username", username, 2); // Store for 2 days
+            setCookie("password", password, 2);
+        } else {
+            setCookie("username", "", -1); // Delete cookies if not checked
+            setCookie("password", "", -1);
+        }
+
+        loadAuctions(); // Load auctions on page load
+    } else {
+        document.getElementById("loginMessage").innerText = "Invalid user! Please register!";
+        deleteCookie("username");
+        deleteCookie("password");
+    }
+}
+
+  // Function to set a cookie (name, value, expiration in days)
+  function setCookie(name, value, days) {
+      var expires = "";
+      if (days) {
+          var date = new Date();
+          date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); // Convert days to milliseconds
+          expires = "; expires=" + date.toUTCString();
+      }
+      document.cookie = name + "=" + value + expires + "; path=/";
+  }
+
+  // Function to get a cookie by name
+  function getCookie(name) {
+      var nameEQ = name + "=";
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+          var c = cookies[i].trim();
+          if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+  }
+
+  function deleteCookie(name) {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+}
+
+
+
+    function loadUsers() {
+      google.script.run
+        .withSuccessHandler(function(users) {
+          var userList = document.getElementById("usersList");
+          userList.innerHTML = "";
+          users.forEach(user => {
+            userList.innerHTML += "<p>" + user.username + "</p>";
+          });
+        })
+        .getUsers();
+    }
+
+    //loadUsers();  // Load users when the page loads
+    // ################################ Auction Page ##############
+    function loadAuctions() {
+      google.script.run.withSuccessHandler(displayAuctions).withFailureHandler(handleError).getAuctionList(auctionsheetname);
+    }
+
+    function handleError(error) {
+  console.log("Error fetching auction data:", error);
+}
+
+function displayAuctions(values) {
+    var data = values;
+    var totalspend=0;
+    var newspend=0;
+
+    console.log("starting displayAuctions");
+    var container = document.getElementById("auctioncontainer");
+    container.innerHTML = ""; // Clear previous content
+
+    // 🔹 Add Search Box & Clear Button
+    var searchDiv = document.createElement("div");
+    searchDiv.classList.add("search-container");
+
+    var searchInput = document.createElement("input");
+    searchInput.type = "text";
+    searchInput.id = "searchBox";
+    searchInput.placeholder = "Search player nominations...";
+    searchInput.onkeyup = filterAuctions; // Attach search function
+
+    var clearButton = document.createElement("button");
+    clearButton.id = "filterButton"; // Assign an ID
+    clearButton.classList.add("whitebutton");
+    clearButton.textContent = "My Bids";
+    clearButton.onclick = filterMyBids;
+    //clearButton.textContent = "Clear";
+    //clearButton.onclick = clearFilter; // Attach clear function
+
+    var clearButton2 = document.createElement("button");
+    clearButton2.id = "filterButton2"; // Assign an ID
+    clearButton2.classList.add("whitebutton");
+    clearButton2.textContent = "Active Bids";
+    clearButton2.onclick = filterMyBids2;
+    //clearButton.textContent = "Clear";
+    //clearButton.onclick = clearFilter; // Attach clear function
+
+    var totalDiv = document.createElement("div");
+    totalDiv.style.textAlign = "right";
+
+    // Create heading element
+    var heading = document.createElement("h3");
+
+    // Create text element
+    var text = document.createElement("a");
+    text.textContent = "Total spend so far (max: 100,000): ";
+
+    // Create total spend element
+    var totalSpend = document.createElement("a");
+    totalSpend.id = "totalspend";
+    totalSpend.textContent = "0";
+
+    // Create refresh button
+    var refreshButton = document.createElement("button");
+    refreshButton.classList.add("refreshbutton");
+    refreshButton.textContent = "Refresh";
+    refreshButton.onclick = loadAuctions; // Assign function reference
+
+    // Append elements to heading
+    heading.appendChild(text);
+    heading.appendChild(totalSpend);
+    heading.appendChild(refreshButton);
+
+    // Append heading to totalDiv
+    totalDiv.appendChild(heading);
+
+    searchDiv.appendChild(searchInput);
+    searchDiv.appendChild(clearButton);
+    searchDiv.appendChild(clearButton2);
+    container.appendChild(searchDiv); // 🔹 Append search elements to container
+    container.appendChild(totalDiv)
+
+
+    if (data.length < 2) return; // No data rows
+
+    data.shift(); // Remove header row
+    var today = new Date();
+
+    data.forEach(function (row) {
+        var nomination = row[0]; // Nomination column
+        var startDate = new Date(row[3]); // StartDate column
+        var endDate = new Date(row[4]); // StartDate column
+        endDate.setHours(23, 0, 0, 0); // Set time to 11:00 PM
+        var basePrice = parseInt(row[5]); // Base Price
+        var currentBid = row[7] === "NA" ? null : parseInt(row[6]); // Current Bid
+        var bidHolder = row[7] === "NA" ? "No bids yet" : row[7]; // Bid Holder
+
+        var rowDiv = document.createElement("div");
+        rowDiv.classList.add("auction-item");
+        rowDiv.id = nomination;
+        rowDiv.style.marginBottom = "10px";
+
+        var nominationSpan = document.createElement("span");
+        nominationSpan.textContent = nomination + " ";
+
+        // Create a span element to display the end time
+        var endTimeSpan = document.createElement("span");
+        endTimeSpan.classList.add("end-time");
+        endTimeSpan.style.marginLeft = "10px";
+        endTimeSpan.style.fontSize = "12px";
+        endTimeSpan.style.color = "#888"; // Gray color
+
+        var now = new Date(); // Current date and time
+        var button = document.createElement("button");
+        if (now > endDate) {
+            if (currentBid === null) {
+                // Auction ended with no bids, mark as "Unsold"
+                button.innerHTML = `Unsold <br><a class="subtext">Base Price: ${basePrice}</a>`;
+                button.classList.add("unsold");
+            } else {
+                // Auction ended, show "Sold"
+                button.innerHTML = `Sold <br><a class="subtext">Final Bid: ${currentBid} by ${bidHolder}</a>`;
+                button.classList.add("sold");
+            }
+            button.disabled = true; // Disable button
+            endTimeSpan.textContent = "Auction Ended";
+        } else if (startDate > now) {
+            // Auction upcoming
+            button.innerHTML = `Upcoming <br><a class="subtext">${startDate.toDateString()}</a>`;
+            button.classList.add("upcoming");
+            button.disabled = true;
+            //endTimeSpan.textContent = `Starts: ${startDate.toDateString()}`;
+            endTimeSpan.textContent = `Ends: ${endDate.toDateString()} 11:00 PM`;
+        } else {
+            // Auction ongoing
+            var pricetext = currentBid === null
+                ? `Bid Now  <br><a class="subtext">Base Price: ${basePrice}</a>`
+                : `Bid Now  <br><a class="subtext">Current Bid: ${currentBid} by ${bidHolder}</a>`;
+
+            button.innerHTML = pricetext;
+            button.classList.add("bidnow");
+            button.disabled = false;
+            endTimeSpan.textContent = `Ends: ${endDate.toDateString()} 11:00 PM`;
+        }
+
+        if (currentBid !== null && bidHolder === username) {
+            totalspend += currentBid;
+        }        
+
+        // Create bidding UI (initially hidden)
+        var bidDiv = document.createElement("div");
+        bidDiv.style.display = "none";
+        bidDiv.classList.add("bid-container");
+
+        // Text element for current bid value
+        var bidText = document.createElement("a");
+        bidText.classList.add("bid-text");
+        bidText.innerHTML = currentBid === null
+            ? `Current Bid: <strong>${basePrice}</strong> (Starting Price)`
+            : `Current Bid: <strong>${currentBid}</strong> by <strong>${bidHolder}</strong>`;
+
+        // Button to increment bid
+        var incrementButton = document.createElement("button");
+        incrementButton.classList.add("whitebutton");
+        incrementButton.textContent = "+ 500";
+
+        // Disable increment if current user is bid holder
+        if (bidHolder === username) {
+
+            incrementButton.disabled = true;
+        }
+
+        // Submit button (Initially Disabled)
+        var submitButton = document.createElement("button");
+        submitButton.classList.add("bidnow");
+        submitButton.textContent = "Submit";
+        submitButton.disabled = true; // Disabled initially
+
+        // Increment Button Functionality
+        incrementButton.onclick = function () {
+            var newBid = (currentBid ? currentBid : basePrice) + 500;
+            bidText.innerHTML = `Current Bid: <strong>${newBid}</strong> (Your Bid)`;
+            currentBid = newBid; // Update bid value
+
+            submitButton.disabled = false; // Enable submit button after incrementing bid
+            
+            //var totalSpendElement = document.getElementById("totalspend");
+            //var totalSpend = parseInt(totalSpendElement.textContent) || 0;
+            //totalSpend += 500; // Increment total spend
+            //totalSpendElement.textContent = totalSpend; // Update UI
+        };
+
+        // Submit button function
+        submitButton.onclick = function () {
+            document.body.style.cursor = "wait";
+            setTimeout(() => { 
+                // Simulate processing
+                document.body.style.cursor = "default"; // Reset cursor after action
+            }, 3000);            
+            google.script.run
+                .withSuccessHandler(function (response) {
+                    document.body.style.cursor = "default";
+                    var totalSpendElement = document.getElementById("totalspend");
+                    var totalSpend = parseInt(totalSpendElement.textContent) || 0;
+                    totalSpend += currentBid; // Increment total spend
+                    totalSpendElement.textContent = totalSpend; // Update UI
+                    if (response === "Success") {
+                        refreshSingleAuction(nomination); // Refresh bid info after update
+                        alert(`Bid submitted successfully: ${currentBid} for ${nomination}`);
+                        submitButton.disabled = true; // Disable submit after bid submission
+                        incrementButton.disabled = true; // Disable increment after bid submission
+                    } else {
+                        alert(`Error: ${response}`);
+                    }
+                })
+                .withFailureHandler(function (error) {
+                    document.body.style.cursor = "default";
+                    alert("Failed to submit bid: " + error.message);
+                    refreshSingleAuction(nomination); // Refresh bid info after update
+                    
+                })
+                .updateAuctionBid(auctionsheetname, nomination, currentBid, username); // Pass current username
+        };
+
+        // Close button
+        var closeButton = document.createElement("button");
+        closeButton.classList.add("upcoming");
+        closeButton.textContent = "Close";
+        closeButton.onclick = function () {
+            bidDiv.style.display = bidDiv.style.display === "block" ? "none" : "block";
+        };
+
+        // Refresh button
+        var refreshButton = document.createElement("button");
+        refreshButton.classList.add("whitebutton");
+        refreshButton.textContent = "Refresh";
+        refreshButton.onclick = function () {
+            refreshSingleAuction(nomination); // Fetch latest bid for this auction item
+        };
+
+        // Toggle bid UI on button click
+        button.onclick = function () {
+            bidDiv.style.display = bidDiv.style.display === "none" ? "block" : "none";
+        };
+
+        bidDiv.appendChild(bidText);
+        bidDiv.appendChild(incrementButton);
+        bidDiv.appendChild(submitButton);
+        bidDiv.appendChild(closeButton);
+        bidDiv.appendChild(refreshButton);
+
+        rowDiv.appendChild(nominationSpan);
+        rowDiv.appendChild(button);
+        rowDiv.appendChild(endTimeSpan); 
+        rowDiv.appendChild(bidDiv);
+        container.appendChild(rowDiv);
+    });
+
+    var totalSpendElement = document.getElementById("totalspend");
+    if (totalSpendElement) {
+        totalSpendElement.textContent = totalspend; // Update value
+    }
+}
+
+
+function refreshSingleAuction(nomination) {
+    google.script.run
+        .withSuccessHandler(function (row) {
+            if (row) updateSingleBidValue(nomination, row);
+        })
+        .withFailureHandler(handleError)
+        .getAuctionRow(auctionsheetname, nomination);
+}
+
+function updateSingleBidValue(nomination, row) {
+    if (!row) return; // No data received
+
+    var newBid = (row[6] === "NA" || row[6] === 0) ? null : parseInt(row[6]); // Latest Current Bid
+    var newBidHolder = row[7] === "NA" ? "No bids yet" : row[7]; // Latest Bid Holder
+
+    var auctionItem = document.getElementById(nomination);
+    if (auctionItem) {
+        var bidText = auctionItem.querySelector(".bid-text");
+        //console.log(bidText);
+        if (bidText) {
+            bidText.innerHTML = newBid === null
+                ? `Current Bid: <strong>${parseInt(row[5])}</strong> (Starting Price)`
+                : `Current Bid: <strong>${newBid}</strong> by <strong>${newBidHolder}</strong>`;
+        }
+    }
+}
+
+function filterAuctions() {
+    var input, filter, container, auctionItems, nominationText, i;
+    
+    input = document.getElementById("searchBox");
+    filter = input.value.toLowerCase(); // Convert input to lowercase
+    container = document.getElementById("auctioncontainer");
+    auctionItems = container.getElementsByClassName("auction-item"); // Get all auction items
+
+    for (i = 0; i < auctionItems.length; i++) {
+        nominationText = auctionItems[i].getElementsByTagName("span")[0].textContent.toLowerCase();
+        
+        // Show item if it contains the search text, otherwise hide it
+        if (nominationText.includes(filter)) {
+            auctionItems[i].style.display = "";
+        } else {
+            auctionItems[i].style.display = "none";
+        }
+    }
+}
+
+function filterMyBids() {
+    var container = document.getElementById("auctioncontainer");
+    var auctionItems = container.getElementsByClassName("auction-item");
+
+    for (var i = 0; i < auctionItems.length; i++) {
+        var bidText = auctionItems[i].getElementsByClassName("subtext")[0].textContent.toLowerCase();
+        
+        if (bidText.includes(username.toLowerCase())) {
+            auctionItems[i].style.display = "";
+        } else {
+            auctionItems[i].style.display = "none";
+        }
+    }
+
+    // Update button using its ID
+    var btn = document.getElementById("filterButton");
+    btn.textContent = "Clear";
+    btn.onclick = clearFilter;
+}
+
+function filterMyBids2() {
+    var container = document.getElementById("auctioncontainer");
+    var auctionItems = container.getElementsByClassName("auction-item");
+
+    for (var i = 0; i < auctionItems.length; i++) {
+        var button = auctionItems[i].getElementsByTagName("button")[0];
+        var buttonText = button.textContent.toLowerCase();
+        
+        if (buttonText.includes("unsold")) {
+            
+        } else if (buttonText.includes("bid now")) {
+          auctionItems[i].style.display = "";
+        }
+        else {
+            auctionItems[i].style.display = "none";
+        }
+    }
+
+    // Update button using its ID
+    var btn = document.getElementById("filterButton2");
+    btn.textContent = "Clear";
+    btn.onclick = clearFilter;
+}
+
+
+
+
+function clearFilter() {
+    var auctionItems = document.getElementsByClassName("auction-item");
+
+    for (var i = 0; i < auctionItems.length; i++) {
+        auctionItems[i].style.display = "";
+    }
+
+    // Reset button using its ID
+    var btn = document.getElementById("filterButton");
+    btn.textContent = "My Bids";
+    btn.onclick = filterMyBids;
+    
+    var btn = document.getElementById("filterButton2");
+    btn.textContent = "Active Bids";
+    btn.onclick = filterMyBids2;    
+}
+
+// Auto-fill login fields and attempt login if credentials exist
+window.onload = function () {
+    var savedUsername = getCookie("username");
+    var savedPassword = getCookie("password");
+
+    if (savedUsername && savedPassword) {
+        document.getElementById("loginUsername").value = savedUsername;
+        document.getElementById("loginPassword").value = savedPassword;
+        document.getElementById("rememberMe").checked = true;
+        
+        // Auto login if credentials exist
+        loginUser();  
+    }
+};
+
+    
+    
+
   </script>
+
 </body>
 </html>

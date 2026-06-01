@@ -1,56 +1,719 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ISISCC Auction Tool</title>
-  <meta name="description" content="ISISCC Fantasy Cricket in-person auction spin wheel.">
-  <style>
-    html, body { height: 100%; margin: 0; }
-    body { overflow: hidden; background: #f5f7fb; }
-    iframe { width: 100%; height: 100%; border: 0; display: block; background: #ffffff; }
-    .loader {
-      position: fixed;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      background: linear-gradient(180deg, #e8f3ee 0, #f5f7fb 320px);
-      color: #64748b;
-      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-      text-align: center;
-      transition: opacity 180ms ease, visibility 180ms ease;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin Wheel</title>
+<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+<script src="CloudflareAppsScriptAdapter.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+  font-size: 14px;
+        }
+        .container {
+            display: grid;
+	    grid-template-columns: auto auto auto;
+            align-items: center;
+	    width:100%;
+        }
+	.grid-item {padding: 5px;
+		width:100%;
+    height: 90%;
+		}
+        #canvas {
+            display: block;
+            margin: 0 auto;
+        }
+        #spin, #options {
+            display: block;
+            margin: 10px auto;
+        }
+	#timerDisplay {
+	font-weight: bold;
+	}
+.button {
+  background-color: #007BFF; /* Blue */
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-weight: bold;
+  margin: 4px 2px;
+  cursor: pointer;
+
+  transition-duration: 0.4s;
+}
+
+.large {
+  font-size: 16px;
+  padding: 12px 24px;
+  border-radius: 8px;
+}
+.small {
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
+.button-container,#endangle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button:hover {
+  background-color: #0069D9;
+  color: white;
+}
+.currentselection {
+background-color:#afeeee;
+align-items: center;
+text-align: center;
+}
+
+  form {
+      background-color: #ffffff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 5px;
+      border-radius: 5px;
     }
-    .loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    .loader strong { display: block; color: #172033; font-size: 1.05rem; margin-bottom: 8px; }
-    .direct-help {
-      position: fixed;
-      right: 12px;
-      bottom: 12px;
-      z-index: 3;
-      display: inline-flex;
-      align-items: center;
-      min-height: 34px;
-      padding: 7px 10px;
-      border: 1px solid rgba(15, 118, 110, 0.45);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.92);
-      color: #0f766e;
-      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-      font-size: 0.78rem;
-      font-weight: 800;
-      text-decoration: none;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+
+
+.form-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+    label {
+      margin-bottom: 5px;
+	}
+    input {
+      padding: 4px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      font-size: 16px;
     }
-  </style>
+    #team {
+	with:100%;
+      padding: 4px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      font-size: 16px;
+    }
+
+.noheader th{display:none;}
+
+.noheader table tr td:first-child{font-weight: bold;}
+
+table td {padding-right: 8px;
+	  padding-left: 4px;
+	  padding-bottom: 2px;}
+
+    </style>
 </head>
 <body>
-  <iframe id="appFrame" title="ISISCC Auction Tool" src="https://script.google.com/macros/s/AKfycbw0FMq7t-UtrI8SLlN3Na-DbHecvEMQenZU6T4nWdrQBuYr5YbAM2IKE6lIRDciFf_Vkg/exec?page=auction&authuser=0" loading="eager" allowfullscreen></iframe>
-  <div class="loader" id="loader"><div><strong>Loading Auction Tool...</strong><span>Please wait while the spin wheel loads.</span></div></div>
-  <a class="direct-help" href="https://script.google.com/macros/s/AKfycbw0FMq7t-UtrI8SLlN3Na-DbHecvEMQenZU6T4nWdrQBuYr5YbAM2IKE6lIRDciFf_Vkg/exec?page=auction&authuser=0" target="_top">Open direct</a>
-  <script>
-    const loader = document.getElementById('loader');
-    document.getElementById('appFrame').addEventListener('load', () => loader.classList.add('hidden'));
-  </script>
+
+    <div class="container">
+	    <div class="grid-item">
+		    <div id="ownerdf"></div><br>
+		    <div>Current Time:<a id="time-display"></a></div>
+		    <div class="currentselection" >
+			    <h4>Selected Player</h4>
+          <div id="currentselection" class="noheader">
+            <table><tr> <th>Description</th> <th>Value</th> </tr>
+                <tr> <td>Nomination</td> <td></td> </tr>
+                <tr> <td>PlayerType</td> <td></td> </tr>
+                <tr> <td>EstimatedPoints</td> <td></td> </tr>
+                <tr> <td>BasePrice</td> <td></td> </tr>
+            </table>
+          </div>
+          <br>
+		    </div>
+		
+		    <div id='selectedvalue'><h3>Selection history...</h3><br></div>
+	    </div>
+	    <div class="grid-item">
+		  <br>
+       <textarea id="options" placeholder="Enter options separated by lines" rows="15" cols="30"></textarea>
+  		<label for="setname">Choose a set:</label>
+			<select name="setvalues" id="setname">
+			<option value="Set 1">Set 1</option>
+			<option value="Set 2">Set 2</option>
+			<option value="Set 3">Set 3</option>
+			<option value="Set 4">Set 4</option>
+			<option value="Unsold">Unsold</option>
+			</select> 
+		 <button class="button small" onClick="updatedraw()">Update</button>
+<br>
+		<div>Timer: <a id="timerDisplay">0.00</a></div>
+  <form>
+    <h3 class="form-title">Purchase register</h3>
+    <div class="form-group">
+      <label for="player-nomination">Player Nomination</label>
+      <input type="text" id="player-nomination" name="player-nomination" required>
+    </div>
+    <div class="form-group">
+      <label for="value">Value</label>
+      <input type="number" id="value" name="value" required>
+    </div>
+    <div class="form-group">
+      <label for="team">Team</label>
+ <select id="team" name="team" required>				
+		<option value="Select..">Select..</option>
+		<option value="What the Duck?!">What the Duck?!(J Duckitt)</option>
+		<option value="Isis Hotspur">Isis Hotspur (A Beavan)</option>
+    <option value="Nick It Once More">Nick It Once More (N Wyatt)</option>
+    <option value="Ronnie's Royals">Ronnie's Royals (A Symons)</option>
+    <option value="The Chimney Boys">The Chimney Boys (A East)</option>
+		<option value="Thamesis">Thamesis (K Ponsford)</option>
+		<option value="Whiter's T-Pots">Whiter's T-Pots (K Whiter)</option>
+    <option value="Stokes Foakes Woakes">Stokes Foakes Woakes (J Ponsford)</option>
+</select>
+    </div>
+
+  </form>
+		<div class="button-container">
+
+<button id="submitbtn" onClick="submit()" class="button large">submit</button>
+		</div>		
+
+	</div>
+	<div class="grid-item">
+
+	        <canvas id="canvas" width="450" height="450"></canvas>
+		<br>
+		<div id='endangle'><p>Loading ....</p></div><br>
+		<div class="button-container">
+
+		<button id="spin" class="button large">Spin</button>
+		</div>
+
+	</div>
+    </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.0/lib/bundle.min.js"></script> 
+    <script>
+
+
+	var nominations_df="";
+	var auction_df="";
+	var doc_ready=false;
+	let auctionedlist=[];
+  var SERVER_SEASON_YEAR = '<?= seasonYear ?>';
+  var seasonYear = /^\d{4}$/.test(SERVER_SEASON_YEAR) ? Number(SERVER_SEASON_YEAR) : londonYear();
+  var nominationsSheetName = "Nominations" + seasonYear;
+  var auctionSheetName = "Auction" + seasonYear;
+  function londonYear() {
+    try {
+      return Number(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', year: 'numeric' }).format(new Date()));
+    } catch (err) {
+      return new Date().getFullYear();
+    }
+  }
+  //## CHANGE_ME ##
+	let ownerdict = {
+  "TeamName": [
+    "Ronnie's Royals",
+    "Nick It Once More",
+    "Whiter's T-Pots",
+    "What the Duck?!",
+    "Thamesis",
+    "The Chimney Boys",
+    "Stokes Foakes Woakes",
+    "Isis Hotspur"
+  ],
+  "Senior": Array(8).fill(100000),
+  "Junior": Array(8).fill(25000)
+};
+
+//let ownerdf=new dfd.DataFrame(ownerdict,{index:ownerdict["TeamName"]});
+
+
+  let auctionToolSnapshotPromise = null;
+
+  function loadAuctionToolSnapshot() {
+    if (!auctionToolSnapshotPromise) {
+      auctionToolSnapshotPromise = flApiPost('/api/auction-tool/snapshot', {});
+    }
+    return auctionToolSnapshotPromise;
+  }
+
+	function loadNominationsData() {
+    return loadAuctionToolSnapshot().then(function(payload) {
+      seasonYear = Number(payload.seasonYear || seasonYear);
+      nominationsSheetName = payload.nominationsSheetName || nominationsSheetName;
+      const nominations = payload.nominations || [];
+      if (!nominations.length) throw new Error('No nominations data returned.');
+      const nominations_hdr = nominations[0];
+      nominations_df = new dfd.DataFrame(nominations.slice(1), { columns: nominations_hdr });
+      return nominations_df;
+    });
+	}
+
+	function getauctionupdates() {
+    console.log('getauctionupdates');
+    return loadAuctionToolSnapshot().then(function(payload) {
+      auctionSheetName = payload.auctionSheetName || auctionSheetName;
+      const auctiondata = payload.auction || [];
+      if (!auctiondata.length) throw new Error('No auction data returned.');
+      const auctionhdr = auctiondata[0];
+      auction_df = new dfd.DataFrame(auctiondata.slice(1), { columns: auctionhdr });
+      reduceauctionedvalue(auction_df);
+      return auction_df;
+    });
+	}
+
+function reduceauctionedvalue(df){
+
+df.loc({columns:["Team","PlayerType","PricePaid"]}).values.forEach((row) => {
+    const team = row[0];
+    const playerType = row[1];
+    const pricePaid = row[2];
+
+    updateOwnerPriceDict(team, playerType, pricePaid);
+});
+update_ownertable();			
+
+}
+
+
+        const optionsInput = document.getElementById('options');
+
+
+        let options = [];
+        let colors = ['#FFC0CB', '#ADD8E6', '#90EE90', '#FFD700', '#D8BFD8', '#FFA07A'];
+        let angle = 0;
+        let selectedvalue='';
+
+async function fetchDataAndExecuteUpdate() {
+  try {
+    nominations_df = await loadNominationsData();
+    auction_df = await getauctionupdates();
+    console.log('fetchDataAndExecuteUpdate');
+    updatedraw();
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+	function updatedraw(){
+    if (!auction_df || !nominations_df || !auction_df.columns || !nominations_df.columns) {
+    console.error("Data not loaded yet", { auction_df, nominations_df });
+    return;
+  }
+	//console.log('updatedraw');
+	let setvalue = document.getElementById('setname').value;
+	//console.log(auction_df['PlayerNomination'].values);
+	auctionedlist=auction_df['PlayerNomination'].values;
+	console.log(setvalue);
+	let cond=nominations_df["Set"].eq(setvalue);
+	options=nominations_df.loc({rows:cond})['Nomination'].values.filter(value => { return !auctionedlist.includes(value);});
+	document.getElementById('options').value = options.join('\n');
+	draw();
+	}
+
+function update_ownertable(){
+let ownerdf=new dfd.DataFrame(ownerdict,{index:ownerdict["TeamName"]});
+document.getElementById('ownerdf').innerHTML=table_html(ownerdf,false,"",0);
+
+}
+
+
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const spinBtn = document.getElementById('spin');
+
+
+
+        function draw(markerangle=90) {
+	//console.log('draw');
+	    if (selectedvalue===''){
+	//console.log(Math.floor((360 - ((angle * (180 / Math.PI))) % 360)/(360/options.length),0));
+	//console.log(options[Math.floor((360 - ((angle * (180 / Math.PI))) % 360)/(360/options.length),0)]);
+	//console.log(options);
+
+	    document.getElementById('endangle').innerHTML=options[Math.floor((360 - ((angle * (180 / Math.PI))) % 360)/(360/options.length),0)]  ;
+	}
+	else {
+	 document.getElementById('endangle').innerHTML=options[0];
+	}
+            if (options.length === 0) return;
+
+		let angleincrement=0;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(angle);
+	    currentpos=angle;
+            const arc = 2 * Math.PI / options.length;
+
+            for (let i = 0; i < options.length; i++) {
+                ctx.beginPath();
+                ctx.arc(0, 0, canvas.width / 2, i * arc, (i + 1) * arc);
+                ctx.lineTo(0, 0);
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.fill();
+                ctx.stroke();
+                ctx.save();
+
+                ctx.rotate(i * arc + arc / 2);
+                ctx.fillStyle = 'black';
+                ctx.font = 'bold 11px sans-serif';
+                ctx.fillText(options[i], canvas.width / 6, 0);
+		angleincrement=angleincrement+angle;
+                ctx.restore();
+            }
+
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+	    drawMarker(markerangle);
+        }
+
+	function getRandomDuration(min, max) {
+	    return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
+        function spin() {
+	    	console.log('spin');
+	    startTimer();	
+	    //document.getElementById('selectedvalue').innerHTML='';	
+            if (options.length === 0) return;
+
+            let duration = getRandomDuration(3000, 6000);;
+            let start = null;
+            //let endAngle;
+
+	    selectedvalue='';
+            function animate(timestamp) {
+                if (!start) start = timestamp;
+                let progress = timestamp - start;
+		let remainingProgress = 1 - (progress / duration);
+                angle += 0.3*remainingProgress;
+// Example usage:
+//audioElement.play();
+
+                if (progress < duration) {
+                    requestAnimationFrame(animate);
+                    //endAngle = 2 * Math.PI * (Math.floor(Math.random() * options.length) + angle);
+                } else {
+                    //let selected = Math.abs(Math.floor((angle) % (2 * Math.PI) / (2 * Math.PI / options.length)));
+		    let selected = Math.floor((360 - ((angle * (180 / Math.PI))) % 360)/(360/options.length),0);
+                    selectedvalue=options[selected];
+		    //document.getElementById("player-nomination").value=selectedvalue;
+                     updateselectioninfo(selectedvalue)		
+		    //document.getElementById("player-nomination").readOnly=true;
+		    document.getElementById('selectedvalue').innerHTML+='Selected value: ' + options[selected]+'<br>';
+		    alert('Selected value: ' + options[selected]);
+
+		    //document.getElementById('selectedvalue').innerHTML+='Selected value: ' + options[selected]+' '+selected+'<br>'+(360 - ((angle * (180 / Math.PI))) % 360)/(360/options.length)+'<br>';   
+                    options.splice(selected, 1);
+                    angle = 0;
+		    optionsInput.value = options.join('\n');
+                }
+                draw();
+
+            }
+
+            requestAnimationFrame(animate);
+                 
+	   
+        }
+
+ function updateselectioninfo(selectedplayer){
+          document.getElementById("player-nomination").value=selectedplayer;
+	let cond=nominations_df["Nomination"].eq(selectedplayer);
+	console.log(nominations_df.loc({rows:cond,columns:["Nomination","PlayerType","EstimatedPoints","BasePrice"]}));
+	let selected_df=nominations_df.loc({rows:cond,columns:["Nomination","PlayerType","EstimatedPoints","BasePrice"]}).resetIndex().T;
+	selected_df.addColumn("Type", selected_df.index, { inplace: true });
+	selected_df.addColumn("Value", selected_df[0], { inplace: true });
+	document.getElementById("currentselection").innerHTML=table_html(selected_df.loc({columns:["Type","Value"]}),false,"",0);
+
+
+}
+
+        optionsInput.addEventListener('change', (e) => {
+            options = e.target.value.split('\n').map(option => option.trim());
+            draw(0);
+        });
+
+        spinBtn.addEventListener('click', spin);
+
+        function updateTime() {
+
+            let now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+
+            // Add a leading zero if needed
+            if (hours < 10) hours = "0" + hours;
+            if (minutes < 10) minutes = "0" + minutes;
+            if (seconds < 10) seconds = "0" + seconds;
+
+            let timeString = hours + ":" + minutes + ":" + seconds;
+            document.getElementById("time-display").innerText = timeString;
+        }
+
+        // Update the time display immediately
+        updateTime();
+
+        // Update the time display every second
+        setInterval(updateTime, 1000);
+
+let timerDisplay = document.getElementById('timerDisplay');
+let startTime;
+let timerInterval;
+
+function updateTimerColor(elapsedTime) {
+  if (elapsedTime < 60) {
+    timerDisplay.style.color = 'green';
+  } else if (elapsedTime >= 60 && elapsedTime <= 90) {
+    timerDisplay.style.color = 'orange';
+  } else {
+    timerDisplay.style.color = 'red';
+  }
+}
+
+function startTimer() {
+//console.log('startTimer');
+  startTime = Date.now();
+  timerInterval = setInterval(function () {
+    let elapsedTime = Date.now() - startTime;
+    timerDisplay.textContent = (elapsedTime / 1000).toFixed(2);
+    updateTimerColor((elapsedTime / 1000).toFixed(2));
+  }, 100); // Update every 100ms
+}
+
+function stopTimer() {
+clearInterval(timerInterval);
+}
+
+function submit() {
+	let nomination=document.getElementById("player-nomination").value;
+	let pricepaid=document.getElementById("value").value;
+	let Team=document.getElementById("team").value;
+	console.log(Team);
+
+
+	if (nomination === "" || pricepaid === "") {
+	    alert("Either nomination or pricePaid is an empty string.");
+	}
+	else {
+		let cond=nominations_df["Nomination"].eq(nomination);
+		let selected_df=nominations_df.loc({rows:cond}).resetIndex();
+		//console.log(nominations_df.loc({rows:cond,columns:["Nomination","PlayerType","EstimatedPoints","BasePrice"]}));
+		//console.log(selected_df.at(0,"PlayerType"));
+		let playertype=selected_df.at(0,"PlayerType");
+		
+		updateOwnerPriceDict(Team,playertype,pricepaid);
+
+		update_ownertable();			
+		stopTimer();
+
+		//Insert data
+		const capped = selected_df.at(0,"Player").startsWith("Uncapped") ? 1 : 0;
+		//nomination,pricepaid,Team,playertype,selected_df.at(0,"EstimatedPoints"),capped,selected_df.at(0,"Category"),selected_df.at(0,"Player");
+
+    google.script.run.addAcutionRow(auctionSheetName,[nomination,pricepaid,Team,playertype,selected_df.at(0,"EstimatedPoints"),capped,selected_df.at(0,"Category"),selected_df.at(0,"Player")]);
+
+		//Reset Purchase register
+		document.getElementById("player-nomination").value="";
+		document.getElementById("value").value="";
+		document.getElementById("team").value="Select..";
+		}
+	}
+
+
+function updateOwnerPriceDict(Team,playertype,pricepaid){
+		const index = ownerdict["TeamName"].indexOf(Team);
+		let snrvalue=ownerdict["Senior"][index]
+		let jnrvalue=ownerdict["Junior"][index]
+		if (playertype==="Junior" && pricepaid>=jnrvalue) {
+		snrvalue=snrvalue+jnrvalue-pricepaid;
+		jnrvalue=0;
+
+		} else if (playertype==="Junior" && pricepaid<jnrvalue) {
+		jnrvalue=jnrvalue-pricepaid;
+		} else {
+		snrvalue=snrvalue-pricepaid;
+		}
+
+		ownerdict["Senior"][index]=snrvalue;
+		ownerdict["Junior"][index]=jnrvalue;
+}
+
+        // Draw the marker
+
+function drawMarker(markerAngle) {
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate(Math.PI/2); // Rotate the marker based on the passed angle
+    ctx.translate(-canvas.width / 2, -canvas.height / 2);
+
+    ctx.beginPath();
+    ctx.moveTo(canvas.width / 2 - 10, 0);
+    ctx.lineTo(canvas.width / 2 + 10, 0);
+    ctx.lineTo(canvas.width / 2, 20);
+    ctx.closePath();
+    ctx.fillStyle = 'black';
+    ctx.fill();
+
+    ctx.restore();
+}
+
+
+     function table_html(table,addsort=false,onclickfn="",idnode=-1){
+		  let table_data='<table><tr>';
+		  let table_hdr=table.columns;
+		  for (i=0;i<table_hdr.length;i++){
+			if (addsort){
+				console.log(table.column(table_hdr[i]).dtype);
+				if (table.column(table_hdr[i]).dtype=='string'){
+					table_data+='<th onclick="sortTable_asc('+i+',\''+table_hdr[i]+'\',this,\''+'text'+'\')">'+table_hdr[i]+'&#8693;</th>';
+				}
+				else {
+					table_data+='<th onclick="sortTable_asc('+i+',\''+table_hdr[i]+'\',this,\''+'int'+'\')">'+table_hdr[i]+'&#8693;</th>';
+				}
+			
+				}
+			else {
+				table_data+='<th>'+table_hdr[i]+'</th>';
+				}
+			}
+		  table_data+='</tr>';
+		  
+		  for (i=0;i<table.shape[0];i++){
+			if (onclickfn!=""){
+				table_data+='<tr class="hvr" onclick="'+onclickfn+'(this)">';
+			}
+
+			if (idnode!=-1){
+			table_data+='<tr id="'+table.iat(i,idnode)+'">';
+			}
+			else{
+			table_data+='<tr>';
+			}
+			for (j=0;j<table.shape[1];j++){
+			   table_data+='<td>'+table.iat(i,j)+'</td>';
+			}
+			table_data+='</tr>';
+		  }
+		  table_data+='</table>';
+		  return table_data;
+	  }	  	  
+
+	  function sortTable_asc(sortcolumn,columnname,node,type="text") {
+		  var table, rows, switching, i, x, y, shouldSwitch;
+		  //table = document.getElementById("table");
+		  table=node.parentNode.parentNode.parentNode;
+		  rows = table.rows;
+		  var headercol= rows[0].getElementsByTagName("TH")[sortcolumn];
+		  node.innerHTML=columnname+" &uarr;";
+		  node.onclick = function() {sortTable_desc(sortcolumn,columnname,node,type)};
+		  console.log(node);
+		  switching = true;
+		  /*Make a loop that will continue until
+		  no switching has been done:*/
+		  while (switching) {
+		    //start by saying: no switching is done:
+		    switching = false;
+		    rows = table.rows;
+		    /*Loop through all table rows (except the
+		    first, which contains table headers):*/
+		    for (i = 1; i < (rows.length - 1); i++) {
+		      //start by saying there should be no switching:
+		      shouldSwitch = false;
+		      /*Get the two elements you want to compare,
+		      one from current row and one from the next:*/
+		      x = rows[i].getElementsByTagName("TD")[sortcolumn];
+		      y = rows[i + 1].getElementsByTagName("TD")[sortcolumn];
+		      //check if the two rows should switch place:
+		      if (type=="int"){
+			      if (parseInt(x.innerHTML) > parseInt(y.innerHTML)) {
+				//if so, mark as a switch and break the loop:
+				shouldSwitch = true;
+				break;
+			      }
+		      }
+		      else {
+		      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+			//if so, mark as a switch and break the loop:
+			shouldSwitch = true;
+			break;
+		      }
+		      }
+		    }
+		    if (shouldSwitch) {
+		      /*If a switch has been marked, make the switch
+		      and mark that a switch has been done:*/
+		      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+		      switching = true;
+		    }
+		  }
+		}
+
+	  function sortTable_desc(sortcolumn,columnname,node,type="text") {
+		  var table, rows, switching, i, x, y, shouldSwitch;
+		  table=node.parentNode.parentNode.parentNode;
+		  rows = table.rows;
+		  var headercol= rows[0].getElementsByTagName("TH")[sortcolumn];
+		  node.innerHTML=columnname+" &darr;";
+		  node.onclick = function() {sortTable_asc(sortcolumn,columnname,node,type)};
+		  switching = true;
+		  /*Make a loop that will continue until
+		  no switching has been done:*/
+		  while (switching) {
+		    //start by saying: no switching is done:
+		    switching = false;
+		    rows = table.rows;
+		    /*Loop through all table rows (except the
+		    first, which contains table headers):*/
+		    for (i = 1; i < (rows.length - 1); i++) {
+		      //start by saying there should be no switching:
+		      shouldSwitch = false;
+		      /*Get the two elements you want to compare,
+		      one from current row and one from the next:*/
+		      x = rows[i].getElementsByTagName("TD")[sortcolumn];
+		      y = rows[i + 1].getElementsByTagName("TD")[sortcolumn];
+		      //check if the two rows should switch place:
+		      if (type=="int"){
+			      if (parseInt(x.innerHTML) < parseInt(y.innerHTML)) {
+				//if so, mark as a switch and break the loop:
+				shouldSwitch = true;
+				break;
+			      }
+		      }
+		      else {
+		      if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+			//if so, mark as a switch and break the loop:
+			shouldSwitch = true;
+			break;
+		      }
+		      }
+		    }
+		    if (shouldSwitch) {
+		      /*If a switch has been marked, make the switch
+		      and mark that a switch has been done:*/
+		      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+		      switching = true;
+		    }
+		  }
+		}	  
+
+
+
+update_ownertable();
+fetchDataAndExecuteUpdate();
+
+	//draw();
+       // drawMarker(0);
+
+    </script>
 </body>
 </html>

@@ -1,56 +1,1941 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
+  <base target="_top">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ISISCC Fantasy League Admin</title>
-  <meta name="description" content="Admin command centre for ISISCC Fantasy Cricket.">
+  <title>Fantasy League Admin</title>
+  <script src="CloudflareAppsScriptAdapter.js"></script>
   <style>
-    html, body { height: 100%; margin: 0; }
-    body { overflow: hidden; background: #f5f7fb; }
-    iframe { width: 100%; height: 100%; border: 0; display: block; background: #ffffff; }
-    .loader {
-      position: fixed;
-      inset: 0;
+    :root {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --soft: #eef6f3;
+      --ink: #172033;
+      --muted: #64748b;
+      --line: #dbe3ef;
+      --brand: #0f766e;
+      --brand-strong: #115e59;
+      --gold: #d97706;
+      --danger: #b42318;
+      --shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(180deg, #e8f3ee 0, var(--bg) 300px);
+      color: var(--ink);
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .header,
+    .panel,
+    .login-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      padding: 14px 16px;
+    }
+
+    .eyebrow {
+      display: block;
+      color: var(--gold);
+      font-size: 0.72rem;
+      font-weight: 850;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      font-size: clamp(1.35rem, 3vw, 1.9rem);
+    }
+
+    h2 {
+      font-size: 1.1rem;
+    }
+
+    .subhead,
+    .muted {
+      color: var(--muted);
+    }
+
+    .subhead {
+      margin: 5px 0 0;
+    }
+
+    .login-shell {
+      min-height: 100vh;
       display: grid;
       place-items: center;
-      padding: 24px;
-      background: linear-gradient(180deg, #e8f3ee 0, #f5f7fb 320px);
-      color: #64748b;
-      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-      text-align: center;
-      transition: opacity 180ms ease, visibility 180ms ease;
+      padding: 18px;
     }
-    .loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    .loader strong { display: block; color: #172033; font-size: 1.05rem; margin-bottom: 8px; }
-    .direct-help {
-      position: fixed;
-      right: 12px;
-      bottom: 12px;
-      z-index: 3;
+
+    .login-card {
+      width: min(360px, 100%);
+      padding: 22px;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      margin: 12px 0;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 9px 10px;
+      color: var(--ink);
+    }
+
+    input[type="checkbox"] {
+      width: auto;
+      min-height: 0;
+      accent-color: var(--brand);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    button,
+    .button {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 9px 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--ink);
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    button:hover,
+    .button:hover {
+      border-color: var(--brand);
+    }
+
+    .primary {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #ffffff;
+    }
+
+    .primary:hover {
+      background: var(--brand-strong);
+      border-color: var(--brand-strong);
+    }
+
+    .danger {
+      color: #ffffff;
+      background: var(--danger);
+      border-color: var(--danger);
+    }
+
+    button:disabled {
+      opacity: 0.58;
+      cursor: not-allowed;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .panel {
+      padding: 16px;
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .metric {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--soft);
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .metric .value {
+      margin-top: 4px;
+      font-size: 1.25rem;
+      font-weight: 850;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.92rem;
+    }
+
+    th,
+    td {
+      padding: 8px 6px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      overflow-wrap: anywhere;
+    }
+
+    th {
+      background: #f8fafc;
+      font-weight: 850;
+    }
+
+    .notice {
+      margin-top: 12px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--muted);
+    }
+
+    .notice.error {
+      border-color: #fecaca;
+      background: #fff1f2;
+      color: var(--danger);
+    }
+
+    .loading-card {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 12px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f8fafc;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 18px;
+      border: 3px solid #dbe3ef;
+      border-top-color: var(--brand);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .button-spinner {
+      width: 14px;
+      height: 14px;
+      flex: 0 0 14px;
+      margin-right: 6px;
+      border: 2px solid currentColor;
+      border-top-color: transparent;
+      border-radius: 50%;
+      opacity: 0.85;
+      animation: spin 0.8s linear infinite;
+    }
+
+    button.is-busy,
+    .button.is-busy {
+      gap: 6px;
+      pointer-events: none;
+    }
+
+    .notice.busy {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-weight: 800;
+    }
+
+    .notice.busy::before {
+      content: "";
+      width: 16px;
+      height: 16px;
+      flex: 0 0 16px;
+      border: 3px solid #dbe3ef;
+      border-top-color: var(--brand);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .preview-box {
+      margin-top: 12px;
+      max-height: 360px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .preview-box table {
+      margin-top: 0;
+      min-width: 860px;
+    }
+
+    .score-summary {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .score-count {
       display: inline-flex;
       align-items: center;
       min-height: 34px;
-      padding: 7px 10px;
-      border: 1px solid rgba(15, 118, 110, 0.45);
+      padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.92);
-      color: #0f766e;
-      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-      font-size: 0.78rem;
-      font-weight: 800;
-      text-decoration: none;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+      background: var(--soft);
+      color: var(--brand-strong);
+      font-weight: 850;
+    }
+
+    .score-editor {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .score-editor-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 0.8fr 0.8fr;
+      gap: 12px;
+      margin: 12px 0;
+    }
+
+    .scorecard-section {
+      margin-top: 14px;
+    }
+
+    .scorecard-section h3 {
+      font-size: 1rem;
+    }
+
+    .tools-panel .actions {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .tools-panel .button {
+      justify-content: flex-start;
+      width: 100%;
+    }
+
+    .compact-table {
+      display: block;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .compact-table table {
+      margin-top: 0;
+      min-width: 760px;
+    }
+
+    .compact-table input,
+    .compact-table select {
+      min-height: 34px;
+      padding: 6px 7px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+
+    .num-input {
+      width: 76px;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 820px) {
+      body {
+        background: linear-gradient(180deg, #e8f3ee 0, var(--bg) 180px);
+      }
+
+      .shell {
+        padding: 8px;
+      }
+
+      .header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+      }
+
+      h1 {
+        font-size: 1.32rem;
+      }
+
+      h2 {
+        font-size: 1rem;
+      }
+
+      h3 {
+        font-size: 0.94rem;
+      }
+
+      .subhead {
+        margin-top: 3px;
+        font-size: 0.82rem;
+        line-height: 1.3;
+      }
+
+      .eyebrow {
+        margin-bottom: 3px;
+        font-size: 0.62rem;
+        letter-spacing: 0.05em;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .panel {
+        padding: 12px;
+      }
+
+      .metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+        margin-top: 8px;
+      }
+
+      .metric {
+        padding: 9px;
+      }
+
+      .metric .label {
+        font-size: 0.62rem;
+      }
+
+      .metric .value {
+        font-size: 1rem;
+        line-height: 1.15;
+      }
+
+      .header .actions,
+      .panel > .actions,
+      .tools-panel .actions,
+      .score-editor > .actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+        width: 100%;
+      }
+
+      .header .actions .button,
+      .header .actions button,
+      .panel > .actions button,
+      .tools-panel .button,
+      .score-editor > .actions button {
+        width: 100%;
+        min-height: 32px;
+        padding: 7px 8px;
+        font-size: 0.74rem;
+        line-height: 1.1;
+      }
+
+      .tools-panel .button {
+        justify-content: center;
+      }
+
+      input,
+      select {
+        min-height: 34px;
+        padding: 7px 8px;
+      }
+
+      label {
+        gap: 4px;
+        margin: 8px 0;
+        font-size: 0.82rem;
+      }
+
+      table {
+        font-size: 0.76rem;
+      }
+
+      th,
+      td {
+        padding: 6px 4px;
+      }
+
+      .score-editor-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin: 8px 0;
+      }
+
+      .score-editor {
+        margin-top: 10px;
+        padding-top: 10px;
+      }
+
+      .scorecard-section {
+        margin-top: 10px;
+      }
+
+      .scorecard-section .actions {
+        gap: 8px;
+      }
+
+      .scorecard-section .actions button {
+        min-height: 32px;
+        padding: 7px 9px;
+        font-size: 0.78rem;
+      }
+
+      .score-count {
+        min-height: 30px;
+        padding: 5px 8px;
+        font-size: 0.78rem;
+      }
+
+      .notice,
+      .loading-card {
+        margin-top: 8px;
+        padding: 9px;
+        font-size: 0.78rem;
+      }
+
+      .compact-table table {
+        min-width: 680px;
+      }
     }
   </style>
 </head>
 <body>
-  <iframe id="appFrame" title="ISISCC Fantasy League Admin" src="https://script.google.com/macros/s/AKfycbw0FMq7t-UtrI8SLlN3Na-DbHecvEMQenZU6T4nWdrQBuYr5YbAM2IKE6lIRDciFf_Vkg/exec?page=admin&authuser=0" loading="eager" allowfullscreen></iframe>
-  <div class="loader" id="loader"><div><strong>Loading Admin...</strong><span>Please wait while the command centre loads.</span></div></div>
-  <a class="direct-help" href="https://script.google.com/macros/s/AKfycbw0FMq7t-UtrI8SLlN3Na-DbHecvEMQenZU6T4nWdrQBuYr5YbAM2IKE6lIRDciFf_Vkg/exec?page=admin&authuser=0" target="_top">Open direct</a>
+  <section class="login-shell" id="loginPanel">
+    <div class="login-card">
+      <span class="eyebrow">ISISCC Fantasy Cricket</span>
+      <h1>Admin</h1>
+      <p class="subhead">Use an Admin-sheet login with the right role.</p>
+      <label>
+        Name (case sensitive)
+        <input id="adminName" autocomplete="username">
+      </label>
+      <label>
+        Key (case sensitive)
+        <input id="adminKey" type="password" autocomplete="current-password">
+      </label>
+      <button class="primary" id="loginButton" onclick="login()">Login</button>
+      <div id="loginStatus" class="notice hidden"></div>
+    </div>
+  </section>
+
+  <main class="shell hidden" id="app">
+    <header class="header">
+      <div>
+        <span class="eyebrow">ISISCC Fantasy Cricket</span>
+        <h1>Admin</h1>
+        <p class="subhead" id="headerSub">Season command centre.</p>
+      </div>
+      <nav class="actions" aria-label="Admin navigation">
+        <a class="button" href="https://ravikirankella.github.io/Cricket/FL.html" target="_top">Fantasy League</a>
+        <a class="button" href="https://ravikirankella.github.io/Cricket/Scorecard.html" target="_blank" rel="noopener">Add Scorecard</a>
+        <button onclick="logout()">Logout</button>
+      </nav>
+    </header>
+
+    <section class="grid">
+      <div class="panel wide" id="statusPanel">
+        <h2>Season Status</h2>
+        <div class="metric-grid" id="metrics"></div>
+        <div id="mainStatus" class="notice">Loading...</div>
+      </div>
+
+      <div class="panel" id="setupPanel">
+        <h2>Season Data</h2>
+        <p class="muted">Prepare season sheets, sync future fixtures, and append missing scorecard players.</p>
+        <div class="actions">
+          <button class="primary" onclick="loadSeasonSheetPreview(this)">Check Season Sheets</button>
+          <button onclick="loadFutureFixturesPreview(this)">Sync Future Fixtures</button>
+          <button onclick="loadScorecardPlayersPreview(this)">Append Scorecard Players</button>
+        </div>
+        <div id="seasonDataStatus" class="notice hidden"></div>
+      </div>
+
+      <div class="panel" id="registrationPanel">
+        <h2>Registration</h2>
+        <p class="muted" id="registrationText">Loading registration state...</p>
+        <p class="muted">Open/Close updates only the <strong>REGISTRATION_OPEN</strong> Apps Script property. It does not create teams or change auction rows.</p>
+        <div class="actions">
+          <button class="primary" onclick="previewRegistration(true, this)">Open Registration</button>
+          <button class="danger" onclick="previewRegistration(false, this)">Close Registration</button>
+        </div>
+        <div id="registrationPreview" class="score-editor hidden"></div>
+      </div>
+
+      <div class="panel tools-panel" id="linksPanel">
+        <h2>Tool Links</h2>
+        <div class="actions" style="margin-top:12px">
+          <a class="button" href="https://ravikirankella.github.io/Cricket/FL.html" target="_blank" rel="noopener">Fantasy League</a>
+          <a class="button" href="https://ravikirankella.github.io/Cricket/OnlineAuction.html" target="_blank" rel="noopener">Buy Fantasy Players</a>
+          <a class="button" href="https://ravikirankella.github.io/Cricket/MakePrediction.html" target="_blank" rel="noopener">Make Prediction</a>
+          <a class="button" href="https://ravikirankella.github.io/Cricket/Scorecard.html" target="_blank" rel="noopener">Add Scorecard</a>
+          <a class="button" href="https://ravikirankella.github.io/Cricket/AuctionTool.html" target="_blank" rel="noopener">Auction Tool</a>
+        </div>
+      </div>
+
+      <div class="panel wide" id="predictionSetupPanel">
+        <h2>Prediction Setup</h2>
+        <p class="muted">Review curated player markets and recalculate current-form odds adjustments.</p>
+        <div class="actions">
+          <button class="primary" onclick="loadPredictionControls(this)">Review Player Markets</button>
+          <button onclick="loadOddsAdjustmentsPreview(this)">Recalculate Form Adjustments</button>
+        </div>
+        <div id="predictionStatus" class="notice hidden"></div>
+        <div id="predictionControlsEditor" class="score-editor hidden"></div>
+        <div id="predictionOddsEditor" class="score-editor hidden"></div>
+      </div>
+
+      <div class="panel wide hidden" id="seasonDataPreview"></div>
+
+      <div class="panel wide" id="scorePanel">
+        <h2>Scorecard Import</h2>
+        <p class="muted">Completed Isis scorecards that are not yet in the season Scores sheet.</p>
+        <div class="actions">
+          <button onclick="loadNewScorecards(this)">Refresh Scorecards</button>
+        </div>
+        <div id="scoreStatus" class="notice hidden"></div>
+        <div id="scoreList"></div>
+        <div id="scoreEditor" class="score-editor hidden"></div>
+      </div>
+
+      <div class="panel wide" id="sheetsPanel">
+        <h2>Sheets</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Sheet</th>
+              <th>Exists</th>
+              <th>Rows</th>
+              <th>Headers</th>
+            </tr>
+          </thead>
+          <tbody id="sheetRows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <datalist id="adminPlayers"></datalist>
+
   <script>
-    const loader = document.getElementById('loader');
-    document.getElementById('appFrame').addEventListener('load', () => loader.classList.add('hidden'));
+    const state = {
+      credentials: null,
+      auth: null,
+      snapshot: null,
+      scorecards: [],
+      currentScorecard: null,
+      players: [],
+      predictionControls: [],
+      predictionTierOptions: ['', 'Enabled', 'Watch', 'Review', 'Paused', 'Disabled'],
+      predictionRoleOptions: ['', 'Batting', 'Bowling', 'All-round', 'Batter', 'Bowler', 'All-rounder', 'Wicketkeeper'],
+      seasonSheetPreview: null,
+      futureFixturePreview: null,
+      scorecardPlayerPreview: null,
+      registrationPreview: null,
+      oddsAdjustmentsPreview: null
+    };
+
+    function login() {
+      const name = document.getElementById('adminName').value;
+      const key = document.getElementById('adminKey').value;
+      showLoginStatus('Checking...', '', true);
+      setBusy('loginButton', true, 'Checking...');
+      google.script.run
+        .withSuccessHandler(function(payload) {
+          setBusy('loginButton', false, 'Login');
+          if (!payload || !payload.ok) {
+            showLoginStatus((payload && payload.message) || 'Invalid admin login.', 'error');
+            return;
+          }
+          state.credentials = { name: name, key: key };
+          state.auth = payload;
+          document.getElementById('loginPanel').classList.add('hidden');
+          document.getElementById('app').classList.remove('hidden');
+          applyAccess(payload.roles || {});
+          loadAdminPlayers();
+          if (payload.roles && (payload.roles.scoreboard || payload.roles.admin)) {
+            loadNewScorecards();
+          }
+          if (payload.roles && payload.roles.admin) {
+            loadSnapshot();
+          } else {
+            renderScoreboardOnly();
+          }
+        })
+        .withFailureHandler(function(err) {
+          setBusy('loginButton', false, 'Login');
+          showLoginStatus(errorText(err), 'error');
+        })
+        .loginAdmin({ name: name, key: key });
+    }
+
+    function logout() {
+      state.credentials = null;
+      state.auth = null;
+      state.snapshot = null;
+      state.scorecards = [];
+      state.currentScorecard = null;
+      state.players = [];
+      state.predictionControls = [];
+      state.seasonSheetPreview = null;
+      state.futureFixturePreview = null;
+      state.scorecardPlayerPreview = null;
+      state.registrationPreview = null;
+      state.oddsAdjustmentsPreview = null;
+      document.getElementById('app').classList.add('hidden');
+      document.getElementById('loginPanel').classList.remove('hidden');
+    }
+
+    function loadAdminPlayers() {
+      google.script.run
+        .withSuccessHandler(function(players) {
+          state.players = Array.isArray(players) ? players : [];
+          renderPlayerDatalist();
+        })
+        .withFailureHandler(function() {
+          state.players = [];
+          renderPlayerDatalist();
+        })
+        .getPlayers();
+    }
+
+    function renderPlayerDatalist(extraPlayers) {
+      const seen = {};
+      const players = []
+        .concat(state.players || [])
+        .concat(extraPlayers || [])
+        .map(value => String(value || '').trim())
+        .filter(Boolean)
+        .filter(function(player) {
+          const key = playerKey(player);
+          if (!key || seen[key]) return false;
+          seen[key] = true;
+          return true;
+        })
+        .sort((a, b) => a.localeCompare(b));
+      const node = document.getElementById('adminPlayers');
+      if (node) {
+        node.innerHTML = players.map(player => `<option value="${escapeHtml(player)}"></option>`).join('');
+      }
+    }
+
+    function loadSnapshot() {
+      showStatus('Loading admin status...', '', true);
+      google.script.run
+        .withSuccessHandler(function(snapshot) {
+          if (!snapshot || !snapshot.ok) {
+            showStatus((snapshot && snapshot.message) || 'Admin status could not be loaded.', 'error');
+            return;
+          }
+          state.snapshot = snapshot;
+          renderSnapshot(snapshot);
+        })
+        .withFailureHandler(function(err) {
+          showStatus(errorText(err), 'error');
+        })
+        .getAdminSnapshot(state.credentials);
+    }
+
+    function loadSeasonSheetPreview(button) {
+      if (!state.credentials) return;
+      setButtonBusy(button, true, 'Checking...');
+      showSeasonDataStatus('Checking season sheets and headers...', '', true);
+      showSeasonDataPreviewLoading('Checking season sheet setup...');
+      google.script.run
+        .withSuccessHandler(function(payload) {
+          setButtonBusy(button, false);
+          if (!payload || !payload.ok) {
+            showSeasonDataStatus((payload && payload.message) || 'Sheet check failed.', 'error');
+            renderSeasonDataError((payload && payload.message) || 'Sheet check failed.');
+            return;
+          }
+          state.seasonSheetPreview = payload;
+          renderSeasonSheetPreview(payload);
+          showSeasonDataStatus(payload.message || 'Sheet check complete.', '');
+        })
+        .withFailureHandler(function(err) {
+          setButtonBusy(button, false);
+          showSeasonDataStatus(errorText(err), 'error');
+          renderSeasonDataError(errorText(err));
+        })
+        .adminPreviewSeasonSheets(state.credentials);
+    }
+
+    function applySeasonSheetSetup(button) {
+      if (!state.seasonSheetPreview) return;
+      setButtonBusy(button, true, 'Applying...');
+      setSeasonPreviewBusy(true, button);
+      showSeasonDataStatus('Creating missing sheets and adding missing headers...', '', true);
+      google.script.run
+        .withSuccessHandler(function(snapshot) {
+          setSeasonPreviewBusy(false, button);
+          setButtonBusy(button, false);
+          if (!snapshot || !snapshot.ok) {
+            showSeasonDataStatus((snapshot && snapshot.message) || 'Sheet setup failed.', 'error');
+            return;
+          }
+          state.snapshot = snapshot;
+          renderSnapshot(snapshot);
+          closeSeasonDataPreview();
+          showSeasonDataStatus(snapshot.message || 'Season sheets updated.', '');
+        })
+        .withFailureHandler(function(err) {
+          setSeasonPreviewBusy(false, button);
+          setButtonBusy(button, false);
+          showSeasonDataStatus(errorText(err), 'error');
+        })
+        .adminEnsureSeasonSheets(state.credentials);
+    }
+
+    function loadFutureFixturesPreview(button) {
+      if (!state.credentials) return;
+      setButtonBusy(button, true, 'Checking...');
+      showSeasonDataStatus('Checking Isis for future fixture changes...', '', true);
+      showSeasonDataPreviewLoading('Reading future fixtures from Isis...');
+      google.script.run
+        .withSuccessHandler(function(payload) {
+          setButtonBusy(button, false);
+          if (!payload || !payload.ok) {
+            showSeasonDataStatus((payload && payload.message) || 'Fixture check failed.', 'error');
+            renderSeasonDataError((payload && payload.message) || 'Fixture check failed.');
+            return;
+          }
+          state.futureFixturePreview = payload;
+          renderFutureFixturesPreview(payload);
+          showSeasonDataStatus(payload.message || 'Fixture check complete.', '');
+        })
+        .withFailureHandler(function(err) {
+          setButtonBusy(button, false);
+          showSeasonDataStatus(errorText(err), 'error');
+          renderSeasonDataError(errorText(err));
+        })
+        .adminPreviewFutureFixtures(state.credentials);
+    }
+
+    function applyFutureFixtures(button) {
+      if (!state.futureFixturePreview) return;
+      setButtonBusy(button, true, 'Updating...');
+      setSeasonPreviewBusy(true, button);
+      showSeasonDataStatus('Updating future fixture rows...', '', true);
+      google.script.run
+        .withSuccessHandler(function(snapshot) {
+          setSeasonPreviewBusy(false, button);
+          setButtonBusy(button, false);
+          if (!snapshot || !snapshot.ok) {
+            showSeasonDataStatus((snapshot && snapshot.message) || 'Fixture update failed.', 'error');
+            return;
+          }
+          state.snapshot = snapshot;
+          renderSnapshot(snapshot);
+          closeSeasonDataPreview();
+          showSeasonDataStatus(snapshot.message || 'Future fixtures updated.', '');
+        })
+        .withFailureHandler(function(err) {
+          setSeasonPreviewBusy(false, button);
+          setButtonBusy(button, false);
+          showSeasonDataStatus(errorText(err), 'error');
+        })
+        .adminApplyFutureFixtures(Object.assign({}, state.credentials, {
+          seasonYear: state.futureFixturePreview.seasonYear,
+          previewChangeCount: state.futureFixturePreview.changeCount,
+          fixtureRows: state.futureFixturePreview.fixtureSync ? state.futureFixturePreview.fixtureSync.rows : []
+        }));
+    }
+
+    function loadScorecardPlayersPreview(button) {
+      if (!state.credentials) return;
+      setButtonBusy(button, true, 'Checking...');
+      showSeasonDataStatus('Checking Scores for players missing from Players...', '', true);
+      showSeasonDataPreviewLoading('Comparing scorecard players with the Players sheet...');
+      google.script.run
+        .withSuccessHandler(function(payload) {
+          setButtonBusy(button, false);
+          if (!payload || !payload.ok) {
+            showSeasonDataStatus((payload && payload.message) || 'Player check failed.', 'error');
+            renderSeasonDataError((payload && payload.message) || 'Player check failed.');
+            return;
+          }
+          state.scorecardPlayerPreview = payload;
+          renderScorecardPlayersPreview(payload);
+          showSeasonDataStatus(payload.message || 'Player check complete.', '');
+        })
+        .withFailureHandler(function(err) {
+          setButtonBusy(button, false);
+          showSeasonDataStatus(errorText(err), 'error');
+          renderSeasonDataError(errorText(err));
+        })
+        .adminPreviewScorecardPlayers(state.credentials);
+    }
+
+    function applyScorecardPlayers(button) {
+      if (!state.scorecardPlayerPreview) return;
+      setButtonBusy(button, true, 'Appending...');
+      setSeasonPreviewBusy(true, button);
+      showSeasonDataStatus('Appending missing scorecard players...', '', true);
+      google.script.run
+        .withSuccessHandler(function(snapshot) {
+          setSeasonPreviewBusy(false, button);
+          setButtonBusy(button, false);
+          if (!snapshot || !snapshot.ok) {
+            showSeasonDataStatus((snapshot && snapshot.message) || 'Player update failed.', 'error');
+            return;
+          }
+          state.snapshot = snapshot;
+          renderSnapshot(snapshot);
+          loadAdminPlayers();
+          closeSeasonDataPreview();
+          showSeasonDataStatus(snapshot.message || 'Players updated.', '');
+        })
+        .withFailureHandler(function(err) {
+          setSeasonPreviewBusy(false, button);
+          setButtonBusy(button, false);
+          showSeasonDataStatus(errorText(err), 'error');
+        })
+        .adminApplyScorecardPlayers(Object.assign({}, state.credentials, {
+          missingPlayers: state.scorecardPlayerPreview.missingPlayers || []
+        }));
+    }
+
+    function renderSeasonSheetPreview(payload) {
+      const rows = (payload && payload.rows) || [];
+      const canApply = rows.some(row => row.action && row.action !== 'OK');
+      const body = rows.map(row => `<tr>
+        <td>${escapeHtml(row.name || '')}</td>
+        <td>${escapeHtml(row.action || '')}</td>
+        <td>${escapeHtml(row.exists ? 'Yes' : 'No')}</td>
+        <td>${escapeHtml(row.rows || 0)}</td>
+        <td>${escapeHtml((row.missingHeaders || []).join(', ') || 'None')}</td>
+      </tr>`).join('');
+      renderSeasonDataPreview('Season Sheet Setup Preview', `
+        <p class="muted">${escapeHtml((payload && payload.message) || '')}</p>
+        <div class="preview-box">
+          <table>
+            <thead><tr><th>Sheet</th><th>Action</th><th>Exists</th><th>Rows</th><th>Missing Headers</th></tr></thead>
+            <tbody>${body}</tbody>
+          </table>
+        </div>`, canApply
+          ? '<button class="primary" onclick="applySeasonSheetSetup(this)">Confirm Sheet Setup</button>'
+          : '');
+    }
+
+    function renderFutureFixturesPreview(payload) {
+      const rows = (payload && payload.rows) || [];
+      const canApply = !!rows.length;
+      const body = rows.length ? rows.map(row => `<tr>
+        <td>${escapeHtml(row.Action || '')}</td>
+        <td>${escapeHtml(row.GameId || '')}</td>
+        <td>${escapeHtml(formatDate(row.Date || ''))}</td>
+        <td>${escapeHtml(row.CurrentOpponent || '')}</td>
+        <td>${escapeHtml(row.NewOpponent || '')}</td>
+        <td>${escapeHtml(row.CurrentStatus || '')}</td>
+        <td>${escapeHtml(row.NewStatus || '')}</td>
+        <td>${escapeHtml(row.CurrentResult || '')}</td>
+        <td>${escapeHtml(row.NewResult || '')}</td>
+        <td>${escapeHtml(row.NewNotes || '')}</td>
+      </tr>`).join('') : '<tr><td colspan="10">No future fixture changes found.</td></tr>';
+      renderSeasonDataPreview('Future Fixtures Preview', `
+        <p class="muted">${escapeHtml((payload && payload.message) || '')}</p>
+        <p class="muted">Source: ${escapeHtml((payload && payload.fixtureSource) || '')}</p>
+        <div class="preview-box">
+          <table>
+            <thead><tr><th>Action</th><th>GameId</th><th>Date</th><th>Current Opponent</th><th>New Opponent</th><th>Current Status</th><th>New Status</th><th>Current Result</th><th>New Result</th><th>New Notes</th></tr></thead>
+            <tbody>${body}</tbody>
+          </table>
+        </div>`, canApply
+          ? '<button class="primary" onclick="applyFutureFixtures(this)">Confirm Fixture Update</button>'
+          : '');
+    }
+
+    function renderScorecardPlayersPreview(payload) {
+      const players = (payload && payload.missingPlayers) || [];
+      const body = players.length ? players.map(player => `<tr><td>${escapeHtml(player)}</td></tr>`).join('') : '<tr><td>No missing scorecard players found.</td></tr>';
+      renderSeasonDataPreview('Scorecard Players Preview', `
+        <p class="muted">${escapeHtml((payload && payload.message) || '')}</p>
+        <div class="preview-box">
+          <table>
+            <thead><tr><th>Player to append</th></tr></thead>
+            <tbody>${body}</tbody>
+          </table>
+        </div>`, players.length
+          ? '<button class="primary" onclick="applyScorecardPlayers(this)">Confirm Append Players</button>'
+          : '');
+    }
+
+    function renderSeasonDataPreview(title, bodyHtml, primaryButtonHtml) {
+      const panel = document.getElementById('seasonDataPreview');
+      panel.innerHTML = `
+        <h2>${escapeHtml(title)}</h2>
+        ${bodyHtml}
+        <div class="actions" style="margin-top:12px">
+          ${primaryButtonHtml || ''}
+          <button onclick="closeSeasonDataPreview()">Close Preview</button>
+        </div>`;
+      panel.classList.remove('hidden');
+    }
+
+    function showSeasonDataPreviewLoading(message) {
+      const panel = document.getElementById('seasonDataPreview');
+      panel.innerHTML = `
+        <h2>Season Data Preview</h2>
+        <div class="loading-card">
+          <span class="spinner" aria-hidden="true"></span>
+          <span>${escapeHtml(message || 'Checking...')}</span>
+        </div>`;
+      panel.classList.remove('hidden');
+    }
+
+    function renderSeasonDataError(message) {
+      renderSeasonDataPreview('Season Data Preview', `<div class="notice error">${escapeHtml(message)}</div>`, '');
+    }
+
+    function closeSeasonDataPreview() {
+      const panel = document.getElementById('seasonDataPreview');
+      panel.classList.add('hidden');
+      panel.innerHTML = '';
+      state.seasonSheetPreview = null;
+      state.futureFixturePreview = null;
+      state.scorecardPlayerPreview = null;
+    }
+
+    function setSeasonPreviewBusy(busy, activeButton) {
+      const panel = document.getElementById('seasonDataPreview');
+      if (!panel) return;
+      panel.querySelectorAll('input, select, button').forEach(function(control) {
+        if (control !== activeButton) control.disabled = busy;
+      });
+    }
+
+    function setRegistration(open, button) {
+      previewRegistration(open, button);
+    }
+
+    function previewRegistration(open, button) {
+      setButtonBusy(button, true, open ? 'Checking...' : 'Checking...');
+      const editor = document.getElementById('registrationPreview');
+      editor.innerHTML = `
+        <div class="loading-card">
+          <span class="spinner" aria-hidden="true"></span>
+          <span>Checking current registration state...</span>
+        </div>`;
+      editor.classList.remove('hidden');
+      google.script.run
+        .withSuccessHandler(function(payload) {
+          setButtonBusy(button, false);
+          if (!payload || !payload.ok) {
+            editor.innerHTML = `<div class="notice error">${escapeHtml((payload && payload.message) || 'Registration preview failed.')}</div>`;
+            return;
+          }
+          state.registrationPreview = payload;
+          renderRegistrationPreview(payload);
+        })
+        .withFailureHandler(function(err) {
+          setButtonBusy(button, false);
+          editor.innerHTML = `<div class="notice error">${escapeHtml(errorText(err))}</div>`;
+        })
+        .adminPreviewRegistrationState(Object.assign({}, state.credentials, { open: open }));
+    }
+
+    function renderRegistrationPreview(payload) {
+      const editor = document.getElementById('registrationPreview');
+      const same = String(payload.currentStatus || '') === String(payload.newStatus || '');
+      editor.innerHTML = `
+        <div class="score-summary">
+          <span class="score-count">${escapeHtml(payload.currentStatus || '')} -> ${escapeHtml(payload.newStatus || '')}</span>
+          <span class="muted">${escapeHtml(payload.message || '')}</span>
+        </div>
+        <table>
+          <tbody>
+            <tr><th>Property</th><td>${escapeHtml(payload.propertyName || 'REGISTRATION_OPEN')}</td></tr>
+            <tr><th>Current value</th><td>${escapeHtml(payload.currentStatus || '')}</td></tr>
+            <tr><th>After confirm</th><td>${escapeHtml(payload.newStatus || '')}</td></tr>
+          </tbody>
+        </table>
+        <div class="actions" style="margin-top:12px">
+          <button class="primary" onclick="applyRegistration(this)" ${same ? 'disabled' : ''}>Confirm Registration Change</button>
+          <button onclick="closeRegistrationPreview()">Close Preview</button>
+        </div>`;
+      editor.classList.remove('hidden');
+    }
+
+    function applyRegistration(button) {
+      if (!state.registrationPreview) return;
+      setButtonBusy(button, true, 'Updating...');
+      setRegistrationPreviewBusy(true, button);
+      showStatus('Updating registration state...', '', true);
+      google.script.run
+        .withSuccessHandler(function(snapshot) {
+          setRegistrationPreviewBusy(false, button);
+          setButtonBusy(button, false);
+          if (!snapshot || !snapshot.ok) {
+            showStatus((snapshot && snapshot.message) || 'Registration update failed.', 'error');
+            return;
+          }
+          state.snapshot = snapshot;
+          renderSnapshot(snapshot);
+          closeRegistrationPreview();
+          showStatus(snapshot.message || 'Registration updated.', '');
+        })
+        .withFailureHandler(function(err) {
+          setRegistrationPreviewBusy(false, button);
+          setButtonBusy(button, false);
+          showStatus(errorText(err), 'error');
+        })
+        .adminApplyRegistrationState(Object.assign({}, state.credentials, { open: state.registrationPreview.open }));
+    }
+
+    function setRegistrationPreviewBusy(busy, activeButton) {
+      const editor = document.getElementById('registrationPreview');
+      if (!editor) return;
+      editor.querySelectorAll('input, select, button').forEach(function(control) {
+        if (control !== activeButton) control.disabled = busy;
+      });
+    }
+
+    function closeRegistrationPreview() {
+      const editor = document.getElementById('registrationPreview');
+      editor.classList.add('hidden');
+      editor.innerHTML = '';
+      state.registrationPreview = null;
+    }
+
+    function loadNewScorecards(button) {
+      if (!state.credentials) return;
+      setButtonBusy(button, true, 'Checking...');
+      state.currentScorecard = null;
+      document.getElementById('scoreEditor').classList.add('hidden');
+      document.getElementById('scoreEditor').innerHTML = '';
+      document.getElementById('scoreList').innerHTML = `
+        <div class="loading-card">
+          <span class="spinner" aria-hidden="true"></span>
+          <span>Checking Isis for completed scorecards...</span>
+        </div>`;
+      showScoreStatus('Checking Isis for new scorecards...', '', true);
+      google.script.run
+        .withSuccessHandler(function(payload) {
+          setButtonBusy(button, false);
+          if (!payload || !payload.ok) {
+            showScoreStatus((payload && payload.message) || 'Could not check scorecards.', 'error');
+            return;
+          }
+          state.scorecards = payload.scorecards || [];
+          renderScorecardList(payload);
+          showScoreStatus(payload.message || 'Scorecard check complete.', '');
+        })
+        .withFailureHandler(function(err) {
+          setButtonBusy(button, false);
+          showScoreStatus(errorText(err), 'error');
+        })
+        .adminListNewScorecards(state.credentials);
+    }
+
+    function loadPredictionControls(button) {
+      if (!state.credentials) return;
+      setButtonBusy(button, true, 'Loading...');
+      const editor = document.getElementById('predictionControlsEditor');
+      editor.innerHTML = `
+        <div class="loading-card">
+          <span class="spinner" aria-hidden="true"></span>
+          <span>Loading existing prediction-control rows...</span>
+        </div>`;
+      editor.classList.remove('hidden');
+      showPredictionStatus('Loading prediction controls...', '', true);
+      google.script.run
+        .withSuccessHandler(function(payload) {
+          setButtonBusy(button, false);
+          if (!payload || !payload.ok) {
+            const message = (payload && payload.message) || 'Prediction controls could not be loaded.';
+            showPredictionStatus(message, 'error');
+            editor.innerHTML = `<div class="notice error">${escapeHtml(message)}</div>`;
+            return;
+          }
+          state.predictionControls = payload.rows || [];
+          state.predictionTierOptions = payload.selectionTierOptions || state.predictionTierOptions;
+          state.predictionRoleOptions = payload.roleOptions || state.predictionRoleOptions;
+          renderPredictionControls(payload);
+          showPredictionStatus(payload.message || 'Prediction controls loaded.', '');
+        })
+        .withFailureHandler(function(err) {
+          setButtonBusy(button, false);
+          const message = errorText(err);
+          showPredictionStatus(message, 'error');
+          editor.innerHTML = `<div class="notice error">${escapeHtml(message)}</div>`;
+        })
+        .adminGetPredictionControls(state.credentials);
+    }
+
+    function renderPredictionControls(payload) {
+      const rows = (payload && payload.rows) || [];
+      const editor = document.getElementById('predictionControlsEditor');
+      if (!rows.length) {
+        editor.innerHTML = '<div class="notice">No curated BettingPlayerControl rows found. Add reviewed players to the sheet first.</div>';
+        editor.classList.remove('hidden');
+        return;
+      }
+      const marketHeaders = ['RUNS20', 'RUNS30', 'RUNS50', 'RUNS100', 'SIX', 'MAIDEN', 'WKTS3', 'WKTS5'];
+      editor.innerHTML = `
+        <div class="actions">
+          <button class="primary" onclick="savePredictionControls(this)">Save Player Markets</button>
+          <button onclick="applyPredictionControlSuggestions(this)">Apply Suggestions</button>
+          <button onclick="loadPredictionControls(this)">Reload Controls</button>
+          <button onclick="closePredictionControls()">Close Review</button>
+        </div>
+        <div class="score-summary">
+          <span class="score-count">${rows.length} control row${rows.length === 1 ? '' : 's'}</span>
+          <span class="muted">Enabled, market flags, Max Stake, Selection Tier, and Role are editable here.</span>
+        </div>
+        <div class="compact-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Player</th>
+                <th>Enabled</th>
+                ${marketHeaders.map(header => `<th>${escapeHtml(header)}</th>`).join('')}
+                <th>Suggested</th>
+                <th>Max Stake</th>
+                <th>Selection Tier</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows.map(row => renderPredictionControlRow(row, marketHeaders)).join('')}
+            </tbody>
+          </table>
+        </div>`;
+      editor.classList.remove('hidden');
+    }
+
+    function renderPredictionControlRow(row, marketHeaders) {
+      const suggested = String(row.RecommendedMarkets || '');
+      const suggestedText = suggested
+        ? `<strong>${escapeHtml(suggested)}</strong><br><span class="muted">${escapeHtml(row.RecommendationReason || '')}</span>`
+        : '<span class="muted">-</span>';
+      return `<tr class="prediction-control-row" data-player="${escapeHtml(row.Player || '')}" data-suggested="${escapeHtml(suggested)}">
+        <td><strong>${escapeHtml(row.Player || '')}</strong></td>
+        <td>${checkboxHtml('Enabled', row.Enabled)}</td>
+        ${marketHeaders.map(header => `<td>${checkboxHtml(header, row[header])}</td>`).join('')}
+        <td>${suggestedText}</td>
+        <td><input class="prediction-max-stake num-input" type="number" min="0" step="10" value="${escapeHtml(row.MaxStakeOverride || '')}"></td>
+        <td>${selectHtml('prediction-tier', state.predictionTierOptions, row.SelectionTier || '')}</td>
+        <td>${selectHtml('prediction-role', state.predictionRoleOptions, row.RoleHint || '')}</td>
+      </tr>`;
+    }
+
+    function checkboxHtml(field, checked) {
+      return `<input class="prediction-flag" data-field="${escapeHtml(field)}" type="checkbox" ${checked ? 'checked' : ''}>`;
+    }
+
+    function selectHtml(className, options, selected) {
+      return `<select class="${escapeHtml(className)}">${optionListHtml(options, selected)}</select>`;
+    }
+
+    function optionListHtml(options, selected) {
+      const chosen = String(selected == null ? '' : selected);
+      const seen = {};
+      const values = (options || []).slice();
+      if (chosen && values.indexOf(chosen) === -1) values.push(chosen);
+      return values.filter(function(value) {
+        const key = String(value == null ? '' : value);
+        if (seen[key]) return false;
+        seen[key] = true;
+        return true;
+      }).map(function(value) {
+        const text = String(value == null ? '' : value);
+        const label = text || 'Blank';
+        return `<option value="${escapeHtml(text)}" ${text === chosen ? 'selected' : ''}>${escapeHtml(label)}</option>`;
+      }).join('');
+    }
+
+    function savePredictionControls(button) {
+      const rows = collectPredictionControls();
+      setButtonBusy(button, true, 'Saving...');
+      setPredictionControlsBusy(true, button);
+      showPredictionStatus('Saving prediction controls...', '', true);
+      google.script.run
+        .withSuccessHandler(function(payload) {
+          setPredictionControlsBusy(false, button);
+          setButtonBusy(button, false);
+          if (!payload || !payload.ok) {
+            showPredictionStatus((payload && payload.message) || 'Prediction controls were not saved.', 'error');
+            return;
+          }
+          state.predictionControls = payload.rows || [];
+          renderPredictionControls(payload);
+          showPredictionStatus(payload.message || 'Prediction controls saved.', '');
+        })
+        .withFailureHandler(function(err) {
+          setPredictionControlsBusy(false, button);
+          setButtonBusy(button, false);
+          showPredictionStatus(errorText(err), 'error');
+        })
+        .adminUpdatePredictionControls(Object.assign({}, state.credentials, { rows: rows }));
+    }
+
+    function collectPredictionControls() {
+      const rows = [];
+      document.querySelectorAll('.prediction-control-row').forEach(function(tr) {
+        const row = {
+          Player: tr.getAttribute('data-player') || '',
+          MaxStakeOverride: tr.querySelector('.prediction-max-stake').value,
+          SelectionTier: tr.querySelector('.prediction-tier').value,
+          RoleHint: tr.querySelector('.prediction-role').value
+        };
+        tr.querySelectorAll('.prediction-flag').forEach(function(input) {
+          row[input.getAttribute('data-field')] = input.checked;
+        });
+        rows.push(row);
+      });
+      return rows;
+    }
+
+    function applyPredictionControlSuggestions(button) {
+      let applied = 0;
+      document.querySelectorAll('.prediction-control-row').forEach(function(tr) {
+        const suggested = String(tr.getAttribute('data-suggested') || '')
+          .split(',')
+          .map(value => value.trim())
+          .filter(Boolean);
+        suggested.forEach(function(market) {
+          const input = tr.querySelector(`.prediction-flag[data-field="${cssEscape(market)}"]`);
+          if (input && !input.checked) {
+            input.checked = true;
+            applied++;
+          }
+        });
+      });
+      showPredictionStatus(applied
+        ? applied + ' suggested market switch' + (applied === 1 ? '' : 'es') + ' ticked. Click Save Player Markets to update the sheet.'
+        : 'No new suggested market switches to apply.',
+        '');
+    }
+
+    function cssEscape(value) {
+      if (window.CSS && typeof window.CSS.escape === 'function') return window.CSS.escape(value);
+      return String(value || '').replace(/["\\]/g, '\\$&');
+    }
+
+    function closePredictionControls() {
+      const editor = document.getElementById('predictionControlsEditor');
+      editor.classList.add('hidden');
+      editor.innerHTML = '';
+      state.predictionControls = [];
+    }
+
+    function setPredictionControlsBusy(busy, activeButton) {
+      const editor = document.getElementById('predictionControlsEditor');
+      if (!editor) return;
+      editor.querySelectorAll('input, select, button').forEach(function(control) {
+        if (control !== activeButton) control.disabled = busy;
+      });
+    }
+
+    function loadOddsAdjustmentsPreview(button) {
+      if (!state.credentials) return;
+      setButtonBusy(button, true, 'Calculating...');
+      const editor = document.getElementById('predictionOddsEditor');
+      editor.innerHTML = `
+        <div class="loading-card">
+          <span class="spinner" aria-hidden="true"></span>
+          <span>Calculating current-form adjustments from season scorecards...</span>
+        </div>`;
+      editor.classList.remove('hidden');
+      showPredictionStatus('Calculating form adjustments...', '', true);
+      google.script.run
+        .withSuccessHandler(function(payload) {
+          setButtonBusy(button, false);
+          if (!payload || !payload.ok) {
+            const message = (payload && payload.message) || 'Form adjustment preview failed.';
+            showPredictionStatus(message, 'error');
+            editor.innerHTML = `<div class="notice error">${escapeHtml(message)}</div>`;
+            return;
+          }
+          state.oddsAdjustmentsPreview = payload;
+          renderOddsAdjustmentsPreview(payload);
+          showPredictionStatus(payload.message || 'Form adjustments calculated. Review before saving.', '');
+        })
+        .withFailureHandler(function(err) {
+          setButtonBusy(button, false);
+          const message = errorText(err);
+          showPredictionStatus(message, 'error');
+          editor.innerHTML = `<div class="notice error">${escapeHtml(message)}</div>`;
+        })
+        .adminPreviewBettingOddsAdjustments(state.credentials);
+    }
+
+    function renderOddsAdjustmentsPreview(payload) {
+      const rows = (payload && payload.rows) || [];
+      const editor = document.getElementById('predictionOddsEditor');
+      const body = rows.length ? rows.map((row, index) => `<tr class="odds-adjustment-row" data-index="${index}">
+        <td><strong>${escapeHtml(row.Player || '')}</strong></td>
+        <td>${escapeHtml(row.MarketCode || '')}</td>
+        <td>${escapeHtml(row.CurrentFormFactor === '' ? 'blank' : row.CurrentFormFactor)}</td>
+        <td><input class="odds-new-factor num-input" type="number" min="0.4" max="2.5" step="0.001" value="${escapeHtml(row.NewFormFactor)}"></td>
+        <td>${escapeHtml(row.GamesUsed || 0)}</td>
+        <td>${escapeHtml((row.RecentSuccesses || 0) + '/' + (row.RecentAttempts || 0))}</td>
+        <td>${escapeHtml(row.NewEvidence || '')}</td>
+        <td><input class="odds-new-notes" value="${escapeHtml(row.NewNotes || '')}"></td>
+      </tr>`).join('') : '<tr><td colspan="8">No enabled player markets found.</td></tr>';
+      editor.innerHTML = `
+        <div class="actions">
+          <button class="primary" onclick="applyOddsAdjustments(this)" ${rows.length ? '' : 'disabled'}>Apply Form Adjustments</button>
+          <button onclick="loadOddsAdjustmentsPreview(this)">Recalculate Preview</button>
+          <button onclick="closeOddsAdjustmentsPreview()">Close Preview</button>
+        </div>
+        <div class="score-summary">
+          <span class="score-count">${rows.length} adjustment row${rows.length === 1 ? '' : 's'}</span>
+          <span class="muted">Current values are shown beside calculated values. Edit the new factor before applying if needed.</span>
+        </div>
+        <div class="compact-table">
+          <table>
+            <thead>
+              <tr><th>Player</th><th>Market</th><th>Current Factor</th><th>New Factor</th><th>Games</th><th>Successes</th><th>Evidence</th><th>Notes</th></tr>
+            </thead>
+            <tbody>${body}</tbody>
+          </table>
+        </div>`;
+      editor.classList.remove('hidden');
+    }
+
+    function applyOddsAdjustments(button) {
+      if (!state.oddsAdjustmentsPreview) return;
+      const rows = collectOddsAdjustmentRows();
+      setButtonBusy(button, true, 'Applying...');
+      setOddsAdjustmentsBusy(true, button);
+      showPredictionStatus('Saving reviewed form adjustments...', '', true);
+      google.script.run
+        .withSuccessHandler(function(snapshot) {
+          setOddsAdjustmentsBusy(false, button);
+          setButtonBusy(button, false);
+          if (!snapshot || !snapshot.ok) {
+            showPredictionStatus((snapshot && snapshot.message) || 'Form adjustments were not saved.', 'error');
+            return;
+          }
+          state.snapshot = snapshot;
+          renderSnapshot(snapshot);
+          closeOddsAdjustmentsPreview();
+          showPredictionStatus(snapshot.message || 'Form adjustments saved.', '');
+        })
+        .withFailureHandler(function(err) {
+          setOddsAdjustmentsBusy(false, button);
+          setButtonBusy(button, false);
+          showPredictionStatus(errorText(err), 'error');
+        })
+        .adminApplyBettingOddsAdjustments(Object.assign({}, state.credentials, { rows: rows }));
+    }
+
+    function collectOddsAdjustmentRows() {
+      const sourceRows = (state.oddsAdjustmentsPreview && state.oddsAdjustmentsPreview.rows) || [];
+      const rows = [];
+      document.querySelectorAll('.odds-adjustment-row').forEach(function(tr) {
+        const source = sourceRows[Number(tr.getAttribute('data-index'))] || {};
+        rows.push({
+          Player: source.Player || '',
+          MarketCode: source.MarketCode || '',
+          NewFormFactor: tr.querySelector('.odds-new-factor').value,
+          GamesUsed: source.GamesUsed || '',
+          RecentSuccesses: source.RecentSuccesses || '',
+          RecentAttempts: source.RecentAttempts || '',
+          NewEvidence: source.NewEvidence || source.Evidence || '',
+          NewNotes: tr.querySelector('.odds-new-notes').value
+        });
+      });
+      return rows;
+    }
+
+    function setOddsAdjustmentsBusy(busy, activeButton) {
+      const editor = document.getElementById('predictionOddsEditor');
+      if (!editor) return;
+      editor.querySelectorAll('input, select, button').forEach(function(control) {
+        if (control !== activeButton) control.disabled = busy;
+      });
+    }
+
+    function closeOddsAdjustmentsPreview() {
+      const editor = document.getElementById('predictionOddsEditor');
+      editor.classList.add('hidden');
+      editor.innerHTML = '';
+      state.oddsAdjustmentsPreview = null;
+    }
+
+    function renderScorecardList(payload) {
+      const games = (payload && payload.scorecards) || [];
+      const node = document.getElementById('scoreList');
+      if (!games.length) {
+        node.innerHTML = `<div class="score-summary"><span class="score-count">0 new scorecards</span><span class="muted">Checked ${escapeHtml((payload && payload.checkedAt) || '')}</span></div>`;
+        return;
+      }
+      node.innerHTML = `
+        <div class="score-summary">
+          <span class="score-count">${games.length} new scorecard${games.length === 1 ? '' : 's'}</span>
+          <span class="muted">Checked ${escapeHtml((payload && payload.checkedAt) || '')}</span>
+        </div>
+        <table>
+          <thead><tr><th>Date</th><th>Opponent</th><th>Venue</th><th>Result</th><th></th></tr></thead>
+          <tbody>${games.map(game => `<tr>
+            <td>${escapeHtml(formatDate(game.Date))}</td>
+            <td>${escapeHtml(game.Opponent || '')}</td>
+            <td>${escapeHtml(game.HomeAway || '')}</td>
+            <td>${escapeHtml(game.Result || '')}</td>
+            <td><button data-scorecard-view onclick="viewScorecard('${escapeHtml(game.GameId)}', this)">View</button></td>
+          </tr>`).join('')}</tbody>
+        </table>`;
+    }
+
+    function viewScorecard(gameId, button) {
+      showScoreStatus('Reading Isis scorecard... this can take a few seconds.', '');
+      setScorecardViewBusy(button, true);
+      const editor = document.getElementById('scoreEditor');
+      editor.innerHTML = `
+        <div class="loading-card">
+          <span class="spinner" aria-hidden="true"></span>
+          <span>Reading Isis scorecard and building the review form...</span>
+        </div>`;
+      editor.classList.remove('hidden');
+      window.setTimeout(function() {
+        google.script.run
+          .withSuccessHandler(function(payload) {
+            setScorecardViewBusy(button, false);
+            if (!payload || !payload.ok || !payload.rows || !payload.rows.length) {
+              const message = (payload && payload.message) || 'No scorecard rows found.';
+              editor.innerHTML = `<div class="notice error">${escapeHtml(message)}</div>`;
+              showScoreStatus(message, 'error');
+              return;
+            }
+            state.currentScorecard = payload;
+            renderScorecardEditor(payload);
+            showScoreStatus(payload.message || 'Review scorecard before saving.', '');
+          })
+          .withFailureHandler(function(err) {
+            setScorecardViewBusy(button, false);
+            const message = errorText(err);
+            editor.innerHTML = `<div class="notice error">${escapeHtml(message)}</div>`;
+            showScoreStatus(message, 'error');
+          })
+          .adminPreviewScorecardImport(Object.assign({}, state.credentials, { gameId: gameId }));
+      }, 50);
+    }
+
+    function setScorecardViewBusy(activeButton, busy) {
+      document.querySelectorAll('[data-scorecard-view]').forEach(function(button) {
+        button.classList.toggle('primary', busy && button === activeButton);
+        if (button === activeButton) {
+          setButtonBusy(button, busy, 'Reading...');
+        } else {
+          button.disabled = busy;
+        }
+      });
+    }
+
+    function renderScorecardEditor(payload) {
+      const rows = payload.rows || [];
+      const first = rows[0] || [];
+      const maxOvers = first[2] == null || first[2] === '' ? inferMaxOvers(rows) : first[2];
+      renderPlayerDatalist(rows.map(row => row[5]));
+      const bowlers = rows
+        .filter(row => String(row[9] || '').trim() && String(row[9] || '').trim().toUpperCase() !== 'DNB')
+        .sort((a, b) => Number(a[9] || 0) - Number(b[9] || 0));
+      const node = document.getElementById('scoreEditor');
+      node.innerHTML = `
+        <div class="actions">
+          <button onclick="loadNewScorecards(this)">Back to List</button>
+          <button class="primary" onclick="submitScorecard(this)">Submit Scorecard</button>
+        </div>
+        <div class="score-editor-grid">
+          <label>GameId<input id="editGameId" value="${escapeHtml(first[0] || payload.gameId || '')}" readonly></label>
+          <label>Opponent<input id="editOpponent" value="${escapeHtml(first[1] || '')}"></label>
+          <label>Max Overs per bowler<input id="editMaxOvers" type="number" min="0" max="99" value="${escapeHtml(maxOvers)}"></label>
+          <label>Result
+            <select id="editWon">
+              <option value="1" ${Number(first[3]) === 1 ? 'selected' : ''}>Won</option>
+              <option value="0" ${Number(first[3]) === 1 ? '' : 'selected'}>Lost / Drawn / Tied</option>
+            </select>
+          </label>
+        </div>
+        <div class="scorecard-section">
+          <h3>Batting Card</h3>
+          <div class="compact-table">
+            <table>
+              <thead><tr><th>#</th><th>Player</th><th>How Out</th><th>Sixes</th><th>Runs</th><th>Catches</th><th>Runouts</th><th>Stumpings</th></tr></thead>
+              <tbody id="editBattingRows">${rows.map((row, index) => renderBattingEditRow(row, index + 1)).join('')}</tbody>
+            </table>
+          </div>
+        </div>
+        <div class="scorecard-section">
+          <div class="actions">
+            <h3>Bowling Card</h3>
+            <button onclick="addBowlingEditRow()">Add Bowler</button>
+          </div>
+          <div class="compact-table">
+            <table>
+              <thead><tr><th>Order</th><th>Bowler</th><th>Overs</th><th>Maidens</th><th>Runs</th><th>Wickets</th><th></th></tr></thead>
+              <tbody id="editBowlingRows">${(bowlers.length ? bowlers : [[]]).map((row, index) => renderBowlingEditRow(row, index + 1)).join('')}</tbody>
+            </table>
+          </div>
+        </div>`;
+      node.classList.remove('hidden');
+    }
+
+    function inferMaxOvers(rows) {
+      let maxOvers = 0;
+      (rows || []).forEach(function(row) {
+        const order = String(row[9] || '').trim().toUpperCase();
+        if (!order || order === 'DNB') return;
+        const overs = Number(row[10]);
+        if (!isNaN(overs)) maxOvers = Math.max(maxOvers, Math.ceil(overs));
+      });
+      return maxOvers || '';
+    }
+
+    function renderBattingEditRow(row, seq) {
+      return `<tr class="edit-batting-row">
+        <td>${seq}</td>
+        <td><input class="edit-player" list="adminPlayers" value="${escapeHtml(row[5] || '')}"></td>
+        <td><select class="edit-howout">${howOutOptions(row[6] || 'DNB')}</select></td>
+        <td><input class="edit-sixes num-input" type="number" min="0" value="${escapeHtml(row[7] == null ? 0 : row[7])}"></td>
+        <td><input class="edit-runs num-input" type="number" min="0" value="${escapeHtml(row[8] == null ? 0 : row[8])}"></td>
+        <td><input class="edit-catches num-input" type="number" min="0" value="${escapeHtml(row[14] == null ? 0 : row[14])}"></td>
+        <td><input class="edit-runouts num-input" type="number" min="0" value="${escapeHtml(row[15] == null ? 0 : row[15])}"></td>
+        <td><input class="edit-stumpings num-input" type="number" min="0" value="${escapeHtml(row[16] == null ? 0 : row[16])}"></td>
+      </tr>`;
+    }
+
+    function renderBowlingEditRow(row, seq) {
+      return `<tr class="edit-bowling-row">
+        <td><input class="edit-bowling-order num-input" type="number" min="1" value="${escapeHtml(row[9] && row[9] !== 'DNB' ? row[9] : seq)}"></td>
+        <td><input class="edit-bowler" list="adminPlayers" value="${escapeHtml(row[5] || '')}"></td>
+        <td><input class="edit-overs num-input" type="number" min="0" step="0.1" value="${escapeHtml(row[10] == null ? '' : row[10])}"></td>
+        <td><input class="edit-mdns num-input" type="number" min="0" value="${escapeHtml(row[11] == null ? '' : row[11])}"></td>
+        <td><input class="edit-runs-conceded num-input" type="number" min="0" value="${escapeHtml(row[12] == null ? '' : row[12])}"></td>
+        <td><input class="edit-wkts num-input" type="number" min="0" value="${escapeHtml(row[13] == null ? '' : row[13])}"></td>
+        <td><button onclick="removeBowlingEditRow(this)">Remove</button></td>
+      </tr>`;
+    }
+
+    function addBowlingEditRow() {
+      const body = document.getElementById('editBowlingRows');
+      body.insertAdjacentHTML('beforeend', renderBowlingEditRow([], body.querySelectorAll('tr').length + 1));
+    }
+
+    function removeBowlingEditRow(button) {
+      const row = button.closest('tr');
+      if (row) row.remove();
+    }
+
+    function submitScorecard(button) {
+      let rows;
+      try {
+        rows = collectEditedScorecardRows();
+      } catch (err) {
+        showScoreStatus(errorText(err), 'error');
+        return;
+      }
+      setScorecardSubmitBusy(button, true);
+      showScoreStatus('Saving scorecard...', '', true);
+      google.script.run
+        .withSuccessHandler(function(payload) {
+          if (!payload || !payload.ok) {
+            setScorecardSubmitBusy(button, false);
+            showScoreStatus((payload && payload.message) || 'Scorecard save failed.', 'error');
+            return;
+          }
+          setScorecardSubmitBusy(button, false);
+          document.getElementById('scoreEditor').classList.add('hidden');
+          showScoreStatus(`${payload.message || 'Scorecard saved.'} Rows: ${payload.rowCount || rows.length}.`, '');
+          loadNewScorecards();
+          if (state.auth && state.auth.roles && state.auth.roles.admin) loadSnapshot();
+        })
+        .withFailureHandler(function(err) {
+          setScorecardSubmitBusy(button, false);
+          showScoreStatus(errorText(err), 'error');
+        })
+        .adminSaveScorecardRows(Object.assign({}, state.credentials, { rows: rows }));
+    }
+
+    function setScorecardSubmitBusy(button, busy) {
+      const editor = document.getElementById('scoreEditor');
+      if (!editor) return;
+      let busyNode = document.getElementById('scoreEditorBusy');
+      if (busy && !busyNode) {
+        editor.insertAdjacentHTML('afterbegin', `
+          <div id="scoreEditorBusy" class="loading-card">
+            <span class="spinner" aria-hidden="true"></span>
+            <span>Saving scorecard rows and updating Fantasy League totals...</span>
+          </div>`);
+        busyNode = document.getElementById('scoreEditorBusy');
+      }
+      if (!busy && busyNode) busyNode.remove();
+      editor.querySelectorAll('input, select, button').forEach(function(control) {
+        if (control !== button) control.disabled = busy;
+      });
+      setButtonBusy(button, busy, 'Saving...');
+    }
+
+    function collectEditedScorecardRows() {
+      const gameId = document.getElementById('editGameId').value.replace(/\D/g, '');
+      const opponent = document.getElementById('editOpponent').value.trim();
+      const maxOvers = document.getElementById('editMaxOvers').value;
+      const won = Number(document.getElementById('editWon').value);
+      if (!gameId) throw new Error('GameId is required.');
+      if (!opponent) throw new Error('Opponent is required.');
+
+      const rows = [];
+      const byPlayer = {};
+      document.querySelectorAll('.edit-batting-row').forEach(function(tr) {
+        const player = tr.querySelector('.edit-player').value.trim();
+        if (!player) return;
+        const row = [
+          gameId,
+          opponent,
+          maxOvers,
+          won,
+          1,
+          player,
+          tr.querySelector('.edit-howout').value || 'DNB',
+          tr.querySelector('.edit-sixes').value || 0,
+          tr.querySelector('.edit-runs').value || 0,
+          'DNB',
+          '',
+          '',
+          '',
+          '',
+          tr.querySelector('.edit-catches').value || 0,
+          tr.querySelector('.edit-runouts').value || 0,
+          tr.querySelector('.edit-stumpings').value || 0
+        ];
+        rows.push(row);
+        byPlayer[playerKey(player)] = row;
+      });
+
+      document.querySelectorAll('.edit-bowling-row').forEach(function(tr, index) {
+        const player = tr.querySelector('.edit-bowler').value.trim();
+        if (!player) return;
+        const key = playerKey(player);
+        let row = byPlayer[key];
+        if (!row) {
+          row = [gameId, opponent, maxOvers, won, 1, player, 'DNB', 0, 0, 'DNB', '', '', '', '', 0, 0, 0];
+          rows.push(row);
+          byPlayer[key] = row;
+        }
+        row[9] = tr.querySelector('.edit-bowling-order').value || (index + 1);
+        row[10] = tr.querySelector('.edit-overs').value || '';
+        row[11] = tr.querySelector('.edit-mdns').value || '';
+        row[12] = tr.querySelector('.edit-runs-conceded').value || '';
+        row[13] = tr.querySelector('.edit-wkts').value || '';
+      });
+
+      if (!rows.length) throw new Error('At least one player row is required.');
+      return rows;
+    }
+
+    function howOutOptions(selected) {
+      const values = ['DNB', 'Bowled', 'Caught', 'Ct & Bld', 'LBW', 'Not Out', 'Run Out', 'Stumped'];
+      const chosen = String(selected || 'DNB').toLowerCase();
+      return values.map(value => `<option value="${escapeHtml(value)}" ${value.toLowerCase() === chosen ? 'selected' : ''}>${escapeHtml(value)}</option>`).join('');
+    }
+
+    function playerKey(value) {
+      return String(value || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    }
+
+    function formatDate(value) {
+      const text = String(value || '').trim();
+      const match = text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      return match ? `${match[3]}/${match[2]}/${match[1]}` : text;
+    }
+
+    function applyAccess(roles) {
+      const isAdmin = !!roles.admin;
+      const canScore = !!roles.scoreboard || isAdmin;
+      document.getElementById('setupPanel').classList.toggle('hidden', !isAdmin);
+      document.getElementById('registrationPanel').classList.toggle('hidden', !isAdmin);
+      document.getElementById('predictionSetupPanel').classList.toggle('hidden', !isAdmin);
+      document.getElementById('sheetsPanel').classList.toggle('hidden', !isAdmin);
+      document.getElementById('scorePanel').classList.toggle('hidden', !canScore);
+      document.getElementById('headerSub').textContent = isAdmin
+        ? 'Season command centre.'
+        : 'Scoreboard access.';
+    }
+
+    function renderScoreboardOnly() {
+      renderMetrics([
+        ['Access', 'Scoreboard'],
+        ['Season', getDisplayedSeasonYear()],
+        ['Admin', 'No'],
+        ['Scorecards', 'Available']
+      ]);
+      showStatus('You have Scoreboard access. Admin setup actions are hidden for this login.', '');
+    }
+
+    function getDisplayedSeasonYear() {
+      const title = document.querySelector('#app h1, #loginPanel h1');
+      const match = title ? String(title.textContent || '').match(/\b(20\d{2})\b/) : null;
+      return match ? match[1] : '';
+    }
+
+    function renderSnapshot(snapshot) {
+      renderMetrics([
+        ['Season', snapshot.seasonYear || ''],
+        ['Registration', snapshot.registration ? snapshot.registration.status : ''],
+        ['Sheets', (snapshot.sheets || []).length],
+        ['Generated', snapshot.generatedAt || '']
+      ]);
+      document.getElementById('registrationText').textContent =
+        snapshot.registration && snapshot.registration.open ? 'Registration is open.' : 'Registration is closed.';
+      renderSheets(snapshot.sheets || []);
+      showStatus(snapshot.message || 'Ready.', '');
+    }
+
+    function renderMetrics(items) {
+      document.getElementById('metrics').innerHTML = items.map(function(item) {
+        return `<div class="metric"><div class="label">${escapeHtml(item[0])}</div><div class="value">${escapeHtml(item[1])}</div></div>`;
+      }).join('');
+    }
+
+    function renderSheets(rows) {
+      document.getElementById('sheetRows').innerHTML = rows.map(function(row) {
+        return `<tr>
+          <td>${escapeHtml(row.name || '')}</td>
+          <td>${row.exists ? 'Yes' : 'No'}</td>
+          <td>${escapeHtml(row.rows || 0)}</td>
+          <td>${row.headersOk ? 'OK' : 'Check'}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    function showStatus(message, type, busy) {
+      setNotice('mainStatus', message, type, busy);
+    }
+
+    function showScoreStatus(message, type, busy) {
+      setNotice('scoreStatus', message, type, busy);
+    }
+
+    function showSeasonDataStatus(message, type, busy) {
+      setNotice('seasonDataStatus', message, type, busy);
+    }
+
+    function showPredictionStatus(message, type, busy) {
+      setNotice('predictionStatus', message, type, busy);
+    }
+
+    function showLoginStatus(message, type, busy) {
+      setNotice('loginStatus', message, type, busy);
+    }
+
+    function setNotice(id, message, type, busy) {
+      const node = document.getElementById(id);
+      if (!node) return;
+      node.textContent = message;
+      node.classList.remove('hidden');
+      node.classList.toggle('error', type === 'error');
+      node.classList.toggle('busy', !!busy && type !== 'error');
+    }
+
+    function setBusy(id, busy, text) {
+      setButtonBusy(document.getElementById(id), busy, text, text);
+    }
+
+    function setButtonBusy(button, busy, busyText, normalText) {
+      if (!button) return;
+      if (!button.dataset.normalText) button.dataset.normalText = button.textContent;
+      const restoreText = normalText || button.dataset.normalText;
+      button.disabled = busy;
+      button.classList.toggle('is-busy', !!busy);
+      if (busy) {
+        button.innerHTML = `<span class="button-spinner" aria-hidden="true"></span><span>${escapeHtml(busyText || 'Working...')}</span>`;
+      } else {
+        button.textContent = restoreText;
+        delete button.dataset.normalText;
+      }
+    }
+
+    function errorText(err) {
+      return err && err.message ? err.message : String(err || 'Something went wrong.');
+    }
+
+    function escapeHtml(value) {
+      return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
   </script>
 </body>
 </html>
