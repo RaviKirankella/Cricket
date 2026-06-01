@@ -1,56 +1,2152 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
+  <base target="_top">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ISISCC Fantasy Predictions</title>
-  <meta name="description" content="Make ISISCC Fantasy Cricket predictions for open fixtures.">
+  <title>Fantasy Predictions</title>
   <style>
-    html, body { height: 100%; margin: 0; }
-    body { overflow: hidden; background: #f6f8f5; }
-    iframe { width: 100%; height: 100%; border: 0; display: block; background: #ffffff; }
-    .loader {
-      position: fixed;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      background: linear-gradient(180deg, #edf4ef 0, #f6f8f5 320px);
-      color: #5d6b62;
-      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-      text-align: center;
-      transition: opacity 180ms ease, visibility 180ms ease;
+    :root {
+      --bg: #f6f8f5;
+      --surface: #ffffff;
+      --surface-2: #edf4ef;
+      --ink: #17211c;
+      --muted: #5d6b62;
+      --line: #d8e2dc;
+      --brand: #16643f;
+      --brand-strong: #0f4c32;
+      --accent: #b77818;
+      --danger: #b42318;
+      --radius: 8px;
+      --shadow: 0 16px 36px rgba(21, 37, 30, 0.10);
     }
-    .loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    .loader strong { display: block; color: #17211c; font-size: 1.05rem; margin-bottom: 8px; }
-    .direct-help {
-      position: fixed;
-      right: 12px;
-      bottom: 12px;
-      z-index: 3;
-      display: inline-flex;
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .app-shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .app-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
       align-items: center;
-      min-height: 34px;
-      padding: 7px 10px;
-      border: 1px solid rgba(15, 118, 110, 0.45);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.92);
-      color: #0f766e;
-      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.45rem;
+      line-height: 1.15;
+      font-weight: 800;
+    }
+
+    .subhead {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .toolbar,
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .button,
+    button {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--ink);
+      padding: 10px 14px;
+      cursor: pointer;
+      text-decoration: none;
+      min-height: 42px;
+    }
+
+    .button:hover,
+    button:hover {
+      border-color: var(--brand);
+    }
+
+    .primary {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .primary:hover {
+      background: var(--brand-strong);
+      border-color: var(--brand-strong);
+    }
+
+    button:disabled,
+    input:disabled,
+    select:disabled {
+      opacity: 0.58;
+      cursor: not-allowed;
+    }
+
+    .panel {
+      margin-top: 16px;
+      padding: 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .panel-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .panel-title > div {
+      min-width: 0;
+    }
+
+    .panel-eyebrow {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 850;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .prediction-workbench {
+      display: grid;
+      grid-template-columns: minmax(300px, 0.9fr) minmax(360px, 1.1fr);
+      gap: 16px;
+      align-items: start;
+      margin-top: 16px;
+    }
+
+    .prediction-workbench .panel {
+      margin-top: 0;
+    }
+
+    .selection-panel {
+      border-top: 4px solid var(--brand);
+    }
+
+    .wager-panel {
+      position: sticky;
+      top: 16px;
+      border-top: 4px solid var(--accent);
+      background: #fffdf8;
+    }
+
+    .selection-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .field-card {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fbfdfb;
+      transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    .field-card:focus-within {
+      border-color: var(--brand);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(22, 100, 63, 0.12);
+    }
+
+    .login-shell {
+      display: flex;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    .login-card {
+      width: min(340px, 100%);
+      padding: 20px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .login-card h2 {
+      margin-bottom: 14px;
+    }
+
+    .login-title {
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .login-card label {
+      margin-bottom: 11px;
+    }
+
+    .login-card .primary {
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .login-switch {
+      margin: 14px 0 0;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .link-button {
+      border: 0;
+      min-height: auto;
+      padding: 0;
+      background: transparent;
+      color: var(--brand);
+      font-weight: 800;
+      text-decoration: underline;
+    }
+
+    .link-button:hover {
+      border-color: transparent;
+      color: var(--brand-strong);
+    }
+
+    .reset-actions {
+      display: grid;
+      gap: 10px;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--ink);
+      padding: 9px 10px;
+    }
+
+    input:focus,
+    select:focus {
+      outline: 2px solid rgba(22, 100, 63, 0.20);
+      border-color: var(--brand);
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+      min-height: 42px;
+    }
+
+    .check-row input {
+      width: auto;
+      min-height: auto;
+    }
+
+    .notice {
+      margin-top: 14px;
+      padding: 11px 12px;
+      border-radius: var(--radius);
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .notice.error {
+      color: var(--danger);
+      background: #fff4f2;
+      border-color: #f2c8c2;
+    }
+
+    .notice.success {
+      color: var(--brand-strong);
+      background: #edf8f1;
+      border-color: #bfdfcb;
+    }
+
+    .mode-banner {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius);
+      border: 1px solid #ecc36f;
+      background: #fff7e2;
+      color: #6a4308;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .mode-banner.real {
+      border-color: #b7dfca;
+      background: #eef9f2;
+      color: #0f5132;
+    }
+
+    .balance-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .metric {
+      padding: 12px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      min-height: 82px;
+    }
+
+    .metric.loading {
+      background: #f8fbf7;
+      border-style: dashed;
+    }
+
+    .metric-label {
+      color: var(--muted);
       font-size: 0.78rem;
       font-weight: 800;
-      text-decoration: none;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+      text-transform: uppercase;
+    }
+
+    .metric-value {
+      margin-top: 7px;
+      font-size: 1.42rem;
+      font-weight: 850;
+    }
+
+    .open-section {
+      margin-top: 16px;
+      border-top: 4px solid var(--brand);
+    }
+
+    .open-section h2 {
+      margin-bottom: 10px;
+    }
+
+    .quote-panel {
+      margin-top: 14px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+    }
+
+    .wager-empty {
+      margin-top: 14px;
+      padding: 18px;
+      border: 1px dashed #d8bc84;
+      border-radius: var(--radius);
+      background: #fff8eb;
+      color: var(--muted);
+    }
+
+    .wager-empty strong {
+      display: block;
+      margin-top: 4px;
+      color: var(--ink);
+      font-size: 1.08rem;
+    }
+
+    .quote-main {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+    }
+
+    .quote-label {
+      font-weight: 800;
+      font-size: 1.06rem;
+    }
+
+    .quote-meta {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .dummy-note {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: #fff1c7;
+      color: #7a4a05;
+      font-weight: 800;
+    }
+
+    .cutoff-card {
+      margin-top: 12px;
+      padding: 11px 12px;
+      border: 1px solid #dbe3ef;
+      border-radius: var(--radius);
+      background: #f8fafc;
+    }
+
+    .cutoff-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .cutoff-card strong {
+      display: block;
+      margin-top: 3px;
+      color: var(--ink);
+      font-size: 1rem;
+    }
+
+    .odds-box {
+      min-width: 116px;
+      padding: 10px;
+      border-radius: var(--radius);
+      background: var(--ink);
+      color: #fff;
+      text-align: center;
+    }
+
+    .odds-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      color: #d7e3dc;
+      font-weight: 800;
+    }
+
+    .odds-value {
+      font-size: 1.55rem;
+      font-weight: 850;
+    }
+
+    .stake-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(150px, auto);
+      gap: 10px;
+      align-items: center;
+      margin-top: 12px;
+      padding: 14px;
+      border: 1px solid #e4c58d;
+      border-radius: var(--radius);
+      background: #fff7e8;
+    }
+
+    .market-field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .market-heading {
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .market-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .market-button {
+      min-height: 38px;
+      padding: 8px 11px;
+      font-size: 0.88rem;
+      background: var(--surface-2);
+    }
+
+    .market-button.active {
+      background: #fff3d4;
+      border-color: var(--accent);
+      color: #5b3806;
+      font-weight: 800;
+      box-shadow: inset 0 0 0 1px rgba(183, 120, 24, 0.30);
+    }
+
+    .hidden-select {
+      display: none;
+    }
+
+    .odds-decimal {
+      margin-top: 2px;
+      color: #d7e3dc;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .reward-line {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .reward-line strong {
+      color: var(--accent);
+    }
+
+    .stake-help {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 650;
+      line-height: 1.35;
+    }
+
+    .reward-warning {
+      margin-top: 10px;
+      color: var(--danger);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    #placeButton {
+      width: 100%;
+    }
+
+    .table-shell {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 620px;
+      font-size: 0.9rem;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      white-space: nowrap;
+    }
+
+    th {
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      font-weight: 850;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .empty {
+      color: var(--muted);
+      padding: 16px 0;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 920px) {
+      .app-header,
+      .prediction-workbench {
+        grid-template-columns: 1fr;
+      }
+      .balance-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .wager-panel {
+        position: static;
+      }
+      .toolbar,
+      .actions {
+        justify-content: flex-start;
+      }
+      .quote-main,
+      .stake-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .app-shell {
+        padding: 8px;
+      }
+      h1 {
+        font-size: 1.22rem;
+      }
+      .panel,
+      .app-header {
+        padding: 12px;
+      }
+      .app-header {
+        gap: 10px;
+      }
+      .subhead {
+        margin-top: 4px;
+        font-size: 0.78rem;
+        line-height: 1.25;
+      }
+      .toolbar {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+        width: 100%;
+      }
+      .button,
+      button {
+        width: 100%;
+        min-height: 32px;
+        padding: 7px 8px;
+        font-size: 0.75rem;
+        line-height: 1.1;
+      }
+      .market-button {
+        width: auto;
+      }
+      .balance-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+        margin-top: 8px;
+      }
+      .metric {
+        min-height: 64px;
+        padding: 9px;
+      }
+      .metric-label {
+        font-size: 0.62rem;
+      }
+      .metric-value {
+        margin-top: 4px;
+        font-size: 1rem;
+      }
+      .mode-banner {
+        margin-top: 8px;
+        padding: 9px 10px;
+        font-size: 0.75rem;
+      }
+      .prediction-workbench {
+        gap: 10px;
+        margin-top: 10px;
+      }
     }
   </style>
 </head>
 <body>
-  <iframe id="appFrame" title="ISISCC Fantasy Predictions" src="https://script.google.com/macros/s/AKfycbw0FMq7t-UtrI8SLlN3Na-DbHecvEMQenZU6T4nWdrQBuYr5YbAM2IKE6lIRDciFf_Vkg/exec?page=prediction&authuser=0" loading="eager" allowfullscreen></iframe>
-  <div class="loader" id="loader"><div><strong>Loading Fantasy Predictions...</strong><span>Please wait while Make Prediction loads.</span></div></div>
-  <a class="direct-help" href="https://script.google.com/macros/s/AKfycbw0FMq7t-UtrI8SLlN3Na-DbHecvEMQenZU6T4nWdrQBuYr5YbAM2IKE6lIRDciFf_Vkg/exec?page=prediction&authuser=0" target="_top">Open direct</a>
+  <div class="app-shell">
+    <section class="login-shell" id="loginPanel">
+      <div class="login-card">
+        <h1 class="login-title">Fantasy Predictions</h1>
+        <div id="loginForm">
+          <label>
+            Team
+            <input id="teamInput" autocomplete="username">
+          </label>
+          <label>
+            Password
+            <input id="passwordInput" type="password" autocomplete="current-password">
+          </label>
+          <label class="check-row">
+            <input id="rememberInput" type="checkbox">
+            Remember me
+          </label>
+          <button class="primary" id="loginButton" onclick="login()">Login</button>
+          <p class="login-switch">Forgot Password? <button class="link-button" onclick="showResetPassword()">Change Password</button></p>
+          <div id="loginStatus" class="notice hidden"></div>
+        </div>
+        <div id="resetForm" class="hidden">
+          <h2>Reset Password</h2>
+          <label>
+            Email
+            <input id="resetEmailInput" type="email" autocomplete="email" placeholder="Your registered email">
+          </label>
+          <div class="reset-actions">
+            <button class="primary" id="resetButton" onclick="requestPasswordReset()">Send Reset Link</button>
+            <button onclick="showLoginForm()">Back to Login</button>
+          </div>
+          <div id="resetStatus" class="notice hidden"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="appPanel" class="hidden">
+      <header class="app-header">
+        <div>
+          <h1 id="appTitle">Fantasy Predictions</h1>
+          <p class="subhead" id="teamTitle">Team</p>
+        </div>
+        <nav class="toolbar">
+          <a class="button" id="flLink" href="https://ravikirankella.github.io/Cricket/FL.html" target="_blank" rel="noopener" onclick="return openFantasyLeague(event);">Fantasy League</a>
+          <button onclick="logout()">Logout</button>
+        </nav>
+      </header>
+
+      <div id="modeBanner" class="mode-banner hidden"></div>
+      <div id="balanceGrid" class="balance-grid"></div>
+
+      <div class="prediction-workbench">
+        <section class="panel selection-panel">
+          <div class="panel-title">
+            <div>
+              <div class="panel-eyebrow">Selection</div>
+              <h2>Make Prediction</h2>
+            </div>
+            <button onclick="refreshSnapshot()">Refresh</button>
+          </div>
+          <div id="dataStatus" class="notice hidden"></div>
+          <div class="selection-grid">
+            <label class="field-card">
+              Fixture
+              <select id="fixtureSelect" onchange="handleSelectionChanged();"></select>
+            </label>
+            <label class="field-card">
+              Player
+              <select id="playerSelect" onchange="handlePlayerChanged();"></select>
+            </label>
+            <div class="market-field field-card">
+              <div class="market-heading">Market</div>
+              <select id="marketSelect" class="hidden-select" onchange="handleSelectionChanged();"></select>
+              <div id="marketButtons" class="market-buttons"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel wager-panel">
+          <div class="panel-title">
+            <div>
+              <div class="panel-eyebrow">Odds &amp; Stake</div>
+              <h2>Stake &amp; Reward</h2>
+            </div>
+          </div>
+          <div id="quoteStatus" class="notice hidden"></div>
+          <div id="wagerEmpty" class="wager-empty">
+            <span class="panel-eyebrow">Ready</span>
+            <strong>Odds, stake and reward will appear here.</strong>
+          </div>
+          <div id="quotePanel" class="quote-panel hidden"></div>
+        </section>
+      </div>
+
+      <section class="panel open-section hidden" id="openPredictionsSection">
+        <h2>Open Predictions</h2>
+        <div id="openPredictions"></div>
+      </section>
+    </section>
+  </div>
+
   <script>
-    const loader = document.getElementById('loader');
-    document.getElementById('appFrame').addEventListener('load', () => loader.classList.add('hidden'));
+    const API_BASE_URL = 'https://isiscc-fantasy-api.ravikiran59.workers.dev';
+
+    const state = {
+      credentials: null,
+      snapshot: null,
+      snapshotLoading: false,
+      snapshotError: '',
+      quote: null,
+      quoteTimer: null,
+      quoteDebounceTimer: null,
+      quoteRequestId: 0,
+      quoteBundles: {},
+      quoteBundlePromises: {},
+      quotePrefetchTimer: null,
+      quoteCacheVersion: 0,
+      balanceToken: '',
+      balanceLoading: false
+    };
+
+    document.addEventListener('DOMContentLoaded', init);
+
+    function init() {
+      setPageLinks();
+      const savedTeam = getCookie('username');
+      const savedPassword = getCookie('password');
+      if (savedTeam && savedPassword) {
+        document.getElementById('teamInput').value = savedTeam;
+        document.getElementById('passwordInput').value = savedPassword;
+        document.getElementById('rememberInput').checked = true;
+        login();
+      }
+    }
+
+    function setPageLinks() {
+      const link = document.getElementById('flLink');
+      link.href = 'https://ravikirankella.github.io/Cricket/FL.html';
+      link.target = '_blank';
+      link.rel = 'noopener';
+    }
+
+    function openFantasyLeague(event) {
+      if (event && typeof event.preventDefault === 'function') {
+        event.preventDefault();
+      }
+      openPublicUrl('https://ravikirankella.github.io/Cricket/FL.html');
+      return false;
+    }
+
+    function openPublicUrl(url) {
+      const opened = window.open(url, '_blank');
+      if (opened) {
+        try {
+          opened.opener = null;
+        } catch (error) {
+          // Some browsers prevent opener access; the tab has already opened.
+        }
+        return;
+      }
+      try {
+        window.top.location.href = url;
+      } catch (error) {
+        window.location.href = url;
+      }
+    }
+
+    function showResetPassword() {
+      document.getElementById('loginForm').classList.add('hidden');
+      document.getElementById('resetForm').classList.remove('hidden');
+      hideLoginStatus();
+      hideResetStatus();
+      document.getElementById('resetEmailInput').readOnly = false;
+      document.getElementById('resetButton').style.display = '';
+      document.getElementById('resetButton').disabled = false;
+      document.getElementById('resetButton').textContent = 'Send Reset Link';
+    }
+
+    function showLoginForm() {
+      document.getElementById('resetForm').classList.add('hidden');
+      document.getElementById('loginForm').classList.remove('hidden');
+      hideResetStatus();
+    }
+
+    function requestPasswordReset() {
+      const email = document.getElementById('resetEmailInput').value.trim();
+      if (!email) {
+        showResetStatus('Email is required.', 'error');
+        return;
+      }
+
+      setBusy('resetButton', true, 'Sending...');
+      showResetStatus('Sending reset link...', '');
+      callServer('requestPasswordReset', { email: email })
+        .then(message => {
+          document.getElementById('resetEmailInput').readOnly = true;
+          document.getElementById('resetButton').style.display = 'none';
+          showResetStatus(message || 'Reset link sent to your email.', 'success');
+        })
+        .catch(error => showResetStatus(errorMessage(error), 'error'))
+        .finally(() => {
+          const resetButton = document.getElementById('resetButton');
+          if (resetButton.style.display !== 'none') {
+            setBusy('resetButton', false, 'Send Reset Link');
+          }
+        });
+    }
+
+    function login() {
+      const team = document.getElementById('teamInput').value;
+      const password = document.getElementById('passwordInput').value;
+      if (!team || !password) {
+        showLoginStatus('Team and password are required.', 'error');
+        return;
+      }
+
+      setLoginReadOnly(true);
+      setBusy('loginButton', true, 'Checking...');
+      showLoginStatus('Checking login...', '');
+      const credentials = { team, password };
+
+      callServer('loginUser', credentials)
+        .then(payload => {
+          const loginPayload = normalizePredictionLogin(payload, credentials);
+          state.credentials = credentials;
+          if (document.getElementById('rememberInput').checked) {
+            setCookie('username', team, 2);
+            setCookie('password', password, 2);
+          } else {
+            deleteCookie('username');
+            deleteCookie('password');
+          }
+          document.getElementById('loginPanel').classList.add('hidden');
+          document.getElementById('appPanel').classList.remove('hidden');
+          hideLoginStatus();
+          showPredictionLoadingShell(loginPayload);
+          loadPredictionSnapshot();
+        })
+        .catch(error => {
+          const message = errorMessage(error);
+          showLoginStatus(message, 'error');
+          if (/invalid team or password|invalid user/i.test(message)) {
+            deleteCookie('username');
+            deleteCookie('password');
+          }
+        })
+        .finally(() => {
+          setBusy('loginButton', false, 'Login');
+          if (!state.credentials) setLoginReadOnly(false);
+        });
+    }
+
+    function logout() {
+      state.credentials = null;
+      state.snapshot = null;
+      state.snapshotLoading = false;
+      state.snapshotError = '';
+      state.quote = null;
+      state.balanceToken = '';
+      state.balanceLoading = false;
+      state.quoteRequestId += 1;
+      state.quoteCacheVersion += 1;
+      clearQuoteTimer();
+      clearQuoteDebounce();
+      clearQuotePrefetch();
+      state.quoteBundles = {};
+      state.quoteBundlePromises = {};
+      document.getElementById('appPanel').classList.add('hidden');
+      document.getElementById('loginPanel').classList.remove('hidden');
+      setLoginReadOnly(false);
+    }
+
+    function refreshSnapshot() {
+      if (!state.credentials) return;
+      state.snapshotLoading = true;
+      state.snapshotError = '';
+      renderDataStatus();
+      showQuoteStatus('Refreshing prediction data...', '');
+      loadPredictionSnapshot({
+        refreshContext: true,
+        successMessage: 'Updated prediction options.'
+      });
+    }
+
+    function showPredictionLoadingShell(loginPayload) {
+      state.snapshotLoading = true;
+      state.snapshotError = '';
+      state.balanceToken = '';
+      state.balanceLoading = true;
+      applySnapshot(makeLoadingSnapshot(loginPayload), {
+        autoQuote: false,
+        loading: true
+      });
+      showQuoteStatus('Loading prediction data...', '');
+    }
+
+    function makeLoadingSnapshot(loginPayload) {
+      const payload = loginPayload || {};
+      const team = payload.team || (state.credentials && state.credentials.team) || 'Team';
+      return {
+        ok: true,
+        seasonYear: payload.seasonYear || '',
+        generatedAt: payload.generatedAt || '',
+        team: team,
+        balance: {
+          Team: team,
+          FantasyPoints: 0,
+          PredictionPoints: 0,
+          TotalPoints: 0,
+          OpenPredictionStake: 0,
+          AvailablePoints: 0,
+          BalanceStatus: 'LOADING'
+        },
+        balanceToken: '',
+        balanceStatus: 'LOADING',
+        fixtures: [],
+        players: [],
+        markets: [],
+        openPredictions: [],
+        predictionMode: payload.predictionMode || {
+          code: 'REAL',
+          label: 'Real predictions',
+          isDummy: false,
+          isTestTeam: false,
+          message: 'Loading prediction mode...'
+        },
+        diagnostics: {},
+        server: payload.server || {}
+      };
+    }
+
+    function loadPredictionSnapshot(options) {
+      const settings = options || {};
+      if (!state.credentials) return;
+      const request = Object.assign({}, state.credentials);
+      if (settings.refreshContext) request.refreshContext = true;
+      callServer('getPredictionSnapshot', request)
+        .then(snapshot => {
+          if (!state.credentials) return;
+          const nextSnapshot = normalizePredictionSnapshot(snapshot);
+          applySnapshot(nextSnapshot);
+          if (settings.successMessage) showQuoteStatus(settings.successMessage, 'success');
+          loadPredictionBalance();
+        })
+        .catch(error => {
+          if (!state.credentials) return;
+          const message = errorMessage(error);
+          state.snapshotLoading = false;
+          state.snapshotError = message;
+          clearQuoteDebounce();
+          state.quoteRequestId += 1;
+          clearQuote();
+          renderDataStatus();
+          showQuoteStatus(message, 'error');
+        });
+    }
+
+    function applySnapshot(snapshot, options) {
+      const settings = options || {};
+      state.snapshot = snapshot;
+      state.snapshotLoading = Boolean(settings.loading);
+      if (!state.snapshotLoading) state.snapshotError = '';
+      state.quote = null;
+      state.quoteBundles = {};
+      state.quoteBundlePromises = {};
+      state.quoteCacheVersion += 1;
+      clearQuotePrefetch();
+      state.balanceToken = snapshot.balanceToken || '';
+      state.balanceLoading = !state.balanceToken;
+      clearQuoteTimer();
+      document.getElementById('appTitle').textContent = 'Fantasy Predictions' +
+        (state.snapshot.seasonYear ? ' ' + state.snapshot.seasonYear : '');
+      document.getElementById('teamTitle').textContent = state.snapshot.team || state.credentials.team || 'Team';
+      renderPredictionMode();
+      renderBalance();
+      renderDataStatus();
+      renderSelectors();
+      renderOpenPredictions();
+      clearQuote();
+      if (settings.autoQuote !== false) {
+        scheduleQuoteRefresh();
+      } else {
+        clearQuoteDebounce();
+        state.quoteRequestId += 1;
+      }
+    }
+
+    function normalizePredictionSnapshot(snapshot) {
+      if (!snapshot || typeof snapshot !== 'object') {
+        throw new Error('Prediction data did not load from the server. Deploy the updated Code.gs with Prediction.html, then reload the page.');
+      }
+      if (snapshot.ok === false) {
+        throw new Error(snapshot.message || 'Prediction data did not load.');
+      }
+      snapshot.balance = snapshot.balance || {
+        FantasyPoints: 0,
+        PredictionPoints: 0,
+        TotalPoints: 0,
+        OpenPredictionStake: 0,
+        AvailablePoints: 0,
+        BalanceStatus: 'LOADING'
+      };
+      snapshot.balanceToken = snapshot.balanceToken || '';
+      snapshot.balanceStatus = snapshot.balanceStatus || (snapshot.balanceToken ? 'READY' : 'LOADING');
+      snapshot.fixtures = Array.isArray(snapshot.fixtures) ? snapshot.fixtures : [];
+      snapshot.players = Array.isArray(snapshot.players) ? snapshot.players : [];
+      snapshot.markets = Array.isArray(snapshot.markets) ? snapshot.markets : [];
+      snapshot.openPredictions = Array.isArray(snapshot.openPredictions) ? snapshot.openPredictions : [];
+      snapshot.predictionMode = snapshot.predictionMode || {
+        code: 'REAL',
+        label: 'Real predictions',
+        isDummy: false,
+        isTestTeam: false,
+        message: 'Real predictions are open.'
+      };
+      snapshot.quoteCache = {};
+      return snapshot;
+    }
+
+    function normalizePredictionLogin(payload, credentials) {
+      if (payload === true) {
+        return {
+          ok: true,
+          team: credentials.team,
+          seasonYear: ''
+        };
+      }
+      if (payload === false) {
+        throw new Error('Invalid team or password.');
+      }
+      if (!payload || typeof payload !== 'object') {
+        throw new Error('Login did not return a response from the server.');
+      }
+      if (payload.ok === false) {
+        throw new Error(payload.message || 'Invalid team or password.');
+      }
+      return payload;
+    }
+
+    function normalizeBalanceSnapshot(snapshot) {
+      if (!snapshot || typeof snapshot !== 'object') {
+        throw new Error('Points availability did not load from the server.');
+      }
+      if (snapshot.ok === false) {
+        throw new Error(snapshot.message || 'Points availability did not load.');
+      }
+      snapshot.balance = snapshot.balance || {};
+      snapshot.balanceToken = snapshot.balanceToken || '';
+      if (!snapshot.balanceToken) {
+        throw new Error('Points availability token was not returned.');
+      }
+      return snapshot;
+    }
+
+    function loadPredictionBalance() {
+      if (!state.credentials || !state.snapshot) return;
+      state.balanceLoading = true;
+      state.balanceToken = '';
+      state.snapshot.balanceToken = '';
+      state.snapshot.balanceStatus = 'LOADING';
+      state.snapshot.balance = Object.assign({}, state.snapshot.balance || {}, { BalanceStatus: 'LOADING' });
+      renderBalance();
+      if (state.quote) renderQuote();
+
+      callServer('getPredictionBalanceSnapshot', state.credentials)
+        .then(payload => {
+          const nextBalance = normalizeBalanceSnapshot(payload);
+          if (!state.credentials || !state.snapshot) return;
+          state.balanceLoading = false;
+          state.balanceToken = nextBalance.balanceToken;
+          state.snapshot.balance = nextBalance.balance;
+          state.snapshot.balanceToken = nextBalance.balanceToken;
+          state.snapshot.balanceStatus = nextBalance.balanceStatus || 'READY';
+          state.snapshot.balanceIssuedAtMs = nextBalance.balanceIssuedAtMs || '';
+          state.snapshot.balanceValidUntilMs = nextBalance.balanceValidUntilMs || '';
+          renderBalance();
+          if (state.quote) renderQuote();
+        })
+        .catch(error => {
+          state.balanceLoading = false;
+          state.balanceToken = '';
+          if (state.snapshot) {
+            state.snapshot.balanceStatus = 'ERROR';
+            state.snapshot.balance = Object.assign({}, state.snapshot.balance || {}, { BalanceStatus: 'ERROR' });
+          }
+          renderBalance();
+          if (state.quote) renderQuote();
+          showQuoteStatus(errorMessage(error), 'error');
+        });
+    }
+
+    function renderPredictionMode() {
+      const node = document.getElementById('modeBanner');
+      const mode = (state.snapshot && state.snapshot.predictionMode) || {};
+      const isDummy = Boolean(mode.isDummy);
+      const isLoading = state.snapshotLoading && !mode.message;
+      if (!isDummy && !isLoading) {
+        node.classList.add('hidden');
+        node.innerHTML = '';
+        return;
+      }
+
+      const startText = mode.realStartAtMs ? formatLondonDateTime(mode.realStartAtMs) : '1 June 2026';
+      const message = mode.isTestTeam
+        ? 'Test mode: wagers placed by this team are saved as dummy predictions, do not count, and the test balance stays at 10000 points.'
+        : 'Early access: wagers placed before ' + startText + ' are saved as dummy predictions so you can test the flow. They do not count and will disappear from normal views once real predictions start.';
+      node.className = 'mode-banner' + (isDummy ? '' : ' real');
+      node.innerHTML = escapeHtml(message);
+      node.classList.remove('hidden');
+    }
+
+    function renderBalance() {
+      const balance = state.snapshot.balance || {};
+      const ready = isBalanceReady();
+      const items = [
+        ['Fantasy Points', balance.FantasyPoints ?? balance.CricketPoints],
+        ['Prediction Points', balance.PredictionPoints ?? balance.SettledBettingNet],
+        ['Total', balance.TotalPoints],
+        ['Open Stake', balance.OpenPredictionStake ?? balance.OpenStake],
+        ['Available', balance.AvailablePoints]
+      ];
+      document.getElementById('balanceGrid').innerHTML = items.map(item =>
+        '<div class="metric' + (ready ? '' : ' loading') + '"><div class="metric-label">' + escapeHtml(item[0]) +
+        '</div><div class="metric-value">' + (ready ? formatNumber(item[1]) : '...') + '</div></div>'
+      ).join('');
+    }
+
+    function renderDataStatus() {
+      const node = document.getElementById('dataStatus');
+      const snapshot = state.snapshot || {};
+      const diagnostics = snapshot.diagnostics || {};
+      const messages = [];
+
+      if (state.snapshotLoading) {
+        node.className = 'notice';
+        node.innerHTML = 'Loading prediction data...';
+        node.classList.remove('hidden');
+        return;
+      }
+
+      if (state.snapshotError) {
+        node.className = 'notice error';
+        node.innerHTML = escapeHtml(state.snapshotError);
+        node.classList.remove('hidden');
+        return;
+      }
+
+      if (!(snapshot.fixtures || []).length) {
+        messages.push('No open fixtures are available.');
+      }
+      if (!(snapshot.players || []).length) {
+        messages.push('No enabled prediction players are available.');
+      }
+
+      if (!messages.length) {
+        node.classList.add('hidden');
+        node.innerHTML = '';
+        return;
+      }
+
+      const details = [
+        diagnostics.fixturesSheet ? 'Fixtures sheet: ' + diagnostics.fixturesSheet : '',
+        diagnostics.fixtureRows !== undefined ? 'fixture rows: ' + diagnostics.fixtureRows : '',
+        diagnostics.openFixtureRows !== undefined ? 'open: ' + diagnostics.openFixtureRows : '',
+        diagnostics.enabledPlayerControls !== undefined ? 'enabled controls: ' + diagnostics.enabledPlayerControls : '',
+        diagnostics.playerOptions !== undefined ? 'player options: ' + diagnostics.playerOptions : ''
+      ].filter(Boolean).join(', ');
+
+      node.className = 'notice';
+      node.innerHTML = escapeHtml(messages.join(' ')) + (details ? '<br>' + escapeHtml(details) : '');
+      node.classList.remove('hidden');
+    }
+
+    function renderSelectors() {
+      if (state.snapshotLoading) {
+        document.getElementById('fixtureSelect').innerHTML = '<option value="">Loading fixtures...</option>';
+        document.getElementById('fixtureSelect').disabled = true;
+        document.getElementById('playerSelect').innerHTML = '<option value="">Loading players...</option>';
+        document.getElementById('playerSelect').disabled = true;
+        document.getElementById('marketSelect').innerHTML = '<option value="">Loading markets...</option>';
+        document.getElementById('marketSelect').disabled = true;
+        document.getElementById('marketButtons').innerHTML = '<div class="empty">Loading markets...</div>';
+        return;
+      }
+
+      const fixtures = state.snapshot.fixtures || [];
+      const fixtureSelect = document.getElementById('fixtureSelect');
+      fixtureSelect.innerHTML = fixtures.length
+        ? fixtures.map(fixture => '<option value="' + attr(fixture.GameId) + '">' +
+            escapeHtml(fixtureOptionLabel(fixture)) +
+          '</option>').join('')
+        : '<option value="">No open fixtures</option>';
+      fixtureSelect.disabled = !fixtures.length;
+
+      const players = state.snapshot.players || [];
+      const playerSelect = document.getElementById('playerSelect');
+      playerSelect.innerHTML = players.length
+        ? players.map(player => '<option value="' + attr(player.Player) + '">' + escapeHtml(player.Player) + '</option>').join('')
+        : '<option value="">No enabled players</option>';
+      playerSelect.disabled = !players.length;
+
+      renderMarketOptions();
+    }
+
+    function fixtureOptionLabel(fixture) {
+      const date = displayFixtureDate(fixture.Date);
+      const opponent = cleanFixtureText(fixture.Opponent) || 'Opponent TBC';
+      const homeAway = /^(Home|Away)$/i.test(String(fixture.HomeAway || '').trim())
+        ? ' (' + String(fixture.HomeAway).trim() + ')'
+        : '';
+      return date + ' - ' + opponent + homeAway;
+    }
+
+    function displayFixtureDate(value) {
+      const text = String(value || '').trim();
+      const match = text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (!match) return text || 'Date TBC';
+      return match[3] + '/' + match[2] + '/' + match[1];
+    }
+
+    function cleanFixtureText(value) {
+      const text = String(value || '').trim();
+      if (!text || /1899|GMT|standard time|daylight time/i.test(text)) return '';
+      if (/^(mon|tue|wed|thu|fri|sat|sun)\s+[a-z]{3}\s+\d{1,2}\s+\d{4}/i.test(text)) return '';
+      return text;
+    }
+
+    function renderMarketOptions() {
+      const player = selectedPlayer();
+      const marketSelect = document.getElementById('marketSelect');
+      const marketButtons = document.getElementById('marketButtons');
+      const markets = player ? (player.Markets || []) : [];
+      marketSelect.innerHTML = markets.length
+        ? markets.map(market => '<option value="' + attr(market.MarketCode) + '">' + escapeHtml(market.Label) + '</option>').join('')
+        : '<option value="">No markets</option>';
+      marketSelect.disabled = !markets.length;
+      marketButtons.innerHTML = markets.length
+        ? markets.map(function(market, index) {
+            const activeClass = index === 0 ? ' active' : '';
+            return '<button type="button" class="market-button' + activeClass + '" data-market="' + attr(market.MarketCode) +
+              '" onclick="selectMarketOption(this)">' + escapeHtml(market.Label) + '</button>';
+          }).join('')
+        : '<div class="empty">No markets for this player.</div>';
+    }
+
+    function handlePlayerChanged() {
+      renderMarketOptions();
+      scheduleQuoteRefresh();
+    }
+
+    function handleSelectionChanged() {
+      scheduleQuoteRefresh();
+    }
+
+    function selectMarketOption(button) {
+      const value = button.getAttribute('data-market') || '';
+      document.getElementById('marketSelect').value = value;
+      const buttons = document.querySelectorAll('.market-button');
+      buttons.forEach(node => node.classList.toggle('active', node === button));
+      scheduleQuoteRefresh();
+    }
+
+    function scheduleQuoteRefresh() {
+      clearQuoteDebounce();
+      state.quoteRequestId += 1;
+      const fixtureId = document.getElementById('fixtureSelect').value;
+      const playerName = document.getElementById('playerSelect').value;
+      const marketCode = document.getElementById('marketSelect').value;
+      clearQuote();
+      if (!fixtureId || !playerName || !marketCode) {
+        hideQuoteStatus();
+        return;
+      }
+      const cachedQuote = quoteFromCache(fixtureId, playerName, marketCode);
+      if (cachedQuote && quoteIsUsable(cachedQuote)) {
+        state.quote = cachedQuote;
+        renderQuote();
+        hideQuoteStatus();
+        scheduleQuoteBundlePrefetch(fixtureId, playerName);
+        return;
+      }
+      showQuoteStatus('Updating odds...', '');
+      const requestId = state.quoteRequestId;
+      state.quoteDebounceTimer = window.setTimeout(function() {
+        requestQuoteBundle(requestId, fixtureId, playerName, marketCode);
+      }, 120);
+    }
+
+    function requestQuoteBundle(requestId, fixtureId, playerName, marketCode) {
+      if (!fixtureId || !playerName || !marketCode) {
+        showQuoteStatus('Select a fixture, player, and market.', 'error');
+        return;
+      }
+      if (requestId !== state.quoteRequestId) return;
+      state.quoteDebounceTimer = null;
+
+      showQuoteStatus('Calculating odds...', '');
+      loadQuoteBundle(fixtureId, playerName)
+        .then(() => {
+          if (requestId !== state.quoteRequestId) return;
+          const quote = quoteFromCache(fixtureId, playerName, marketCode);
+          if (quote && quoteIsUsable(quote)) {
+            state.quote = quote;
+            renderQuote();
+            hideQuoteStatus();
+            scheduleQuoteBundlePrefetch(fixtureId, playerName);
+            return;
+          }
+          requestSingleQuote(requestId, fixtureId, playerName, marketCode);
+        })
+        .catch(error => {
+          if (requestId !== state.quoteRequestId) return;
+          state.quote = null;
+          clearQuote();
+          showQuoteStatus(errorMessage(error), 'error');
+        });
+    }
+
+    function requestSingleQuote(requestId, fixtureId, playerName, marketCode) {
+      callServer('quotePrediction', Object.assign({}, state.credentials, {
+        gameId: fixtureId,
+        player: playerName,
+        marketCode: marketCode
+      }))
+        .then(quote => {
+          if (requestId !== state.quoteRequestId) return;
+          state.quote = quote;
+          cacheQuote(quote);
+          renderQuote();
+          hideQuoteStatus();
+          scheduleQuoteBundlePrefetch(fixtureId, playerName);
+        })
+        .catch(error => {
+          if (requestId !== state.quoteRequestId) return;
+          state.quote = null;
+          clearQuote();
+          showQuoteStatus(errorMessage(error), 'error');
+        });
+    }
+
+    function loadQuoteBundle(gameId, playerName) {
+      const key = quoteBundleKey(gameId, playerName);
+      const existing = state.quoteBundles[key];
+      if (existing && !quoteBundleExpired(existing)) {
+        return Promise.resolve(existing);
+      }
+      if (state.quoteBundlePromises[key]) {
+        return state.quoteBundlePromises[key];
+      }
+      const request = Object.assign({}, state.credentials, {
+        gameId: gameId,
+        player: playerName
+      });
+      const requestCredentialKey = currentCredentialKey();
+      const requestCacheVersion = state.quoteCacheVersion;
+      const promise = callServer('getPredictionQuoteBundle', request)
+        .then(payload => {
+          if (requestCredentialKey !== currentCredentialKey() ||
+              requestCacheVersion !== state.quoteCacheVersion) {
+            throw new Error('Prediction session changed.');
+          }
+          const bundle = normalizeQuoteBundle(payload, gameId, playerName);
+          state.quoteBundles[key] = bundle;
+          mergeQuoteBundle(bundle);
+          return bundle;
+        })
+        .finally(() => {
+          delete state.quoteBundlePromises[key];
+        });
+      state.quoteBundlePromises[key] = promise;
+      return promise;
+    }
+
+    function normalizeQuoteBundle(payload, gameId, playerName) {
+      if (!payload || typeof payload !== 'object') {
+        throw new Error('Odds did not load from the server.');
+      }
+      if (payload.ok === false) {
+        throw new Error(payload.message || 'Odds did not load.');
+      }
+      const quotes = payload.quoteBundle && typeof payload.quoteBundle === 'object' ? payload.quoteBundle : {};
+      return {
+        gameId: String(payload.gameId || gameId || ''),
+        player: String(payload.player || playerName || ''),
+        generatedAt: payload.quoteBundleGeneratedAt || '',
+        quotes: quotes
+      };
+    }
+
+    function quoteBundleExpired(bundle) {
+      const quotes = Object.values((bundle && bundle.quotes) || {});
+      if (!quotes.length) return false;
+      return !quotes.some(quoteIsUsable);
+    }
+
+    function mergeQuoteBundle(bundle) {
+      if (!state.snapshot) return;
+      if (!state.snapshot.quoteCache || typeof state.snapshot.quoteCache !== 'object') {
+        state.snapshot.quoteCache = {};
+      }
+      Object.assign(state.snapshot.quoteCache, (bundle && bundle.quotes) || {});
+    }
+
+    function scheduleQuoteBundlePrefetch(gameId, activePlayer) {
+      if (state.quotePrefetchTimer) {
+        window.clearTimeout(state.quotePrefetchTimer);
+      }
+      state.quotePrefetchTimer = window.setTimeout(function() {
+        prefetchQuoteBundles(gameId, activePlayer);
+      }, 500);
+    }
+
+    function prefetchQuoteBundles(gameId, activePlayer) {
+      if (!state.credentials || !state.snapshot) return;
+      const players = state.snapshot.players || [];
+      const start = Math.max(0, players.findIndex(player => player.Player === activePlayer));
+      const queue = [];
+      for (let offset = 1; offset <= players.length && queue.length < 3; offset++) {
+        const player = players[(start + offset) % players.length];
+        if (!player || !player.Player) continue;
+        const key = quoteBundleKey(gameId, player.Player);
+        if (state.quoteBundles[key] && !quoteBundleExpired(state.quoteBundles[key])) continue;
+        if (state.quoteBundlePromises[key]) continue;
+        queue.push(player.Player);
+      }
+      queue.reduce(function(chain, playerName) {
+        return chain.then(function() {
+          return loadQuoteBundle(gameId, playerName).catch(function() {});
+        });
+      }, Promise.resolve());
+    }
+
+    function quoteFromCache(gameId, playerName, marketCode) {
+      const cache = (state.snapshot && state.snapshot.quoteCache) || {};
+      return cache[quoteCacheKey(gameId, playerName, marketCode)] || null;
+    }
+
+    function cacheQuote(quote) {
+      if (!state.snapshot || !quote) return;
+      if (!state.snapshot.quoteCache || typeof state.snapshot.quoteCache !== 'object') {
+        state.snapshot.quoteCache = {};
+      }
+      state.snapshot.quoteCache[quoteCacheKey(quote.GameId, quote.Player, quote.MarketCode)] = quote;
+    }
+
+    function quoteCacheKey(gameId, playerName, marketCode) {
+      return [
+        String(gameId || '').trim(),
+        quotePlayerKey(playerName),
+        String(marketCode || '').trim().toUpperCase()
+      ].join('|');
+    }
+
+    function quoteBundleKey(gameId, playerName) {
+      return String(gameId || '').trim() + '|' + quotePlayerKey(playerName);
+    }
+
+    function quotePlayerKey(value) {
+      return String(value || '')
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
+
+    function quoteIsUsable(quote) {
+      return Boolean(quote && quote.QuoteToken && Number(quote.ValidUntilMs || 0) > Date.now() + 2000);
+    }
+
+    function renderQuote() {
+      const quote = state.quote;
+      if (!quote) {
+        clearQuote();
+        return;
+      }
+
+      const limits = quoteStakeLimits(quote);
+      const maxStake = limits.maxStake;
+      const minStake = limits.minStake;
+      const stakeDisabled = maxStake < minStake;
+      const amendMode = isAmendQuote(quote);
+      const dummyMode = Boolean(quote.IsDummy);
+      const currentStake = currentStakeForQuote(quote);
+      const currentReward = currentRewardForQuote(quote);
+      const suggestedStake = stakeDisabled ? 0 : (amendMode && currentStake ? currentStake : minStake);
+      const actionLabel = amendMode
+        ? (dummyMode ? 'Update Dummy Wager' : 'Update Wager')
+        : (dummyMode ? 'Place Dummy Wager' : 'Place Wager');
+      const stakeHelp = limits.pending
+        ? 'Checking available Fantasy points...'
+        : 'Min Stake ' + formatNumber(minStake) +
+          ' | Max Stake ' + formatNumber(maxStake);
+
+      document.getElementById('wagerEmpty').classList.add('hidden');
+      document.getElementById('quotePanel').classList.remove('hidden');
+      document.getElementById('quotePanel').innerHTML =
+        '<div class="quote-main">' +
+          '<div><div class="quote-label">' + escapeHtml(quote.Label || '') + '</div>' +
+          '<div class="quote-meta">' + escapeHtml(quote.FixtureFormatLabel || '') +
+          ' | valid until <span id="quoteCountdown"></span></div>' +
+          '<div class="cutoff-card"><span>Prediction cutoff</span><strong>' +
+          escapeHtml(formatLondonDateTime(quote.CutoffAtMs)) + '</strong></div>' +
+          (dummyMode ? '<div class="quote-meta dummy-note">Dummy wager - early access/testing only. It will not count.</div>' : '') +
+          (amendMode ? '<div class="quote-meta">Current stake ' + formatNumber(currentStake) +
+            ' | current reward ' + formatNumber(currentReward) + '</div>' : '') + '</div>' +
+          '<div class="odds-box"><div class="odds-label">Odds</div><div class="odds-value">' +
+          formatFractionalOdds(quote.DecimalOdds) + '</div><div class="odds-decimal">decimal ' +
+          formatOdds(quote.DecimalOdds) + '</div></div>' +
+        '</div>' +
+        '<div class="stake-grid">' +
+          '<label>Stake' +
+            '<input id="stakeInput" type="number" min="' + attr(minStake) + '" max="' + attr(maxStake) +
+            '" step="' + attr(limits.stakeUnit) + '" value="' + attr(suggestedStake) + '" oninput="renderRewardPreview()" ' +
+            (stakeDisabled ? 'disabled' : '') + '>' +
+            '<span class="stake-help">' + escapeHtml(stakeHelp) + '</span>' +
+          '</label>' +
+          '<button class="primary" id="placeButton" onclick="placePrediction()" ' + (stakeDisabled ? 'disabled' : '') + '>' +
+          actionLabel + '</button>' +
+        '</div>' +
+        '<div class="reward-line" id="rewardPreview"></div>';
+
+      renderRewardPreview();
+      startQuoteTimer();
+    }
+
+    function renderRewardPreview() {
+      const quote = state.quote;
+      const stake = Number((document.getElementById('stakeInput') || {}).value || 0);
+      const reward = quote ? rewardForStake(stake, quote) : 0;
+      const limits = quoteStakeLimits(quote);
+      const maxStake = limits.maxStake;
+      const minStake = limits.minStake;
+      const node = document.getElementById('rewardPreview');
+      const placeButton = document.getElementById('placeButton');
+      if (!node) return;
+      if (limits.pending) {
+        node.innerHTML = 'Checking available Fantasy points...';
+        if (placeButton) placeButton.disabled = true;
+        return;
+      }
+      if (maxStake < minStake) {
+        node.innerHTML = noStakeMessage(maxStake, minStake);
+        if (placeButton) placeButton.disabled = true;
+        return;
+      }
+
+      const warnings = [];
+      if (stake % limits.stakeUnit !== 0) {
+        warnings.push('Stake must be a multiple of ' + limits.stakeUnit + '.');
+      }
+      if (stake < minStake || stake > maxStake) {
+        warnings.push('Stake must be between ' + minStake + ' and ' + maxStake + '.');
+      }
+      if (reward < limits.minReward) {
+        warnings.push('Reward must be at least ' + limits.minReward + '.');
+      }
+      if (placeButton) placeButton.disabled = Boolean(warnings.length);
+
+      node.innerHTML =
+        '<strong>Reward ' + formatNumber(reward) + '</strong>' +
+        (quote && quote.IsDummy
+          ? ' | Dummy wager will not affect Fantasy points'
+          : ' | Available after wager ' + formatNumber(Math.max(0, limits.availableForSelection - stake))) +
+        (warnings.length ? '<div class="reward-warning">' + escapeHtml(warnings.join(' ')) + '</div>' : '');
+    }
+
+    function noStakeMessage(maxStake, minStake) {
+      if (!isBalanceReady()) {
+        return 'Checking available Fantasy points...';
+      }
+      if (maxStake <= 0) {
+        return 'No Fantasy points are currently available to stake.';
+      }
+      return 'Available stake ' + formatNumber(maxStake) +
+        ' is below the minimum stake ' + formatNumber(minStake) + '.';
+    }
+
+    function quoteStakeLimits(quote) {
+      const minStake = minStakeForQuote(quote);
+      const unit = stakeUnitForQuote(quote);
+      const currentStake = currentStakeForQuote(quote);
+      if (!isBalanceReady()) {
+        return {
+          minStake: minStake,
+          maxStake: 0,
+          availablePoints: 0,
+          availableForSelection: currentStake,
+          stakeUnit: unit,
+          minReward: minRewardForQuote(quote),
+          maxReward: maxRewardForQuote(quote),
+          currentStake: currentStake,
+          currentReward: currentRewardForQuote(quote),
+          pending: true
+        };
+      }
+      const balance = (state.snapshot && state.snapshot.balance) || {};
+      const available = Math.max(0, Math.floor(Number(balance.AvailablePoints || 0)));
+      const availableForSelection = quote && quote.IsDummy ? available : available + currentStake;
+      const player = selectedPlayer();
+      const override = player ? Number(player.MaxStakeOverride || 0) : 0;
+      const controlMax = Number.isFinite(override) && override > 0 ? Math.floor(override) : availableForSelection;
+      const rewardCapMax = maxStakeByReward(quote);
+      return {
+        minStake: minStake,
+        maxStake: roundStakeDown(Math.max(0, Math.min(availableForSelection, controlMax, rewardCapMax)), unit),
+        availablePoints: available,
+        availableForSelection: availableForSelection,
+        stakeUnit: unit,
+        minReward: minRewardForQuote(quote),
+        maxReward: maxRewardForQuote(quote),
+        currentStake: currentStake,
+        currentReward: currentRewardForQuote(quote)
+      };
+    }
+
+    function stakeUnitForQuote(quote) {
+      return Math.max(1, Math.floor(Number((quote && quote.StakeUnit) || 10)));
+    }
+
+    function minRewardForQuote(quote) {
+      return Math.max(1, Math.floor(Number((quote && quote.MinReward) || 1)));
+    }
+
+    function maxRewardForQuote(quote) {
+      return Math.max(minRewardForQuote(quote), Math.floor(Number((quote && quote.MaxRewardPerSelection) || 500)));
+    }
+
+    function minStakeForQuote(quote) {
+      const unit = stakeUnitForQuote(quote);
+      const fromQuote = Math.floor(Number((quote && quote.MinStake) || 0));
+      if (fromQuote > 0) return roundStakeUp(fromQuote, unit);
+      const profitPerPoint = Number((quote && quote.DecimalOdds) || 0) - 1;
+      if (!Number.isFinite(profitPerPoint) || profitPerPoint <= 0) return unit;
+      return roundStakeUp(Math.ceil(minRewardForQuote(quote) / profitPerPoint), unit);
+    }
+
+    function maxStakeByReward(quote) {
+      const unit = stakeUnitForQuote(quote);
+      const fromQuote = Math.floor(Number((quote && quote.MaxStakeByReward) || 0));
+      if (fromQuote > 0) return roundStakeDown(fromQuote, unit);
+      const maxReward = maxRewardForQuote(quote);
+      if (maxReward < minRewardForQuote(quote)) return 0;
+      const profitPerPoint = Number((quote && quote.DecimalOdds) || 0) - 1;
+      if (!Number.isFinite(profitPerPoint) || profitPerPoint <= 0) return 0;
+      let stake = roundStakeDown(Math.floor((maxReward + 1 - 1e-9) / profitPerPoint), unit);
+      while (stake > 0 && rewardForStake(stake, quote) > maxReward) {
+        stake -= unit;
+      }
+      return Math.max(0, stake);
+    }
+
+    function isAmendQuote(quote) {
+      return Boolean(quote && (quote.AmendMode || currentStakeForQuote(quote) > 0));
+    }
+
+    function currentStakeForQuote(quote) {
+      const fromQuote = Math.floor(Number((quote && quote.CurrentStake) || 0));
+      if (fromQuote > 0) return fromQuote;
+      const row = openSelectionFromSnapshot(quote);
+      return row ? Math.floor(Number(row.Stake || 0)) : 0;
+    }
+
+    function currentRewardForQuote(quote) {
+      const fromQuote = Math.floor(Number((quote && quote.CurrentReward) || 0));
+      if (fromQuote > 0) return fromQuote;
+      const row = openSelectionFromSnapshot(quote);
+      return row ? Math.floor(Number(row.PotentialProfit || 0)) : 0;
+    }
+
+    function openSelectionFromSnapshot(quote) {
+      if (!quote || !state.snapshot) return null;
+      const rows = state.snapshot.openPredictions || [];
+      const gameId = String(quote.GameId || '').trim();
+      const player = playerKey(quote.Player);
+      const market = String(quote.MarketCode || '').trim().toUpperCase();
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        if (String(row.GameId || '').trim() !== gameId) continue;
+        if (playerKey(row.Player) !== player) continue;
+        if (String(row.MarketCode || '').trim().toUpperCase() !== market) continue;
+        return row;
+      }
+      return null;
+    }
+
+    function rewardForStake(stake, quote) {
+      return Math.floor((Number(stake || 0) * (Number((quote && quote.DecimalOdds) || 0) - 1)) + 1e-9);
+    }
+
+    function roundStakeUp(value, unit) {
+      const n = Math.max(0, Math.ceil(Number(value) || 0));
+      return Math.ceil(n / unit) * unit;
+    }
+
+    function roundStakeDown(value, unit) {
+      const n = Math.max(0, Math.floor(Number(value) || 0));
+      return Math.floor(n / unit) * unit;
+    }
+
+    function playerKey(value) {
+      return String(value || '').trim().toLowerCase();
+    }
+
+    function isBalanceReady() {
+      return Boolean(state.balanceToken && state.snapshot && state.snapshot.balanceStatus !== 'LOADING');
+    }
+
+    function placePrediction() {
+      const quote = state.quote;
+      const stake = Number((document.getElementById('stakeInput') || {}).value || 0);
+      if (!quote || !quote.QuoteToken) {
+        showQuoteStatus('Refresh odds before confirming.', 'error');
+        return;
+      }
+      if (!isBalanceReady()) {
+        showQuoteStatus('Points availability is still loading.', 'error');
+        return;
+      }
+      if (!stake || Math.floor(stake) !== stake) {
+        showQuoteStatus('Stake must be a whole number.', 'error');
+        return;
+      }
+      const limits = quoteStakeLimits(quote);
+      if (stake % limits.stakeUnit !== 0) {
+        showQuoteStatus('Stake must be a multiple of ' + limits.stakeUnit + '.', 'error');
+        return;
+      }
+      if (stake < limits.minStake || stake > limits.maxStake) {
+        showQuoteStatus('Stake must be between ' + limits.minStake + ' and ' + limits.maxStake + '.', 'error');
+        return;
+      }
+      const reward = rewardForStake(stake, quote);
+      if (reward < limits.minReward) {
+        showQuoteStatus('Stake must return at least ' + limits.minReward + ' reward point.', 'error');
+        return;
+      }
+
+      const dummyMode = Boolean(quote.IsDummy);
+      const actionLabel = isAmendQuote(quote)
+        ? (dummyMode ? 'Update Dummy Wager' : 'Update Wager')
+        : (dummyMode ? 'Place Dummy Wager' : 'Place Wager');
+      setBusy('placeButton', true, 'Placing...');
+      callServer('placePrediction', Object.assign({}, state.credentials, {
+        quoteToken: quote.QuoteToken,
+        balanceToken: state.balanceToken,
+        stake: stake
+      }))
+        .then(snapshot => {
+          applySnapshot(normalizePredictionSnapshot(snapshot), { autoQuote: false });
+          showQuoteStatus(snapshot.message || 'Prediction placed.', 'success');
+        })
+        .catch(error => {
+          showQuoteStatus(errorMessage(error), 'error');
+        })
+        .finally(() => setBusy('placeButton', false, actionLabel));
+    }
+
+    function clearQuote() {
+      state.quote = null;
+      clearQuoteTimer();
+      document.getElementById('quotePanel').classList.add('hidden');
+      document.getElementById('quotePanel').innerHTML = '';
+      const empty = document.getElementById('wagerEmpty');
+      empty.innerHTML = state.snapshotLoading
+        ? '<span class="panel-eyebrow">Loading</span><strong>Loading prediction data...</strong>'
+        : '<span class="panel-eyebrow">Ready</span><strong>Odds, stake and reward will appear here.</strong>';
+      empty.classList.remove('hidden');
+    }
+
+    function renderOpenPredictions() {
+      const rows = state.snapshot.openPredictions || [];
+      const section = document.getElementById('openPredictionsSection');
+      if (!rows.length) {
+        section.classList.add('hidden');
+        document.getElementById('openPredictions').innerHTML = '';
+        return;
+      }
+      section.classList.remove('hidden');
+      const headers = ['ModeLabel', 'GameId', 'Player', 'Label', 'Stake', 'DecimalOdds', 'PotentialProfit', 'StatusLabel'];
+      document.getElementById('openPredictions').innerHTML =
+        '<div class="table-shell"><table><thead><tr>' +
+        headers.map(header => '<th>' + escapeHtml(headerLabel(header)) + '</th>').join('') +
+        '</tr></thead><tbody>' +
+        rows.map(row => '<tr>' + headers.map(header => '<td>' + escapeHtml(displayCell(row[header], header)) + '</td>').join('') + '</tr>').join('') +
+        '</tbody></table></div>';
+    }
+
+    function startQuoteTimer() {
+      clearQuoteTimer();
+      updateQuoteCountdown();
+      state.quoteTimer = window.setInterval(updateQuoteCountdown, 1000);
+    }
+
+    function clearQuoteTimer() {
+      if (state.quoteTimer) {
+        window.clearInterval(state.quoteTimer);
+        state.quoteTimer = null;
+      }
+    }
+
+    function clearQuoteDebounce() {
+      if (state.quoteDebounceTimer) {
+        window.clearTimeout(state.quoteDebounceTimer);
+        state.quoteDebounceTimer = null;
+      }
+    }
+
+    function clearQuotePrefetch() {
+      if (state.quotePrefetchTimer) {
+        window.clearTimeout(state.quotePrefetchTimer);
+        state.quotePrefetchTimer = null;
+      }
+    }
+
+    function updateQuoteCountdown() {
+      if (!state.quote) return;
+      const remaining = Number(state.quote.ValidUntilMs || 0) - Date.now();
+      const node = document.getElementById('quoteCountdown');
+      if (!node) return;
+      if (remaining <= 0) {
+        node.textContent = 'expired';
+        const button = document.getElementById('placeButton');
+        if (button) button.disabled = true;
+        clearQuoteTimer();
+        return;
+      }
+      node.textContent = Math.ceil(remaining / 1000) + 's';
+    }
+
+    function selectedPlayer() {
+      const name = document.getElementById('playerSelect').value;
+      return (state.snapshot.players || []).find(player => player.Player === name) || null;
+    }
+
+    async function callServer(fn, payload) {
+      const body = payload || {};
+      const routes = {
+        loginUser: '/api/auth/login',
+        getPredictionSnapshot: '/api/prediction/snapshot',
+        getPredictionBalanceSnapshot: '/api/prediction/balance',
+        getPredictionQuoteBundle: '/api/prediction/quote-bundle',
+        placePrediction: '/api/prediction/place',
+        requestPasswordReset: '/api/password/reset'
+      };
+
+      if (fn === 'quotePrediction') {
+        return loadSingleQuoteFromBundle(body);
+      }
+
+      const route = routes[fn];
+      if (!route) {
+        throw new Error('Unsupported server call: ' + fn);
+      }
+
+      const data = await postApi(route, body);
+      if (fn === 'requestPasswordReset') {
+        return data && typeof data === 'object' && 'message' in data ? data.message : data;
+      }
+      return data;
+    }
+
+    async function loadSingleQuoteFromBundle(payload) {
+      const gameId = payload.gameId || payload.GameId;
+      const player = payload.player || payload.Player;
+      const marketCode = String(payload.marketCode || payload.MarketCode || '').trim().toUpperCase();
+      const bundle = await callServer('getPredictionQuoteBundle', Object.assign({}, payload, {
+        gameId: gameId,
+        player: player
+      }));
+      const quotes = bundle && bundle.quoteBundle && typeof bundle.quoteBundle === 'object'
+        ? bundle.quoteBundle
+        : {};
+      const direct = quotes[marketCode] || quotes[marketCode.toLowerCase()];
+      if (direct) return direct;
+      const match = Object.values(quotes).find(quote =>
+        String((quote && quote.MarketCode) || '').trim().toUpperCase() === marketCode
+      );
+      if (match) return match;
+      throw new Error('Odds are not available for the selected market.');
+    }
+
+    async function postApi(route, payload) {
+      const response = await fetch(API_BASE_URL + route, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload || {})
+      });
+      const envelope = await response.json().catch(() => null);
+      if (!response.ok || !envelope || envelope.ok === false) {
+        const message = envelope && envelope.error && envelope.error.message
+          ? envelope.error.message
+          : 'Cloudflare API returned HTTP ' + response.status;
+        throw new Error(message);
+      }
+      return envelope.data;
+    }
+
+    function showLoginStatus(message, kind) {
+      const node = document.getElementById('loginStatus');
+      node.className = 'notice' + (kind ? ' ' + kind : '');
+      node.innerHTML = escapeHtml(message);
+      node.classList.remove('hidden');
+    }
+
+    function hideLoginStatus() {
+      document.getElementById('loginStatus').classList.add('hidden');
+    }
+
+    function showResetStatus(message, kind) {
+      const node = document.getElementById('resetStatus');
+      node.className = 'notice' + (kind ? ' ' + kind : '');
+      node.innerHTML = escapeHtml(message);
+      node.classList.remove('hidden');
+    }
+
+    function hideResetStatus() {
+      document.getElementById('resetStatus').classList.add('hidden');
+    }
+
+    function showQuoteStatus(message, kind) {
+      const node = document.getElementById('quoteStatus');
+      node.className = 'notice' + (kind ? ' ' + kind : '');
+      node.innerHTML = escapeHtml(message);
+      node.classList.remove('hidden');
+    }
+
+    function hideQuoteStatus() {
+      const node = document.getElementById('quoteStatus');
+      node.classList.add('hidden');
+      node.innerHTML = '';
+    }
+
+    function setBusy(id, busy, text) {
+      const node = document.getElementById(id);
+      if (!node) return;
+      node.disabled = busy;
+      node.textContent = text;
+    }
+
+    function setLoginReadOnly(readOnly) {
+      document.getElementById('teamInput').readOnly = readOnly;
+      document.getElementById('passwordInput').readOnly = readOnly;
+    }
+
+    function currentCredentialKey() {
+      if (!state.credentials) return '';
+      return String(state.credentials.team || '') + '\n' + String(state.credentials.password || '');
+    }
+
+    function setCookie(name, value, days) {
+      let expires = '';
+      if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = '; expires=' + date.toUTCString();
+      }
+      document.cookie = name + '=' + value + expires + '; path=/';
+    }
+
+    function getCookie(name) {
+      const nameEQ = name + '=';
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const c = cookies[i].trim();
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+    function deleteCookie(name) {
+      document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    }
+
+    function headerLabel(header) {
+      const labels = {
+        ModeLabel: 'Mode',
+        GameId: 'Game',
+        DecimalOdds: 'Odds',
+        PotentialProfit: 'Reward',
+        StatusLabel: 'Status'
+      };
+      return labels[header] || header;
+    }
+
+    function displayCell(value, header) {
+      if (header === 'DecimalOdds') return formatOdds(value);
+      if (header === 'Stake' || header === 'PotentialProfit') return formatNumber(value);
+      if (header === 'StatusLabel' && String(value || '').toUpperCase() === 'DUMMY_OPEN') return 'Dummy';
+      return value === null || value === undefined ? '' : value;
+    }
+
+    function formatNumber(value) {
+      const n = Number(value || 0);
+      return Number.isFinite(n) ? String(Math.floor(n)) : '0';
+    }
+
+    function formatOdds(value) {
+      const n = Number(value || 0);
+      return Number.isFinite(n) ? n.toFixed(2) : '-';
+    }
+
+    function formatFractionalOdds(value) {
+      const decimal = Number(value || 0);
+      if (!Number.isFinite(decimal) || decimal <= 1) return '-';
+      const fraction = decimal - 1;
+      const denominators = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 25, 33, 50, 100];
+      let best = { numerator: Math.round(fraction * 100), denominator: 100, diff: Infinity };
+      denominators.forEach(denominator => {
+        const numerator = Math.max(1, Math.round(fraction * denominator));
+        const diff = Math.abs((numerator / denominator) - fraction);
+        if (diff < best.diff) best = { numerator, denominator, diff };
+      });
+      const divisor = gcd(best.numerator, best.denominator);
+      return (best.numerator / divisor) + '/' + (best.denominator / divisor);
+    }
+
+    function formatLondonDateTime(value) {
+      const n = Number(value || 0);
+      if (!Number.isFinite(n) || n <= 0) return 'Cutoff TBC';
+      try {
+        return new Intl.DateTimeFormat('en-GB', {
+          weekday: 'short',
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+          timeZone: 'Europe/London',
+          timeZoneName: 'short'
+        }).format(new Date(n));
+      } catch (err) {
+        return new Date(n).toLocaleString('en-GB');
+      }
+    }
+
+    function gcd(a, b) {
+      a = Math.abs(Number(a) || 0);
+      b = Math.abs(Number(b) || 0);
+      while (b) {
+        const t = b;
+        b = a % b;
+        a = t;
+      }
+      return a || 1;
+    }
+
+    function errorMessage(error) {
+      return error && error.message ? error.message : String(error || 'Something went wrong.');
+    }
+
+    function escapeHtml(value) {
+      return String(value === null || value === undefined ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function attr(value) {
+      return escapeHtml(value);
+    }
   </script>
 </body>
 </html>
